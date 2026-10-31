@@ -1,0 +1,143 @@
+# If you want to move down the line, please use \n. e.g: Priyanshu\nPriyansh.
+# After changed, you have to restart the bot to use.
+# Put the # character at the beginning of each sentence if you don't want the code to run those lines. 
+# Thanks to https://www.facebook.com/duong.than.net for translate to English!
+
+# Priyansh.js 
+
+priyansh.errorFormat=Malformed module!
+priyansh.nameExist=Module's name is similar to another module!
+priyansh.notFoundLanguage=Module %1 don't support your language
+priyansh.notFoundPackage=Can't find package %1 support for module %2, installing...
+priyansh.cantInstallPackage=Can't install package %1 for module %2, error: %3
+priyansh.loadedPackage=Installed whole package successfully for module %1
+priyansh.loadedConfig=Installed config successfully for module %1
+priyansh.cantLoadConfig=Can't install config of module %1, error: %2
+priyansh.cantOnload=Can't launch setup of module %1, error: %1
+priyansh.successLoadModule=Successfully installed module %1
+priyansh.failLoadModule=Can't install module %1, error: %2
+priyansh.finishLoadModule=Installed %1 module commands and %2 module events successfully 
+priyansh.foundPathAppstate=Found file appstate
+priyansh.notFoundPathAppstate=Can't find file appstate
+priyansh.checkListGban=Cheking global ban list...
+priyansh.banDevice=Your device have been banned from miraiproject, please contact to facebook https://fb.me/catalizcs to know more information or asking for unban key, if you already have unban key, please fill it below.
+priyansh.keyNotSameFormat=Wrong format, code must contain 6 number.
+priyansh.codeInputExpired=Your code is wrong or out of date.
+priyansh.unbanDeviceSuccess=Your device are unban now, please restart to use.
+priyansh.userBanned=You had been banned from miraiproject when %1 with reason: %2. Please contact to facebook https://fb.me/catalizCS to have more information!
+priyansh.finishCheckListGban=Checked global ban list
+priyansh.handleListenError=handleListene has occurred some unexpected errorr, error : %1
+priyansh.warningSourceCode=DETECTED THAT SOURCE CODE'S STRUCTURE HAD BEEN CHANGED , STOP NOW!
+priyansh.refreshListen=Refreshed handleListener...
+priyansh.successConnectDatabase=Connected to database successfully!
+priyansh.failConnectDatabase=Failed to connect to database, error: %1
+
+# includes/listen.js
+
+listen.startLoadEnvironment=Proceed to load the environment variable ...
+listen.loadedEnvironmentThread=Loaded thread environment variable successfully 
+listen.loadedEnvironmentUser=Loaded user environment variable successfully 
+listen.successLoadEnvironment=Loaded environment variable successfully 
+listen.failLoadEnvironment=Can't load environment variable, error: %1
+
+# includes/controller/currencies.js
+
+currencies.needObjectOrArray=Have to be an Array or an Object or maybe both
+currencies.needObject=Have to be an Object
+currencies.needNumber= Have to be an number
+
+# includes/controller/threads.js
+
+threads.needObjectOrArray=Have to be an Array or an Object or maybe both
+threads.needObject=Have to be an Object 
+
+# includes/controller/users.js
+
+users.needObjectOrArray=Have to be an Array or an Object or maybe both
+users.needObject=Have to be an Object
+
+# includes/handle/handleCommand.js
+
+handleCommand.userBanned=You are unable to use bot!\n%1\n%2
+handleCommand.threadBanned=Your thread are unable to use bot!\n%1\n%2
+handleCommand.commandNotExist=Mujhe Ye Command Nahi Mili Dusri Try Karlo ☣️🥀
+handleCommand.commandThreadBanned=Your thread is unable to use command "%1"
+handleCommand.commandUserBanned=You are unable to use command "%1"
+handleCommand.threadNotAllowNSFW=Your thread is not allowed to use NSFW commands
+handleCommand.cantGetInfoThread=Can't get your thread's info, error: %1
+handleCommand.permssionNotEnough=You have no permission to use command "%1"
+handleCommand.cantSetMessageReaction=Having some unexpected error at setMessageReaction, error: %1
+handleCommand.executeCommand=[ %1 ] Command used: %2 by user: %3 at thread: %4 | Args included: %5 | Processing time: %6ms
+handleCommand.commandError=Having some unexpected error when using command %1, error: %2
+
+# includes/handle/handleCommandEvent.js
+
+handleCommandEvent.moduleError=Having some unexpected error when using command %1, error: %2
+
+# includes/handle/handleCreateDatabase.js
+
+handleCreateDatabase.newThread=new thread: %1
+handleCreateDatabase.newUser=new user %1
+
+# includes/handle/handleEvent.js
+
+handleEvent.executeEvent=[ %1 ] Event was executed: %2 at thread: %3 | Processing time: %4ms
+handleEvent.eventError=Having some error when executing event %1, error: %2
+
+# includes/handle/handleReaction.js
+
+handleReaction.missingValue=Missing value to respond your problem
+handleReaction.executeError=Having some error when responding your problem, error: %1
+
+# includes/handle/handleReply.js
+
+handleReply.missingValue=Missing value to respond your problem
+handleReply.executeError=Having some error when responding your problem, error: %1
+
+# includes/handle/handleSchedule.js
+
+handleSchedule.exectuteError=Having some error when schedule at module %1, error: %2
+
+# utils/index.js
+
+utils.throwError=[!] The command you are using is not syntax correct, please use %1help %2 for more usage details
+# Fallback keys added for parity with en.lang
+Cyber.newVersionDetected=🔄 𝗨𝗽𝗱𝗮𝘁𝗲 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲: You are currently using version %1. The latest version is %2.
+Cyber.errorFormat=❌ 𝗘𝗿𝗿𝗼𝗿: Malformed module format!
+Cyber.nameExist=⚠️ 𝗪𝗮𝗿𝗻𝗶𝗻𝗴: A module with this name already exists!
+Cyber.notFoundLanguage=🌐 𝗟𝗮𝗻𝗴𝘂𝗮𝗴𝗲 𝗘𝗿𝗿𝗼𝗿: The module "%1" does not support your language.
+Cyber.notFoundPackage=📦 𝗣𝗮𝗰𝗸𝗮𝗴𝗲 𝗠𝗶𝘀𝘀𝗶𝗻𝗴: Cannot find package "%1" for module "%2". Installing now...
+Cyber.cantInstallPackage=❌ 𝗜𝗻𝘀𝘁𝗮𝗹𝗹 𝗘𝗿𝗿𝗼𝗿: Failed to install package "%1" for module "%2".\nDetails: %3
+Cyber.loadedPackage=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Installed all required packages for module "%1".
+Cyber.loadedConfig=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Configuration loaded for module "%1".
+Cyber.cantLoadConfig=❌ 𝗖𝗼𝗻𝗳𝗶𝗴 𝗘𝗿𝗿𝗼𝗿: Failed to load configuration for module "%1".\nDetails: %2
+Cyber.cantOnload=❌ 𝗦𝗲𝘁𝘂𝗽 𝗘𝗿𝗿𝗼𝗿: Failed to launch setup for module "%1".\nDetails: %1
+Cyber.successLoadModule=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Module "%1" installed successfully.
+Cyber.failLoadModule=❌ 𝗠𝗼𝗱𝘂𝗹𝗲 𝗘𝗿𝗿𝗼𝗿: Failed to install module "%1".\nDetails: %2
+Cyber.finishLoadModule=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Installed %1 module commands and %2 module events.
+Cyber.foundPathAppstate=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Appstate located successfully.
+Cyber.notFoundPathAppstate=❌ 𝗘𝗿𝗿𝗼𝗿: Cannot find the appstate file. It may be malformed or missing!
+Cyber.checkListGban=🔍 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴: Verifying global ban list...
+Cyber.banDevice=🚫 𝗗𝗲𝘃𝗶𝗰𝗲 𝗕𝗮𝗻𝗻𝗲𝗱: Your device has been banned from the system. Please contact the administrator for more information or to request an unban key. If you have an unban key, please enter it below.
+Cyber.keyNotSameFormat=⚠️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗙𝗼𝗿𝗺𝗮𝘁: The unban code must contain exactly 6 digits.
+Cyber.codeInputExpired=❌ 𝗘𝘅𝗽𝗶𝗿𝗲𝗱: Your unban code is incorrect or has expired.
+Cyber.unbanDeviceSuccess=✅ 𝗨𝗻𝗯𝗮𝗻𝗻𝗲𝗱: Your device has been successfully unbanned. Please restart to continue.
+Cyber.userBanned=🚫 𝗨𝘀𝗲𝗿 𝗕𝗮𝗻𝗻𝗲𝗱: You were banned on %1.\nReason: %2.\nPlease contact the administrator for more information.
+Cyber.finishCheckListGban=✅ 𝗖𝗼𝗺𝗽𝗹𝗲𝘁𝗲𝗱: Global ban list verification finished.
+Cyber.handleListenError=❌ 𝗟𝗶𝘀𝘁𝗲𝗻 𝗘𝗿𝗿𝗼𝗿: An unexpected error occurred in handleListener.\nDetails: %1
+Cyber.warningSourceCode=⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚: Structural changes detected in the source code. Execution stopped!
+Cyber.refreshListen=🔄 𝗥𝗲𝗳𝗿𝗲𝘀𝗵𝗲𝗱: handleListener has been refreshed.
+Cyber.successConnectDatabase=✅ 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲: Connected successfully!
+Cyber.failConnectDatabase=❌ 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗘𝗿𝗿𝗼𝗿: Failed to connect.\nDetails: %1
+handleCommand.notApproved=❌ 𝗔𝗰𝗰𝗲𝘀𝘀 𝗗𝗲𝗻𝗶𝗲𝗱: This group is not approved to use this bot. Please contact Admin.
+handleCommand.adminOnly=⚠️ 𝗔𝗱𝗺𝗶𝗻 𝗢𝗻𝗹𝘆: Bot is currently in Admin-Only mode.
+updater.latestVersion=✅ 𝗨𝗽-𝘁𝗼-𝗱𝗮𝘁𝗲: You are currently using the latest version.
+updater.cantFindVersion=⚠️ 𝗩𝗲𝗿𝘀𝗶𝗼𝗻 𝗘𝗿𝗿𝗼𝗿: You are using an undefined version (%1). Please check your package.json file.
+updater.newVersions=🔄 𝗨𝗽𝗱𝗮𝘁𝗲 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲: There are %1 new versions available. Starting update process...
+updater.updateSuccess=✅ 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: System updated successfully.%1
+updater.configChanged=⚠️ 𝗖𝗼𝗻𝗳𝗶𝗴 𝗖𝗵𝗮𝗻𝗴𝗲𝗱: The %1 has been modified. Please review your config.json file.
+updater.installingPackages=📦 𝗜𝗻𝘀𝘁𝗮𝗹𝗹𝗶𝗻𝗴: Downloading and installing dependencies...
+updater.installSuccess=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Dependencies installed successfully. Please restart the bot to apply changes.
+updater.backupSuccess=✅ 𝗕𝗮𝗰𝗸𝘂𝗽 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Modified files have been backed up in the %1 folder.
+updater.restartToApply=🔄 𝗥𝗲𝘀𝘁𝗮𝗿𝘁 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱: Please restart the bot to apply the new version.
+updater.skipFile=⏭️ 𝗦𝗸𝗶𝗽𝗽𝗲𝗱: A new version of the %1 file is available, but it was skipped during the update due to the comment "%2".

@@ -1,0 +1,120 @@
+# TODO: replace MAHBUB-SHAON / Mahbub-Shaon placeholders with your real name and handle.
+# If you want to move down the line, please use \n. e.g: tina\nMAHBUB-SHAON.
+# After changed, you have to restart the bot to use.
+# Put the # character at the beginning of each sentence if you don't want the code to run those lines. 
+# Thanks to https://www.facebook.com/duong.than.net for translate to English!
+
+# Cyber.js 
+
+Cyber.newVersionDetected=🔄 𝗨𝗽𝗱𝗮𝘁𝗲 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲: You are currently using version %1. The latest version is %2.
+Cyber.errorFormat=❌ 𝗘𝗿𝗿𝗼𝗿: Malformed module format!
+Cyber.nameExist=⚠️ 𝗪𝗮𝗿𝗻𝗶𝗻𝗴: A module with this name already exists!
+Cyber.notFoundLanguage=🌐 𝗟𝗮𝗻𝗴𝘂𝗮𝗴𝗲 𝗘𝗿𝗿𝗼𝗿: The module "%1" does not support your language.
+Cyber.notFoundPackage=📦 𝗣𝗮𝗰𝗸𝗮𝗴𝗲 𝗠𝗶𝘀𝘀𝗶𝗻𝗴: Cannot find package "%1" for module "%2". Installing now...
+Cyber.cantInstallPackage=❌ 𝗜𝗻𝘀𝘁𝗮𝗹𝗹 𝗘𝗿𝗿𝗼𝗿: Failed to install package "%1" for module "%2".\nDetails: %3
+Cyber.loadedPackage=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Installed all required packages for module "%1".
+Cyber.loadedConfig=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Configuration loaded for module "%1".
+Cyber.cantLoadConfig=❌ 𝗖𝗼𝗻𝗳𝗶𝗴 𝗘𝗿𝗿𝗼𝗿: Failed to load configuration for module "%1".\nDetails: %2
+Cyber.cantOnload=❌ 𝗦𝗲𝘁𝘂𝗽 𝗘𝗿𝗿𝗼𝗿: Failed to launch setup for module "%1".\nDetails: %1
+Cyber.successLoadModule=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Module "%1" installed successfully.
+Cyber.failLoadModule=❌ 𝗠𝗼𝗱𝘂𝗹𝗲 𝗘𝗿𝗿𝗼𝗿: Failed to install module "%1".\nDetails: %2
+Cyber.finishLoadModule=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Installed %1 module commands and %2 module events.
+Cyber.foundPathAppstate=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Appstate located successfully.
+Cyber.notFoundPathAppstate=❌ 𝗘𝗿𝗿𝗼𝗿: Cannot find the appstate file. It may be malformed or missing!
+Cyber.checkListGban=🔍 𝗖𝗵𝗲𝗰𝗸𝗶𝗻𝗴: Verifying global ban list...
+Cyber.banDevice=🚫 𝗗𝗲𝘃𝗶𝗰𝗲 𝗕𝗮𝗻𝗻𝗲𝗱: Your device has been banned from the system. Please contact the administrator for more information or to request an unban key. If you have an unban key, please enter it below.
+Cyber.keyNotSameFormat=⚠️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗙𝗼𝗿𝗺𝗮𝘁: The unban code must contain exactly 6 digits.
+Cyber.codeInputExpired=❌ 𝗘𝘅𝗽𝗶𝗿𝗲𝗱: Your unban code is incorrect or has expired.
+Cyber.unbanDeviceSuccess=✅ 𝗨𝗻𝗯𝗮𝗻𝗻𝗲𝗱: Your device has been successfully unbanned. Please restart to continue.
+Cyber.userBanned=🚫 𝗨𝘀𝗲𝗿 𝗕𝗮𝗻𝗻𝗲𝗱: You were banned on %1.\nReason: %2.\nPlease contact the administrator for more information.
+Cyber.finishCheckListGban=✅ 𝗖𝗼𝗺𝗽𝗹𝗲𝘁𝗲𝗱: Global ban list verification finished.
+Cyber.handleListenError=❌ 𝗟𝗶𝘀𝘁𝗲𝗻 𝗘𝗿𝗿𝗼𝗿: An unexpected error occurred in handleListener.\nDetails: %1
+Cyber.warningSourceCode=⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚: Structural changes detected in the source code. Execution stopped!
+Cyber.refreshListen=🔄 𝗥𝗲𝗳𝗿𝗲𝘀𝗵𝗲𝗱: handleListener has been refreshed.
+Cyber.successConnectDatabase=✅ 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲: Connected successfully!
+Cyber.failConnectDatabase=❌ 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗘𝗿𝗿𝗼𝗿: Failed to connect.\nDetails: %1
+
+# includes/listen.js
+
+listen.startLoadEnvironment=🔄 𝗟𝗼𝗮𝗱𝗶𝗻𝗴: Initializing environment variables...
+listen.loadedEnvironmentThread=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Thread environment variables loaded.
+listen.loadedEnvironmentUser=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: User environment variables loaded.
+listen.successLoadEnvironment=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: All environment variables loaded successfully.
+listen.failLoadEnvironment=❌ 𝗘𝗿𝗿𝗼𝗿: Failed to load environment variables.\nDetails: %1
+
+# includes/controller/currencies.js
+
+currencies.needObjectOrArray=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Array or an Object.
+currencies.needObject=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Object.
+currencies.needNumber=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected a Number.
+
+# includes/controller/threads.js
+
+threads.needObjectOrArray=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Array or an Object.
+threads.needObject=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Object.
+
+# includes/controller/users.js
+
+users.needObjectOrArray=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Array or an Object.
+users.needObject=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Object.
+
+# includes/handle/handleCommand.js
+
+handleCommand.userBanned=🚫 𝗔𝗰𝗰𝗲𝘀𝘀 𝗗𝗲𝗻𝗶𝗲𝗱: You have been banned from using the bot due to policy violations.\nReason: %1
+handleCommand.threadBanned=⛔️ 𝗚𝗿𝗼𝘂𝗽 𝗕𝗮𝗻𝗻𝗲𝗱: This group has been restricted from using the bot.\n\n📞 Please contact the administrator for more information.
+handleCommand.commandNotExist=⚠️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗖𝗼𝗺𝗺𝗮𝗻𝗱\n\nThe command you entered does not exist.\nDid you mean: ⟨ %1 ⟩?\n\nPlease check your input and try again.
+handleCommand.commandThreadBanned=🚫 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: Your group is not allowed to use the command "%1".
+handleCommand.commandUserBanned=🚫 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: You are not allowed to use the command "%1".
+handleCommand.threadNotAllowNSFW=⚠️ 𝗡𝗦𝗙𝗪 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: This command is not allowed in this group.
+handleCommand.cantGetInfoThread=❌ 𝗘𝗿𝗿𝗼𝗿: Unable to retrieve group information.\nDetails: %1
+handleCommand.permssionNotEnough=⛔️ 𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻 𝗗𝗲𝗻𝗶𝗲𝗱\n\nYou do not have the required permissions to use the command "%1".\nThis command is restricted to administrators only.
+handleCommand.cantSetMessageReaction=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while setting message reaction.\nDetails: %1
+handleCommand.executeCommand=⚙️ [ %1 ] Command: %2 | User: %3 | Group: %4 | Args: %5 | Time: %6ms
+handleCommand.commandError=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while executing the command "%1".\nDetails: %2
+handleCommand.notApproved=❌ 𝗔𝗰𝗰𝗲𝘀𝘀 𝗗𝗲𝗻𝗶𝗲𝗱: This group is not approved to use this bot. Please contact Admin.
+handleCommand.adminOnly=⚠️ 𝗔𝗱𝗺𝗶𝗻 𝗢𝗻𝗹𝘆: Bot is currently in Admin-Only mode.
+
+# includes/handle/handleCommandEvent.js
+
+handleCommandEvent.moduleError=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while executing the command "%1".\nDetails: %2
+
+# includes/handle/handleCreateDatabase.js
+
+handleCreateDatabase.newThread=🆕 𝗡𝗲𝘄 𝗚𝗿𝗼𝘂𝗽: %1
+handleCreateDatabase.newUser=🆕 𝗡𝗲𝘄 𝗨𝘀𝗲𝗿: %1
+
+# includes/handle/handleEvent.js
+
+handleEvent.executeEvent=⚙️ [ %1 ] Event: %2 | Group: %3 | Time: %4ms
+handleEvent.eventError=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while executing the event "%1".\nDetails: %2
+
+# includes/handle/handleReaction.js
+
+handleReaction.missingValue=⚠️ 𝗠𝗶𝘀𝘀𝗶𝗻𝗴 𝗩𝗮𝗹𝘂𝗲: Please provide the required information to proceed.
+handleReaction.executeError=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while processing your reaction.\nDetails: %1
+
+# includes/handle/handleReply.js
+
+handleReply.missingValue=⚠️ 𝗠𝗶𝘀𝘀𝗶𝗻𝗴 𝗩𝗮𝗹𝘂𝗲: Please provide the required information to proceed.
+handleReply.executeError=❌ 𝗘𝗿𝗿𝗼𝗿: An unexpected issue occurred while processing your reply.\nDetails: %1
+
+# includes/handle/handleSchedule.js
+
+handleSchedule.exectuteError=❌ 𝗦𝗰𝗵𝗲𝗱𝘂𝗹𝗲 𝗘𝗿𝗿𝗼𝗿: An issue occurred while scheduling module "%1".\nDetails: %2
+
+# utils/index.js
+
+utils.throwError=ℹ️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗨𝘀𝗮𝗴𝗲: Please check the command syntax.\n💡 Type '%1help %2' for more information.
+
+# updater.js
+
+updater.latestVersion=✅ 𝗨𝗽-𝘁𝗼-𝗱𝗮𝘁𝗲: You are currently using the latest version.
+updater.cantFindVersion=⚠️ 𝗩𝗲𝗿𝘀𝗶𝗼𝗻 𝗘𝗿𝗿𝗼𝗿: You are using an undefined version (%1). Please check your package.json file.
+updater.newVersions=🔄 𝗨𝗽𝗱𝗮𝘁𝗲 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲: There are %1 new versions available. Starting update process...
+updater.updateSuccess=✅ 𝗨𝗽𝗱𝗮𝘁𝗲𝗱: System updated successfully.%1
+updater.configChanged=⚠️ 𝗖𝗼𝗻𝗳𝗶𝗴 𝗖𝗵𝗮𝗻𝗴𝗲𝗱: The %1 has been modified. Please review your config.json file.
+updater.installingPackages=📦 𝗜𝗻𝘀𝘁𝗮𝗹𝗹𝗶𝗻𝗴: Downloading and installing dependencies...
+updater.installSuccess=✅ 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Dependencies installed successfully. Please restart the bot to apply changes.
+updater.backupSuccess=✅ 𝗕𝗮𝗰𝗸𝘂𝗽 𝗦𝘂𝗰𝗰𝗲𝘀𝘀: Modified files have been backed up in the %1 folder.
+updater.restartToApply=🔄 𝗥𝗲𝘀𝘁𝗮𝗿𝘁 𝗥𝗲𝗾𝘂𝗶𝗿𝗲𝗱: Please restart the bot to apply the new version.
+updater.skipFile=⏭️ 𝗦𝗸𝗶𝗽𝗽𝗲𝗱: A new version of the %1 file is available, but it was skipped during the update due to the comment "%2".

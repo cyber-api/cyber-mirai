@@ -1,0 +1,28 @@
+# --- Secrets (never commit) ---
+.env
+.env*
+appstate.json
+config.json
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+includes/database/*.sqlite
+includes/data.sqlite
+
+# --- Runtime / generated ---
+node_modules/
+Script/commands/cache/
+Script/commands/checktuongtac/
+logs/
+*.log
+.tmp/
+temp/
+data/
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

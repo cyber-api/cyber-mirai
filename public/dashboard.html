@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Bot Dashboard</title>
+    <link href="/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-robot me-2 fs-3"></i>
+                Cyber Bot Dashboard
+            </a>
+            <div class="d-flex align-items-center">
+                <span id="memoryUsage" class="badge bg-success me-3">0%</span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-clock me-2"></i>Uptime</h5>
+                    <h2 class="display-6" id="uptime">0h 0m 0s</h2>
+                    <div id="uptimeDetails"></div>
+                </div>
+            </div>
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-users me-2"></i>Total Users</h5>
+                    <h2 class="display-6" id="totalUsers">0</h2>
+                </div>
+            </div>
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-comments me-2"></i>Total Threads</h5>
+                    <h2 class="display-6" id="totalThreads">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- File Manager -->
+            <div class="col-lg-8 mb-4">
+                <div class="card file-manager h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-folder-open me-2"></i>File Manager</span>
+                        <div id="fileInfo" class="small text-muted"></div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <select id="fileType" class="form-select" onchange="loadFileType()">
+                                    <option value="">Select Type...</option>
+                                    <option value="config">Config Files</option>
+                                    <option value="commands">Commands</option>
+                                    <option value="events">Events</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <select id="fileSelect" class="form-select" onchange="loadSelectedFile()" disabled>
+                                    <option value="">Choose a file...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="createFileBtn" class="btn btn-success w-100" onclick="showCreateFileModal()" disabled>
+                                    <i class="fas fa-plus"></i> New
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="fileContent" class="form-control flex-grow-1 mb-3" style="min-height: 400px;" disabled></textarea>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button id="saveBtn" class="btn btn-primary me-2" onclick="saveFile()" disabled>
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                                <button id="reloadBtn" class="btn btn-warning me-2" onclick="reloadFile()" disabled style="display: none;">
+                                    <i class="fas fa-sync"></i> Reload
+                                </button>
+                            </div>
+                            <button id="deleteBtn" class="btn btn-danger" onclick="deleteFile()" disabled style="display: none;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls & Logs -->
+            <div class="col-lg-4 mb-4">
+                <div class="card bot-controls mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-cogs me-2"></i>Bot Controls
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-warning w-100 mb-2" onclick="restartBot()">
+                            <i class="fas fa-power-off me-2"></i>Restart Bot
+                        </button>
+                        <button class="btn btn-danger w-100 mb-3" onclick="clearCookiesAndRestart()">
+                            <i class="fas fa-cookie-bite me-2"></i>Clear Cookies & Restart
+                        </button>
+                        
+                        <hr>
+                        
+                        <h6 class="mb-2">FCA Type <span id="currentFca" class="badge bg-secondary float-end">Loading...</span></h6>
+                        <div class="input-group mb-2">
+                            <select id="fcaTypeSelect" class="form-select">
+                                <option value="stfca">ST-FCA</option>
+                                <option value="dongdev">@dongdev/fca-unofficial</option>
+                            </select>
+                            <button class="btn btn-outline-primary" onclick="switchFcaType()">Switch</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card h-50">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-terminal me-2"></i>Logs</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary me-1" onclick="viewLogs()"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="clearLogs()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="logsContainer" class="p-3" style="height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create File Modal -->
+    <div class="modal fade" id="createFileModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Script</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Filename (must end with .js)</label>
+                        <input type="text" id="newFileName" class="form-control" placeholder="example.js">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea id="newFileContent" class="form-control" rows="10" style="font-family: monospace;"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createNewFile()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body" id="toastBody"></div>
+        </div>
+    </div>
+
+    <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
