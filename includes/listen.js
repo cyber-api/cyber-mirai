@@ -44,7 +44,10 @@ module.exports = function ({ api, models }) {
             try {
                 const appState = api.getAppState();
                 const mainPath = global.client.mainPath || process.cwd();
-                const appStatePath = path.join(mainPath, (global.config.APPSTATEPATH || "appstate.json"));
+                // Refresh the session file that actually produced this login:
+                // appstate.json for primary, account.txt2 for secondary.
+                const appStatePath = global.client.sessionFile
+                    || path.join(mainPath, (global.config.APPSTATEPATH || "appstate.json"));
                 fs.writeFileSync(appStatePath, JSON.stringify(appState, null, '\x09'), { encoding: "utf8", mode: 0o600 });
                 try { fs.chmodSync(appStatePath, 0o600); } catch (e) { /* best effort */ }
             } catch (e) {
@@ -62,7 +65,9 @@ module.exports = function ({ api, models }) {
         // rollover, with a guard against overlapping runs (F-37/F-38).
         try {
             const today = moment.tz("Asia/Dhaka").day();
-            const authorizedUsers = [...global.config.NDH, ...global.config.ADMINBOT];
+            // includes() on the original arrays keeps the remote-admin Proxy working.
+            const isAuthorizedUser = (id) => (Array.isArray(global.config.NDH) && global.config.NDH.includes(id))
+                || (Array.isArray(global.config.ADMINBOT) && global.config.ADMINBOT.includes(id));
             if (currentDay == today || global.client.sending_top) return;
             currentDay = today;
             global.client.sending_top = true;
@@ -70,7 +75,7 @@ module.exports = function ({ api, models }) {
                 if (!fs.existsSync(interactionPath)) return;
                 const interactionFiles = fs.readdirSync(interactionPath).filter(fileName => {
                     const id = fileName.replace(".json", '');
-                    return authorizedUsers.includes(id) || global.data.allThreadID.includes(id);
+                    return isAuthorizedUser(id) || global.data.allThreadID.includes(id);
                 });
 
                 for (const file of interactionFiles) {

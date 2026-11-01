@@ -8,9 +8,9 @@
     "npm": ">=10.0.0 <13.0.0"
   },
   "scripts": {
-    "start": "node dashboard.js",
-    "check": "node --check Cyber.js && node --check dashboard.js",
-    "test": "node --check Cyber.js && node --check dashboard.js"
+    "start": "node Ullash.js",
+    "check": "node --check Cyber.js && node --check Ullash.js",
+    "test": "node --check Cyber.js && node --check Ullash.js"
   },
   "repository": {
     "type": "git",

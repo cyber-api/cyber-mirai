@@ -35,7 +35,9 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         if (!events || typeof events.entries !== "function") return;
 
         const actor = author != null ? String(author) : "";
-        const isBotAdmin = toIdList(config.ADMINBOT).includes(actor) || toIdList(config.NDH).includes(actor);
+        // includes() on the original arrays keeps the remote-admin Proxy working.
+        const isBotAdmin = toIdList(config.ADMINBOT).includes(actor)
+            || (Array.isArray(config.NDH) && config.NDH.includes(actor));
 
         // --- Thread Approval Check ---
         if (config.threadApproval && config.threadApproval.enable) {

