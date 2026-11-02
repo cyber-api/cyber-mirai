@@ -1,115 +1,119 @@
-# TODO: replace MAHBUB-SHAON / Mahbub-Shaon placeholders with your real name and handle.
-# Cyber.js 
+# বাংলা ভাষা প্যাক (Bengali language pack)
+# en.lang-এর কাঠামো ও কী-এর ক্রম অনুসরণ করা হয়েছে।
+# নতুন লাইন যোগ করতে \n ব্যবহার করুন। উদাহরণ: প্রথম লাইন\nদ্বিতীয় লাইন।
+# পরিবর্তনের পর বট রিস্টার্ট করুন।
 
-Cyber.newVersionDetected=Tumi use korteso version %1, latest version hoilo %2.
-Cyber.errorFormat=Malformed module!
-Cyber.nameExist=Module er name onno module er shathe mil ase!
-Cyber.notFoundLanguage=Module %1 tomer language support kore na
-Cyber.notFoundPackage=%2 module er jonno package %1 paoa jacche na, install kortesi...
-Cyber.cantInstallPackage=Package %1 install kora jacche na module %2 jonno, error: %3
-Cyber.loadedPackage=Module %1 er shob package successfully install kora hoise
-Cyber.loadedConfig=Module %1 er config successfully install kora hoise
-Cyber.cantLoadConfig=Module %1 er config install kora jacche na, error: %2
-Cyber.cantOnload=Module %1 er setup launch kora jacche na, error: %1
-Cyber.successLoadModule=Module %1 successfully install hoise
-Cyber.failLoadModule=Module %1 install kora jacche na, error: %2
-Cyber.finishLoadModule=%1 module commands ebong %2 module events successfully install hoise
-Cyber.foundPathAppstate=Mahbub-Shaonstate successfully paoa hoise
-Cyber.notFoundPathAppstate=Error! appstate file paoa jacche na, mone hocche file malformed!
-Cyber.checkListGban=Global ban list check kortesi...
-Cyber.banDevice=Tomer device MAHBUB-SHAON theke ban kora hoise, aro info er jonno contact koro facebook m.me/MAHBUB.SHAON, jodi unban key thake fill koro
-Cyber.keyNotSameFormat=Wrong format, code e 6 number thakte hobe
-Cyber.codeInputExpired=Tomer code wrong ba outdated
-Cyber.unbanDeviceSuccess=Tomer device unban hoise, please restart kore use koro
-Cyber.userBanned=Tumi mahbub e ban kora hoiso jokhon %1, reason: %2. Aro info er jonno contact koro facebook m.me/MAHBUB.SHAON
-Cyber.finishCheckListGban=Global ban list check complete
-Cyber.handleListenError=handleListener e unexpected error hoise, error: %1
-Cyber.warningSourceCode=DETECTED THAT SOURCE CODE ER STRUCTURE CHANGE HOISE, STOP NOW!
-Cyber.refreshListen=HandleListener refresh hoise...
-Cyber.successConnectDatabase=Database successfully connect hoise!
-Cyber.failConnectDatabase=Database connect kora jacche na, error: %1
+# Cyber.js
+
+Cyber.newVersionDetected=🔄 নতুন আপডেট পাওয়া গেছে: আপনি এখন ভার্সন %1 ব্যবহার করছেন। সর্বশেষ ভার্সন %2।
+Cyber.errorFormat=❌ ত্রুটি: মডিউলের ফরম্যাট সঠিক নয়!
+Cyber.nameExist=⚠️ সতর্কতা: এই নামে একটি মডিউল ইতিমধ্যেই আছে!
+Cyber.notFoundLanguage=🌐 ভাষা ত্রুটি: "%1" মডিউলটি আপনার ভাষা সমর্থন করে না।
+Cyber.notFoundPackage=📦 প্যাকেজ পাওয়া যায়নি: "%2" মডিউলের জন্য "%1" প্যাকেজটি পাওয়া যাচ্ছে না। এখন ইনস্টল করা হচ্ছে...
+Cyber.cantInstallPackage=❌ ইনস্টল ত্রুটি: "%2" মডিউলের জন্য "%1" প্যাকেজটি ইনস্টল করা যায়নি।\nবিস্তারিত: %3
+Cyber.loadedPackage=✅ সফল: "%1" মডিউলের প্রয়োজনীয় সব প্যাকেজ ইনস্টল হয়েছে।
+Cyber.loadedConfig=✅ সফল: "%1" মডিউলের কনফিগ লোড হয়েছে।
+Cyber.cantLoadConfig=❌ কনফিগ ত্রুটি: "%1" মডিউলের কনফিগ লোড করা যায়নি।\nবিস্তারিত: %2
+Cyber.cantOnload=❌ সেটআপ ত্রুটি: "%1" মডিউলের সেটআপ চালু করা যায়নি।\nবিস্তারিত: %1
+Cyber.successLoadModule=✅ সফল: "%1" মডিউলটি সফলভাবে ইনস্টল হয়েছে।
+Cyber.failLoadModule=❌ মডিউল ত্রুটি: "%1" মডিউলটি ইনস্টল করা যায়নি।\nবিস্তারিত: %2
+Cyber.finishLoadModule=✅ সফল: %1টি মডিউল কমান্ড এবং %2টি মডিউল ইভেন্ট ইনস্টল হয়েছে।
+Cyber.foundPathAppstate=✅ সফল: অ্যাপস্টেট ফাইল পাওয়া গেছে।
+Cyber.notFoundPathAppstate=❌ ত্রুটি: অ্যাপস্টেট ফাইল পাওয়া যাচ্ছে না। ফাইলটি নষ্ট বা অনুপস্থিত হতে পারে!
+Cyber.checkListGban=🔍 পরীক্ষা করা হচ্ছে: গ্লোবাল ব্যান তালিকা যাচাই করা হচ্ছে...
+Cyber.banDevice=🚫 ডিভাইস ব্যান: আপনার ডিভাইসটি সিস্টেম থেকে ব্যান করা হয়েছে। আরও তথ্যের জন্য বা আনব্যান কী চাইতে অ্যাডমিনের সাথে যোগাযোগ করুন। আপনার কাছে আনব্যান কী থাকলে নিচে লিখুন।
+Cyber.keyNotSameFormat=⚠️ ভুল ফরম্যাট: আনব্যান কোডে ঠিক ৬টি সংখ্যা থাকতে হবে।
+Cyber.codeInputExpired=❌ মেয়াদোত্তীর্ণ: আপনার আনব্যান কোডটি ভুল অথবা মেয়াদোত্তীর্ণ।
+Cyber.unbanDeviceSuccess=✅ আনব্যান হয়েছে: আপনার ডিভাইস সফলভাবে আনব্যান করা হয়েছে। চালিয়ে যেতে রিস্টার্ট করুন।
+Cyber.userBanned=🚫 ব্যবহারকারী ব্যান: আপনাকে %1 তারিখে ব্যান করা হয়েছে।\nকারণ: %2।\nআরও তথ্যের জন্য অ্যাডমিনের সাথে যোগাযোগ করুন।
+Cyber.finishCheckListGban=✅ সম্পন্ন: গ্লোবাল ব্যান তালিকা যাচাই শেষ হয়েছে।
+Cyber.handleListenError=❌ লিসেন ত্রুটি: handleListener-এ অপ্রত্যাশিত ত্রুটি হয়েছে।\nবিস্তারিত: %1
+Cyber.warningSourceCode=⚠️ সতর্কতা: সোর্স কোডের কাঠামোতে পরিবর্তন পাওয়া গেছে। কার্যক্রম বন্ধ করা হয়েছে!
+Cyber.refreshListen=🔄 রিফ্রেশ হয়েছে: handleListener রিফ্রেশ করা হয়েছে।
+Cyber.successConnectDatabase=✅ ডাটাবেস: সফলভাবে সংযুক্ত হয়েছে!
+Cyber.failConnectDatabase=❌ ডাটাবেস ত্রুটি: সংযোগ করা যায়নি।\nবিস্তারিত: %1
 
 # includes/listen.js
 
-listen.startLoadEnvironment=Environment variable load kortesi ...
-listen.loadedEnvironmentThread=Thread environment variable successfully load hoise
-listen.loadedEnvironmentUser=User environment variable successfully load hoise
-listen.successLoadEnvironment=Environment variable successfully load hoise
-listen.failLoadEnvironment=Environment variable load kora jacche na, error: %1
+listen.startLoadEnvironment=🔄 লোড হচ্ছে: এনভায়রনমেন্ট ভেরিয়েবল চালু করা হচ্ছে...
+listen.loadedEnvironmentThread=✅ সফল: থ্রেড এনভায়রনমেন্ট ভেরিয়েবল লোড হয়েছে।
+listen.loadedEnvironmentUser=✅ সফল: ব্যবহারকারী এনভায়রনমেন্ট ভেরিয়েবল লোড হয়েছে।
+listen.successLoadEnvironment=✅ সফল: সব এনভায়রনমেন্ট ভেরিয়েবল সফলভাবে লোড হয়েছে।
+listen.failLoadEnvironment=❌ ত্রুটি: এনভায়রনমেন্ট ভেরিয়েবল লোড করা যায়নি।\nবিস্তারিত: %1
 
 # includes/controller/currencies.js
 
-currencies.needObjectOrArray=Array or Object thakte hobe, ba duita ekshathe thakte pare
-currencies.needObject=Object thakte hobe
-currencies.needNumber=Number thakte hobe
+currencies.needObjectOrArray=⚠️ টাইপ ত্রুটি: একটি অ্যারে অথবা অবজেক্ট প্রত্যাশিত।
+currencies.needObject=⚠️ টাইপ ত্রুটি: একটি অবজেক্ট প্রত্যাশিত।
+currencies.needNumber=⚠️ টাইপ ত্রুটি: একটি সংখ্যা প্রত্যাশিত।
 
 # includes/controller/threads.js
 
-threads.needObjectOrArray=Array or Object thakte hobe, ba duita ekshathe thakte pare
-threads.needObject=Object thakte hobe
+threads.needObjectOrArray=⚠️ টাইপ ত্রুটি: একটি অ্যারে অথবা অবজেক্ট প্রত্যাশিত।
+threads.needObject=⚠️ টাইপ ত্রুটি: একটি অবজেক্ট প্রত্যাশিত।
 
 # includes/controller/users.js
 
-users.needObjectOrArray=Array or Object thakte hobe, ba duita ekshathe thakte pare
-users.needObject=Object thakte hobe
+users.needObjectOrArray=⚠️ টাইপ ত্রুটি: একটি অ্যারে অথবা অবজেক্ট প্রত্যাশিত।
+users.needObject=⚠️ টাইপ ত্রুটি: একটি অবজেক্ট প্রত্যাশিত।
 
 # includes/handle/handleCommand.js
 
-handleCommand.userBanned=Box e ablamir oporad e tore ban kore deya hoise-!!🚫
-handleCommand.threadBanned=Group ban hoise..!⛔️\nPlease Owner CYBER MAHBUB-SHAON er shathe contact koro unban er jonno ⚠️
-handleCommand.commandNotExist=━━━━━━━✦━━━━━━━ \n✨ Assalamu Alaikum! 💖🌟\n━━━━━━━✦━━━━━━━\n\nTumar deya command valid na.\nCould it be— \n•—» %1  «—•\nCheck koro input, please!\n━━━━━━━✦━━━━━━━
-handleCommand.commandThreadBanned=Tumar thread e "%1" command use kora jacche na
-handleCommand.commandUserBanned=Tumi "%1" command use korte parba na
-handleCommand.threadNotAllowNSFW=Ei command shudhu Andmi er jonno
-handleCommand.cantGetInfoThread=Thread info pawa jacche na, error: %1
-handleCommand.permssionNotEnough="%1"\n⎯⎯⎯⎯⎯⎯\n✨ Shudhu Maharaja MAHBUB-SHAON ei command use korte parbe.\n✨ Tumi shudhu proja, use kora allowed na 🙂🐸\n"%1"\n⎯⎯⎯⎯⎯⎯
-handleCommand.cantSetMessageReaction=SetMessageReaction e unexpected error, error: %1
-handleCommand.executeCommand=[ %1 ] Command use hoise: %2 by user: %3 at thread: %4 | Args: %5 | Processing time: %6ms
-handleCommand.notApproved=❌ Access Denied: Ei group ta bot use korar jonno approve kora hoyni. Admin er shathe jogajog koro.
-handleCommand.adminOnly=⚠️ Admin Only: Bot ekhon Admin-Only mode e ache.
-handleCommand.commandError=Command use korar somoy unexpected error, error: %2
+handleCommand.userBanned=🚫 প্রবেশাধিকার প্রত্যাখ্যাত: নীতিমালা লঙ্ঘনের কারণে আপনাকে বট ব্যবহার থেকে ব্যান করা হয়েছে।\nকারণ: %1
+handleCommand.threadBanned=⛔️ গ্রুপ ব্যান: এই গ্রুপটিকে বট ব্যবহার থেকে নিষিদ্ধ করা হয়েছে।\n\n📞 আরও তথ্যের জন্য অ্যাডমিনের সাথে যোগাযোগ করুন।
+handleCommand.commandNotExist=⚠️ ভুল কমান্ড\n\nআপনি যে কমান্ডটি দিয়েছেন সেটি নেই।\nআপনি কি ⟨ %1 ⟩ বুঝিয়েছেন?\n\nঅনুগ্রহ করে আপনার ইনপুট দেখে আবার চেষ্টা করুন।
+handleCommand.commandThreadBanned=🚫 নিষিদ্ধ: আপনার গ্রুপে "%1" কমান্ডটি ব্যবহার করার অনুমতি নেই।
+handleCommand.commandUserBanned=🚫 নিষিদ্ধ: আপনি "%1" কমান্ডটি ব্যবহার করার অনুমতি পাননি।
+handleCommand.threadNotAllowNSFW=⚠️ NSFW নিষিদ্ধ: এই গ্রুপে এই কমান্ডটি অনুমোদিত নয়।
+handleCommand.cantGetInfoThread=❌ ত্রুটি: গ্রুপের তথ্য পাওয়া যায়নি।\nবিস্তারিত: %1
+handleCommand.permssionNotEnough=⛔️ অনুমতি প্রত্যাখ্যাত\n\n"%1" কমান্ডটি ব্যবহার করার প্রয়োজনীয় অনুমতি আপনার নেই।\nএই কমান্ডটি শুধুমাত্র অ্যাডমিনদের জন্য।
+handleCommand.cantSetMessageReaction=❌ ত্রুটি: মেসেজ রিঅ্যাকশন সেট করার সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %1
+handleCommand.executeCommand=⚙️ [ %1 ] কমান্ড: %2 | ব্যবহারকারী: %3 | গ্রুপ: %4 | আর্গুমেন্ট: %5 | সময়: %6ms
+handleCommand.commandError=❌ ত্রুটি: "%1" কমান্ডটি চালানোর সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %2
+handleCommand.notApproved=❌ প্রবেশাধিকার প্রত্যাখ্যাত: এই গ্রুপটি বট ব্যবহারের অনুমোদন পায়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।
+handleCommand.adminOnly=⚠️ শুধুমাত্র অ্যাডমিন: বটটি এখন শুধুমাত্র অ্যাডমিন মোডে আছে।
 
 # includes/handle/handleCommandEvent.js
 
-handleCommandEvent.moduleError=Command %1 use korar somoy unexpected error, error: %2
+handleCommandEvent.moduleError=❌ ত্রুটি: "%1" কমান্ডটি চালানোর সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %2
 
 # includes/handle/handleCreateDatabase.js
 
-handleCreateDatabase.newThread=new thread: %1
-handleCreateDatabase.newUser=new user %1
+handleCreateDatabase.newThread=🆕 নতুন গ্রুপ: %1
+handleCreateDatabase.newUser=🆕 নতুন ব্যবহারকারী: %1
 
 # includes/handle/handleEvent.js
 
-handleEvent.executeEvent=[ %1 ] Event execute hoise: %2 at thread: %3 | Processing time: %4ms
-handleEvent.eventError=Event execute korar somoy error hoise %1, error: %2
+handleEvent.executeEvent=⚙️ [ %1 ] ইভেন্ট: %2 | গ্রুপ: %3 | সময়: %4ms
+handleEvent.eventError=❌ ত্রুটি: "%1" ইভেন্টটি চালানোর সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %2
 
 # includes/handle/handleReaction.js
 
-handleReaction.missingValue=Response er jonno value missing
-handleReaction.executeError=Response er somoy error hoise, error: %1
+handleReaction.missingValue=⚠️ তথ্য অনুপস্থিত: এগিয়ে যেতে প্রয়োজনীয় তথ্য দিন।
+handleReaction.executeError=❌ ত্রুটি: আপনার রিঅ্যাকশন প্রক্রিয়া করার সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %1
 
 # includes/handle/handleReply.js
 
-handleReply.missingValue=Response er jonno value missing
-handleReply.executeError=Response er somoy error hoise, error: %1
+handleReply.missingValue=⚠️ তথ্য অনুপস্থিত: এগিয়ে যেতে প্রয়োজনীয় তথ্য দিন।
+handleReply.executeError=❌ ত্রুটি: আপনার রিপ্লাই প্রক্রিয়া করার সময় অপ্রত্যাশিত সমস্যা হয়েছে।\nবিস্তারিত: %1
 
 # includes/handle/handleSchedule.js
 
-handleSchedule.exectuteError=Module %1 schedule korte giye error hoise, error: %2
+handleSchedule.exectuteError=❌ সময়সূচি ত্রুটি: "%1" মডিউলটি শিডিউল করার সময় সমস্যা হয়েছে।\nবিস্তারিত: %2
 
 # utils/index.js
 
-utils.throwError=ℹ️ [!] Jodi ei command kaj na kore, onno command try koro %1help %2 use er jonno💙🥺
+utils.throwError=ℹ️ ভুল ব্যবহার: অনুগ্রহ করে কমান্ডের সিনট্যাক্স দেখুন।\n💡 আরও তথ্যের জন্য '%1help %2' লিখুন।
 
 # updater.js
 
-updater.latestVersion=Tumi latest version use korteso
-updater.cantFindVersion=Tumi undefined version (%1) use korteso, package.json check koro
-updater.newVersions=%1 new version update ache, update start kortesi...
-updater.updateSuccess=Update successfully %1
-updater.configChanged=%1 change hoise, config.json abar check koro
-updater.installingPackages=Bot er dependencies install kortesi...
-updater.installSuccess=Dependencies successfully install hoise, restart kore new version use koro
-updater.backupSuccess=Changed files successfully backup hoise, folder e dekho %1
-updater.restartToApply=Restart kore new version apply koro
-updater.skipFile=%1 file er new version ache, kintu tumi ei file skip korecho comment %2 diye
+updater.latestVersion=✅ হালনাগাদ: আপনি এখন সর্বশেষ ভার্সন ব্যবহার করছেন।
+updater.cantFindVersion=⚠️ ভার্সন ত্রুটি: আপনি একটি অনির্ধারিত ভার্সন (%1) ব্যবহার করছেন। অনুগ্রহ করে package.json ফাইলটি দেখুন।
+updater.newVersions=🔄 আপডেট পাওয়া গেছে: %1টি নতুন ভার্সন আছে। আপডেট প্রক্রিয়া শুরু হচ্ছে...
+updater.updateSuccess=✅ আপডেট হয়েছে: সিস্টেম সফলভাবে আপডেট হয়েছে।%1
+updater.configChanged=⚠️ কনফিগ পরিবর্তিত: %1 পরিবর্তন করা হয়েছে। অনুগ্রহ করে আপনার config.json ফাইলটি দেখুন।
+updater.installingPackages=📦 ইনস্টল হচ্ছে: ডিপেন্ডেন্সি ডাউনলোড ও ইনস্টল করা হচ্ছে...
+updater.installSuccess=✅ সফল: ডিপেন্ডেন্সি সফলভাবে ইনস্টল হয়েছে। পরিবর্তন প্রয়োগ করতে বট রিস্টার্ট করুন।
+updater.backupSuccess=✅ ব্যাকআপ সফল: পরিবর্তিত ফাইলগুলো %1 ফোল্ডারে ব্যাকআপ করা হয়েছে।
+updater.restartToApply=🔄 রিস্টার্ট প্রয়োজন: নতুন ভার্সন প্রয়োগ করতে বট রিস্টার্ট করুন।
+updater.skipFile=⏭️ বাদ দেওয়া হয়েছে: %1 ফাইলের নতুন ভার্সন আছে, কিন্তু "%2" কমেন্টের কারণে আপডেটে এটি বাদ দেওয়া হয়েছে।

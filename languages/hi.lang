@@ -1,0 +1,119 @@
+# हिन्दी भाषा पैक (Hindi language pack)
+# en.lang की संरचना और कुंजी क्रम का पालन किया गया है।
+# नई पंक्ति जोड़ने के लिए \n का उपयोग करें। उदाहरण: पहली पंक्ति\nदूसरी पंक्ति।
+# बदलाव के बाद बॉट रीस्टार्ट करें।
+
+# Cyber.js
+
+Cyber.newVersionDetected=🔄 नया अपडेट उपलब्ध: आप अभी संस्करण %1 उपयोग कर रहे हैं। नवीनतम संस्करण %2 है।
+Cyber.errorFormat=❌ त्रुटि: मॉड्यूल का प्रारूप गलत है!
+Cyber.nameExist=⚠️ चेतावनी: इस नाम का मॉड्यूल पहले से मौजूद है!
+Cyber.notFoundLanguage=🌐 भाषा त्रुटि: मॉड्यूल "%1" आपकी भाषा का समर्थन नहीं करता।
+Cyber.notFoundPackage=📦 पैकेज नहीं मिला: मॉड्यूल "%2" के लिए पैकेज "%1" नहीं मिल रहा। अब इंस्टॉल किया जा रहा है...
+Cyber.cantInstallPackage=❌ इंस्टॉल त्रुटि: मॉड्यूल "%2" के लिए पैकेज "%1" इंस्टॉल नहीं हो सका।\nविवरण: %3
+Cyber.loadedPackage=✅ सफल: मॉड्यूल "%1" के सभी आवश्यक पैकेज इंस्टॉल हो गए।
+Cyber.loadedConfig=✅ सफल: मॉड्यूल "%1" का कॉन्फ़िग लोड हो गया।
+Cyber.cantLoadConfig=❌ कॉन्फ़िग त्रुटि: मॉड्यूल "%1" का कॉन्फ़िग लोड नहीं हो सका।\nविवरण: %2
+Cyber.cantOnload=❌ सेटअप त्रुटि: मॉड्यूल "%1" का सेटअप शुरू नहीं हो सका।\nविवरण: %1
+Cyber.successLoadModule=✅ सफल: मॉड्यूल "%1" सफलतापूर्वक इंस्टॉल हो गया।
+Cyber.failLoadModule=❌ मॉड्यूल त्रुटि: मॉड्यूल "%1" इंस्टॉल नहीं हो सका।\nविवरण: %2
+Cyber.finishLoadModule=✅ सफल: %1 मॉड्यूल कमांड और %2 मॉड्यूल इवेंट इंस्टॉल हुए।
+Cyber.foundPathAppstate=✅ सफल: ऐपस्टेट फ़ाइल मिल गई।
+Cyber.notFoundPathAppstate=❌ त्रुटि: ऐपस्टेट फ़ाइल नहीं मिल रही। फ़ाइल खराब या गायब हो सकती है!
+Cyber.checkListGban=🔍 जाँच हो रही है: वैश्विक बैन सूची की पुष्टि की जा रही है...
+Cyber.banDevice=🚫 डिवाइस बैन: आपका डिवाइस सिस्टम से बैन कर दिया गया है। अधिक जानकारी या अनबैन कुंजी के लिए एडमिन से संपर्क करें। यदि आपके पास अनबैन कुंजी है तो नीचे दर्ज करें।
+Cyber.keyNotSameFormat=⚠️ गलत प्रारूप: अनबैन कोड में ठीक 6 अंक होने चाहिए।
+Cyber.codeInputExpired=❌ समाप्त: आपका अनबैन कोड गलत या समाप्त हो चुका है।
+Cyber.unbanDeviceSuccess=✅ अनबैन हुआ: आपका डिवाइस सफलतापूर्वक अनबैन हो गया। जारी रखने के लिए रीस्टार्ट करें।
+Cyber.userBanned=🚫 उपयोगकर्ता बैन: आपको %1 को बैन किया गया था।\nकारण: %2।\nअधिक जानकारी के लिए एडमिन से संपर्क करें।
+Cyber.finishCheckListGban=✅ पूर्ण: वैश्विक बैन सूची की पुष्टि पूरी हुई।
+Cyber.handleListenError=❌ लिसन त्रुटि: handleListener में अप्रत्याशित त्रुटि हुई।\nविवरण: %1
+Cyber.warningSourceCode=⚠️ चेतावनी: स्रोत कोड की संरचना में बदलाव मिला। निष्पादन रोका गया!
+Cyber.refreshListen=🔄 रीफ़्रेश हुआ: handleListener रीफ़्रेश किया गया।
+Cyber.successConnectDatabase=✅ डेटाबेस: सफलतापूर्वक जुड़ गया!
+Cyber.failConnectDatabase=❌ डेटाबेस त्रुटि: कनेक्ट नहीं हो सका।\nविवरण: %1
+
+# includes/listen.js
+
+listen.startLoadEnvironment=🔄 लोड हो रहा है: पर्यावरण चर प्रारंभ किए जा रहे हैं...
+listen.loadedEnvironmentThread=✅ सफल: थ्रेड पर्यावरण चर लोड हुए।
+listen.loadedEnvironmentUser=✅ सफल: उपयोगकर्ता पर्यावरण चर लोड हुए।
+listen.successLoadEnvironment=✅ सफल: सभी पर्यावरण चर सफलतापूर्वक लोड हुए।
+listen.failLoadEnvironment=❌ त्रुटि: पर्यावरण चर लोड नहीं हो सके।\nविवरण: %1
+
+# includes/controller/currencies.js
+
+currencies.needObjectOrArray=⚠️ प्रकार त्रुटि: एक ऐरे या ऑब्जेक्ट अपेक्षित है।
+currencies.needObject=⚠️ प्रकार त्रुटि: एक ऑब्जेक्ट अपेक्षित है।
+currencies.needNumber=⚠️ प्रकार त्रुटि: एक संख्या अपेक्षित है।
+
+# includes/controller/threads.js
+
+threads.needObjectOrArray=⚠️ प्रकार त्रुटि: एक ऐरे या ऑब्जेक्ट अपेक्षित है।
+threads.needObject=⚠️ प्रकार त्रुटि: एक ऑब्जेक्ट अपेक्षित है।
+
+# includes/controller/users.js
+
+users.needObjectOrArray=⚠️ प्रकार त्रुटि: एक ऐरे या ऑब्जेक्ट अपेक्षित है।
+users.needObject=⚠️ प्रकार त्रुटि: एक ऑब्जेक्ट अपेक्षित है।
+
+# includes/handle/handleCommand.js
+
+handleCommand.userBanned=🚫 पहुँच अस्वीकृत: नीति उल्लंघन के कारण आपको बॉट उपयोग से बैन किया गया है।\nकारण: %1
+handleCommand.threadBanned=⛔️ ग्रुप बैन: इस ग्रुप को बॉट उपयोग से प्रतिबंधित किया गया है।\n\n📞 अधिक जानकारी के लिए एडमिन से संपर्क करें।
+handleCommand.commandNotExist=⚠️ गलत कमांड\n\nआपने जो कमांड दिया है वह मौजूद नहीं है।\nक्या आपका मतलब ⟨ %1 ⟩ था?\n\nकृपया अपना इनपुट जाँचकर फिर से प्रयास करें।
+handleCommand.commandThreadBanned=🚫 प्रतिबंधित: आपके ग्रुप में "%1" कमांड उपयोग करने की अनुमति नहीं है।
+handleCommand.commandUserBanned=🚫 प्रतिबंधित: आपको "%1" कमांड उपयोग करने की अनुमति नहीं है।
+handleCommand.threadNotAllowNSFW=⚠️ NSFW प्रतिबंधित: इस ग्रुप में यह कमांड अनुमत नहीं है।
+handleCommand.cantGetInfoThread=❌ त्रुटि: ग्रुप की जानकारी नहीं मिल सकी।\nविवरण: %1
+handleCommand.permssionNotEnough=⛔️ अनुमति अस्वीकृत\n\n"%1" कमांड उपयोग करने की आवश्यक अनुमति आपके पास नहीं है।\nयह कमांड केवल एडमिन के लिए है।
+handleCommand.cantSetMessageReaction=❌ त्रुटि: संदेश प्रतिक्रिया सेट करते समय अप्रत्याशित समस्या हुई।\nविवरण: %1
+handleCommand.executeCommand=⚙️ [ %1 ] कमांड: %2 | उपयोगकर्ता: %3 | ग्रुप: %4 | आर्ग्युमेंट: %5 | समय: %6ms
+handleCommand.commandError=❌ त्रुटि: "%1" कमांड चलाते समय अप्रत्याशित समस्या हुई।\nविवरण: %2
+handleCommand.notApproved=❌ पहुँच अस्वीकृत: इस ग्रुप को बॉट उपयोग की अनुमति नहीं है। कृपया एडमिन से संपर्क करें।
+handleCommand.adminOnly=⚠️ केवल एडमिन: बॉट अभी केवल-एडमिन मोड में है।
+
+# includes/handle/handleCommandEvent.js
+
+handleCommandEvent.moduleError=❌ त्रुटि: "%1" कमांड चलाते समय अप्रत्याशित समस्या हुई।\nविवरण: %2
+
+# includes/handle/handleCreateDatabase.js
+
+handleCreateDatabase.newThread=🆕 नया ग्रुप: %1
+handleCreateDatabase.newUser=🆕 नया उपयोगकर्ता: %1
+
+# includes/handle/handleEvent.js
+
+handleEvent.executeEvent=⚙️ [ %1 ] इवेंट: %2 | ग्रुप: %3 | समय: %4ms
+handleEvent.eventError=❌ त्रुटि: "%1" इवेंट चलाते समय अप्रत्याशित समस्या हुई।\nविवरण: %2
+
+# includes/handle/handleReaction.js
+
+handleReaction.missingValue=⚠️ जानकारी गायब: आगे बढ़ने के लिए आवश्यक जानकारी दें।
+handleReaction.executeError=❌ त्रुटि: आपकी प्रतिक्रिया संसाधित करते समय अप्रत्याशित समस्या हुई।\nविवरण: %1
+
+# includes/handle/handleReply.js
+
+handleReply.missingValue=⚠️ जानकारी गायब: आगे बढ़ने के लिए आवश्यक जानकारी दें।
+handleReply.executeError=❌ त्रुटि: आपके उत्तर को संसाधित करते समय अप्रत्याशित समस्या हुई।\nविवरण: %1
+
+# includes/handle/handleSchedule.js
+
+handleSchedule.exectuteError=❌ शेड्यूल त्रुटि: मॉड्यूल "%1" को शेड्यूल करते समय समस्या हुई।\nविवरण: %2
+
+# utils/index.js
+
+utils.throwError=ℹ️ गलत उपयोग: कृपया कमांड सिंटैक्स जाँचें।\n💡 अधिक जानकारी के लिए '%1help %2' लिखें।
+
+# updater.js
+
+updater.latestVersion=✅ अद्यतित: आप अभी नवीनतम संस्करण उपयोग कर रहे हैं।
+updater.cantFindVersion=⚠️ संस्करण त्रुटि: आप एक अपरिभाषित संस्करण (%1) उपयोग कर रहे हैं। कृपया package.json फ़ाइल जाँचें।
+updater.newVersions=🔄 अपडेट उपलब्ध: %1 नए संस्करण उपलब्ध हैं। अपडेट प्रक्रिया शुरू हो रही है...
+updater.updateSuccess=✅ अपडेट हुआ: सिस्टम सफलतापूर्वक अपडेट हो गया।%1
+updater.configChanged=⚠️ कॉन्फ़िग बदला: %1 बदल दिया गया है। कृपया अपनी config.json फ़ाइल जाँचें।
+updater.installingPackages=📦 इंस्टॉल हो रहा है: निर्भरताएँ डाउनलोड और इंस्टॉल की जा रही हैं...
+updater.installSuccess=✅ सफल: निर्भरताएँ सफलतापूर्वक इंस्टॉल हुईं। बदलाव लागू करने के लिए बॉट रीस्टार्ट करें।
+updater.backupSuccess=✅ बैकअप सफल: बदली गई फ़ाइलें %1 फ़ोल्डर में बैकअप कर दी गईं।
+updater.restartToApply=🔄 रीस्टार्ट आवश्यक: नया संस्करण लागू करने के लिए बॉट रीस्टार्ट करें।
+updater.skipFile=⏭️ छोड़ा गया: %1 फ़ाइल का नया संस्करण उपलब्ध है, लेकिन "%2" टिप्पणी के कारण अपडेट में इसे छोड़ दिया गया।
