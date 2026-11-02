@@ -1,3 +1,5 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
+
 module.exports.config = {
  name: "mahbub",
  version: "1.0.0",
@@ -32,14 +34,14 @@ const fs = global.nodemodule["fs-extra"];
 "https://i.imgur.com/fGY8plC.mp4",
 "https://i.imgur.com/fGY8plC.mp4",
  ];
- var callback = () => api.sendMessage({body:`╭•┄┅════❁🌺❁════┅┄•╮\n প্রিয় মানুষ ডুবে থাকুক,,,\nহৃদওপিন্ডের বিশাল গভিরতায়,,!🌸 \n╰•┄┅════❁🌺❁════┅┄•╯\n\n ${name} মাহবুব এর ইনবক্স :- m.me/100086680386976 \n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆`,attachment: fs.createReadStream(__dirname + "/cache/emon.jpeg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/emon.jpeg"), event.messageID);
+ var callback = () => api.sendMessage({body:`╭•┄┅════❁🌺❁════┅┄•╮\n প্রিয় মানুষ ডুবে থাকুক,,,\nহৃদওপিন্ডের বিশাল গভিরতায়,,!🌸 \n╰•┄┅════❁🌺❁════┅┄•╯\n\n ${name} ${getAdminInfo().nickname} এর ইনবক্স :- ${getAdminInfo().social.facebook || "Not set"} \n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆`,attachment: fs.createReadStream(__dirname + "/cache/emon.jpeg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/emon.jpeg"), event.messageID);
  const timeStart = Date.now();
  const dcm = process.uptime(); 
  var anh = Math.floor(dcm / (60 * 60));
  var la = Math.floor((dcm % (60 * 60)) / 60);
  var vt = Math.floor(dcm % 60);
  const PREFIX = config.PREFIX;
- return request(encodeURI(link[Math.floor(Math.random() * link.length)])).pipe(fs.createWriteStream(__dirname+"/cache/MAHBUB-SHAON.mp4")).on("close",() => callback());
+ return request(encodeURI(link[Math.floor(Math.random() * link.length)])).pipe(fs.createWriteStream(__dirname+"/cache/cbto-reply.mp4")).on("close",() => callback());
 }
 
  module.exports.languages = {

@@ -1,8 +1,9 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports.config = {
  name: "pin",
  version: "1.0.0",
  hasPermssion: 0,
- credits: "MAHBUB SHAON",
+ credits: getAdminInfo().name,
  description: "Image search",
  commandCategory: "Search",
  usages: "[Text]",

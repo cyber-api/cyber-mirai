@@ -12,7 +12,7 @@ module.exports.config = {
 			key: 'Tag',
 			prompt: 'Leave blank or tag someone, you can tag more than one person',
 			type: 'Document',
-			example: '@Priyansh'
+			example: '@admin'
 		}
 	]
 };

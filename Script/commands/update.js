@@ -1,4 +1,5 @@
 "use strict";
+const { getAdminInfo } = require("../../utils/adminInfo.js");
 
 /**
  * `update` — optional (NON-MANDATORY) update command.
@@ -32,7 +33,7 @@ module.exports.config = {
     name: COMMAND_NAME,
     version: "1.0.0",
     hasPermssion: 2,
-    credits: "MAHBUB MAHBUB-SHAON",
+    credits: getAdminInfo().name,
     description: "Optional update system: check, install, or silence update notices for 2 hours",
     commandCategory: "System",
     usages: "[check/status/refuse]",

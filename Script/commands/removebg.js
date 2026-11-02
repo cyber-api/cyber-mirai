@@ -1,8 +1,9 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports.config = {
  name: 'removebg',
  version: '1.1.1',
  hasPermssion: 0,
- credits: 'Shaon Ahmed',
+ credits: getAdminInfo().name,
  description: 'Edit photo',
  usePrefix: true,
  commandCategory: 'Tools',

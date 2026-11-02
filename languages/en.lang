@@ -1,5 +1,5 @@
-# TODO: replace MAHBUB-SHAON / Mahbub-Shaon placeholders with your real name and handle.
-# If you want to move down the line, please use \n. e.g: tina\nMAHBUB-SHAON.
+# Owner identity is configured in admin.json (name, avatar and social links).
+# If you want to move down the line, please use \n. e.g: tina\nsecond line.
 # After changed, you have to restart the bot to use.
 # Put the # character at the beginning of each sentence if you don't want the code to run those lines. 
 # Thanks to https://www.facebook.com/duong.than.net for translate to English!

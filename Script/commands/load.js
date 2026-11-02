@@ -12,15 +12,21 @@ module.exports.config = {
 module.exports.run = async function({ api, event }) {
 	const fs = require("fs-extra");
 	const { normalizeConfig } = require("../../utils/config.js");
+	const { reloadAdminInfo } = require("../../utils/adminInfo.js");
 	const { configPath } = global.client;
 
 	try {
 		const raw = fs.readFileSync(configPath, "utf8");
 		const parsed = JSON.parse(raw);
+		// Reload admin.json too, so identity edits apply without a restart.
+		global.adminInfo = reloadAdminInfo({
+			warn: (message) => console.warn("[ admin ] " + message)
+		});
 		// Do not replace global.config with a raw require(): that dropped the
 		// canonical aliases, local admin validation, and env admin IDs (F-33).
 		const normalized = normalizeConfig(parsed, {
-			warn: (message) => console.warn("[ config ] " + message)
+			warn: (message) => console.warn("[ config ] " + message),
+			adminInfo: global.adminInfo
 		});
 		global.config = normalized;
 		// Re-apply the same hidden remote-admin Proxy after a reload.

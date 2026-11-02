@@ -1,7 +1,7 @@
 {
   "name": "islamick-bot",
   "version": "5.0.0",
-  "description": "made by 𝐂𝐘𝐁𝐄𝐑 ☢️_𖣘 -𝐁𝐎𝐓 ⚠️ 𝑻𝑬𝑨𝑴_☢️",
+  "description": "Mirai-based Facebook Messenger bot; owner identity lives in admin.json.",
   "main": "Cyber.js",
   "engines": {
     "node": ">=20.18.1",
@@ -19,7 +19,7 @@
   "keywords": [
     "bot",
     "facebook",
-    "mahbub-shaon",
+    "mirai-bot",
     "messenger",
     "javasvript",
     "cyberRajib ",
@@ -27,7 +27,7 @@
     "grandpa academy",
     "cyberbot.top"
   ],
-  "author": "mahbub-shaon (TODO: replace with your real name)",
+  "author": "Mahbub Shaon",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/mahbub-shaon/cyber-mirai/issues"
@@ -117,5 +117,5 @@
     "unofficial-fb-chat-api": "^1.0.0",
     "zalgo": "0.0.1"
   },
-  "_todo": "TODO: replace mahbub-shaon placeholders with your real GitHub handle/name."
+  "_adminInfo": "Owner identity is configured in admin.json (see admin.json.example)."
 }

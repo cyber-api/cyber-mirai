@@ -1,3 +1,4 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
 const axios = require('axios');
  
 const apiURL = "https://smfahim.xyz/gedit";
@@ -5,7 +6,7 @@ const apiURL = "https://smfahim.xyz/gedit";
 module.exports.config = {
   name: "refine",
   version: "6.9",
-  credits: "API Fahim mode by Mahbub-Shaon ッ",
+  credits: getAdminInfo().name,
   countDown: 5,
   hasPermssion: 1,
   category: "AI",

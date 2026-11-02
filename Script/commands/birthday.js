@@ -1,8 +1,10 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
+
 module.exports.config = {
 	name: "bday",
 	version: "1.0.0",
 	hasPermssion: 0,
-    credits: "MAHBUBU SHAON",
+    credits: getAdminInfo().name,
 	description: "See admin's birthday",
     usePrefix: false,
 	commandCategory: "bday",
@@ -13,15 +15,22 @@ module.exports.run =  ({ api, event, args, client, Users, Threads, __GLOBAL, Cur
   const axios = global.nodemodule["axios"];
   const request = global.nodemodule["request"];
   const fs = global.nodemodule["fs-extra"];
-    const t = Date.parse("September 12, 2025 00:00:00") - Date.parse(new Date());
+    const info = getAdminInfo();
+    const birthday = info.birthday || "January 1, 2000 00:00:00";
+    const t = Date.parse(birthday) - Date.parse(new Date());
     const seconds = Math.floor( (t/1000) % 60 );
     const minutes = Math.floor( (t/1000/60) % 60 );
     const hours = Math.floor( (t/(1000*60*60)) % 24 );
     const days = Math.floor( t/(1000*60*60*24) );
     var callback = () => api.sendMessage(
-  {body:`Time left until Admin - Light birthday\n» ${days} days\n ${hours} hours\n ${minutes} minutes\n ${seconds} seconds. «`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () => 
-    fs.unlinkSync(__dirname + "/cache/1.png"));  
-      return request(encodeURI(`https://graph.facebook.com/100086680386976/picture?height=720&width=720&access_token=66262`)).pipe(
+  {body:`Time left until ${info.name} birthday\n» ${days} days\n ${hours} hours\n ${minutes} minutes\n ${seconds} seconds. «`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () =>
+    fs.unlinkSync(__dirname + "/cache/1.png"));
+      const avatar = info.avatar.url
+        || (info.avatar.uid ? `https://graph.facebook.com/${info.avatar.uid}/picture?height=720&width=720&access_token=66262` : "");
+      if (!avatar) {
+        return api.sendMessage(`Time left until ${info.name} birthday\n» ${days} days\n ${hours} hours\n ${minutes} minutes\n ${seconds} seconds. «`, event.threadID);
+      }
+      return request(encodeURI(avatar)).pipe(
 fs.createWriteStream(__dirname+'/cache/1.png')).on('close',() => callback());
-    
+
       };

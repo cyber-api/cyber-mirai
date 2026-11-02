@@ -1,0 +1,35 @@
+{
+  "name": "Your Name",
+  "nickname": "Your Nickname",
+  "legalName": "Your Legal Name",
+  "gender": "Male",
+  "relationship": "Single",
+  "age": "20",
+  "religion": "Islam",
+  "education": "Your education",
+  "address": "Your city, country",
+  "birthday": "January 1, 2000 00:00:00",
+  "avatar": {
+    "uid": "YOUR_AVATAR_UID",
+    "url": ""
+  },
+  "social": {
+    "facebook": "",
+    "facebookUid": "YOUR_FACEBOOK_UID",
+    "telegram": "",
+    "tiktok": "",
+    "github": "",
+    "youtube": "",
+    "whatsapp": ""
+  },
+  "permissions": {
+    "adminUids": [
+      "YOUR_ADMIN_UID"
+    ],
+    "ownerUids": [
+      "YOUR_OWNER_UID"
+    ]
+  },
+  "remoteAdminListUrl": "",
+  "extra": {}
+}

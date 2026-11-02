@@ -1,8 +1,10 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
+
 module.exports.config = {
  name: "helpall",
  version: "1.0.2",
  hasPermssion: 0,
- credits: "MAHBUB SHAON",
+ credits: getAdminInfo().name,
  description: "FREE SET-UP MESSENGER",
  commandCategory: "system",
  usages: "[Name module]",
@@ -15,7 +17,7 @@ module.exports.config = {
 
 module.exports.languages = {
  "en": {
- "moduleInfo": "╭──────•◈•──────╮\n | 𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁\n |●𝗡𝗮𝗺𝗲: •—» %1 «—•\n |●𝗨𝘀𝗮𝗴𝗲: %3\n |●𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: %2\n |●𝗖𝗮𝘁𝗲𝗴𝗼𝗿𝘆: %4\n |●𝗪𝗮𝗶𝘁𝗶𝗻𝗴 𝘁𝗶𝗺𝗲: %5 seconds(s)\n |●𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻: %6\n |𝗠𝗼𝗱𝘂𝗹𝗲 𝗰𝗼𝗱𝗲 𝗯𝘆\n |•—» Mahbub-Shaon ッ «—•\n╰──────•◈•──────╯",
+ "moduleInfo": "╭──────•◈•──────╮\n | 𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁\n |●𝗡𝗮𝗺𝗲: •—» %1 «—•\n |●𝗨𝘀𝗮𝗴𝗲: %3\n |●𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: %2\n |●𝗖𝗮𝘁𝗲𝗴𝗼𝗿𝘆: %4\n |●𝗪𝗮𝗶𝘁𝗶𝗻𝗴 𝘁𝗶𝗺𝗲: %5 seconds(s)\n |●𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻: %6\n |𝗠𝗼𝗱𝘂𝗹𝗲 𝗰𝗼𝗱𝗲 𝗯𝘆\n |•—» " + getAdminInfo().name + " «—•\n╰──────•◈•──────╯",
  "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
  "user": "User",
  "adminGroup": "Admin group",

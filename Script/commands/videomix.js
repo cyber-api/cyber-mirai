@@ -1,8 +1,9 @@
+const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports.config = {
  name: "videomix",
  version: "11.9.7",
  hasPermssion: 0,
- credits: "Shaon Ahmed",
+ credits: getAdminInfo().name,
  description: "random love story video",
  commandCategory: "video",
  usages: "random",

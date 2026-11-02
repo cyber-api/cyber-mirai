@@ -1,0 +1,36 @@
+{
+  "name": "𝐮 𝐥 𝐥 𝐚 𝐬 𝐡 ッ",
+  "nickname": "Ullash",
+  "legalName": "Mahbub Shaon",
+  "gender": "𝐌𝐚𝐥𝐞",
+  "relationship": "𝐈𝐧 𝐂𝐨𝐦𝐩𝐥𝐢𝐜𝐚𝐭𝐞𝐝",
+  "age": "21",
+  "religion": "𝐈𝐬𝐥𝐚𝐦",
+  "education": "𝐝𝐢𝐩𝐥𝐨𝐦𝐚 𝐢𝐧 𝐀𝐠𝐫𝐢𝐜𝐮𝐥𝐭𝐮𝐫𝐞",
+  "address": "𝐍𝐨𝐚𝐤𝐡𝐚𝐥𝐢, 𝐁𝐚𝐧𝐠𝐥𝐚𝐝𝐞𝐬𝐡",
+  "birthday": "September 12, 2025 00:00:00",
+  "avatar": {
+    "uid": "100000478146113",
+    "url": ""
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=100015168369582",
+    "facebookUid": "100015168369582",
+    "telegram": "https://t.me/The_morning_star71",
+    "tiktok": "mahbub01",
+    "github": "https://github.com/mahbub-shaon",
+    "youtube": "",
+    "whatsapp": "01631813286"
+  },
+  "permissions": {
+    "adminUids": [
+      "100000278103965",
+      "61558029693194"
+    ],
+    "ownerUids": [
+      "100000278103965"
+    ]
+  },
+  "remoteAdminListUrl": "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json",
+  "extra": {}
+}

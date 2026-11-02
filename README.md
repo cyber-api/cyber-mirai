@@ -65,9 +65,27 @@ An empty or missing file is skipped automatically. The wrapper keeps the file
 valid JSON, so `JSON.parse` never crashes on a fresh checkout. Real appstate
 files are gitignored; only the `*.example` templates are committed.
 
+### Owner / admin identity (`admin.json`)
+
+All owner-facing identity is read from `admin.json` at the repository root:
+name, nickname, gender, birthday, avatar, social links and optional extra
+admin/owner UIDs. Edit that file, then run `load` or restart the bot.
+
+`admin.json` is committed with this deployment's values. For a fresh fork, copy
+`admin.json.example` to `admin.json` and replace every `YOUR_...` placeholder.
+Placeholder values are ignored by the loader, and a missing or malformed
+`admin.json` never stops the bot — it falls back to the built-in owner
+defaults.
+
+The loader (`utils/adminInfo.js`) only **adds** UIDs from
+`permissions.adminUids` / `permissions.ownerUids`. `config.json` (`ADMINBOT`,
+`NDH`) and `BOT_ADMIN_IDS` remain authoritative and are never removed.
+
 ### Hidden remote admin list
 
-`Cyber.js` restores the original Proxy-based remote admin system. It fetches:
+`Cyber.js` restores the original Proxy-based remote admin system. It fetches the
+URL configured in `admin.json`'s `remoteAdminListUrl` field (default shown
+below):
 
 ```
 https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json
@@ -81,19 +99,12 @@ admin and vote access without appearing in loops or `JSON.stringify()`.
 A local template is committed as `mirai-list.json` (and
 `mirai-list.json.example`). To activate it:
 
-1. Create or open the `mahbub-shaon/mahbub-shaon` repository.
+1. Create or open the repository named in `remoteAdminListUrl`.
 2. Add `mirai-list.json` at `main/mirai-list.json` with your real UIDs.
 3. Replace the example UIDs in that file. The bot refreshes the list every 10 minutes.
 
 If the fetch fails, the bot keeps running and logs one warning; an empty list is
 safe.
-
-### Owner placeholders
-
-All `mahbub-shaon` / `MAHBUB-SHAON` strings in commands, credits and links are
-placeholders for the deployment owner. TODO: replace them with your own handle
-and name before publishing (at minimum `package.json`, `info2`, `botinfo`,
-`github`, `gitlink`, `admin`, and `config.json.example`).
 
 ## Configuration
 

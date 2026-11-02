@@ -49,6 +49,13 @@ function normalizeConfig(input, options) {
     config.NDH = normalizeUidList(config.NDH || config.ndh, "NDH", warn);
     config.ndh = config.NDH;
 
+    // --- optional owner/admin identity file ---
+    // admin.json may add UIDs, but never removes the local config or env entries.
+    if (opts.adminInfo && typeof opts.adminInfo === "object") {
+        const { mergeAdminUids } = require("./adminInfo.js");
+        mergeAdminUids(config, opts.adminInfo);
+    }
+
     // --- canonical aliases ---
     config.PREFIX = typeof config.PREFIX === "string" && config.PREFIX
         ? config.PREFIX
