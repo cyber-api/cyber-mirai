@@ -3,7 +3,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch,
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
 const { normalizeConfig } = require("./utils/config.js");
-const { readCookieFile, buildLoginCandidates, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
+const { readCookieFile, loginOrder, sessionFileFor, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
 
 global.client = new Object({
     commands: new Map(),
@@ -301,26 +301,20 @@ global.getText = function (section, key, ...values) {
     });
 }
 
+// Login sources are read through the shared parser so the documented wrapper
+// ({_note, _data}) and a plain FCA array are both accepted.
 var appStateFile = resolve(join(global.client.mainPath, global.config.APPSTATEPATH || "appstate.json"));
-var appState = null;
-try {
-    if (existsSync(appStateFile)) {
-        const content = readFileSync(appStateFile, "utf8");
-        if (content.trim().length > 0) {
-            appState = JSON.parse(content);
-            logger.loader(global.getText("Cyber", "foundPathAppstate"));
-        }
-    }
-} catch (e) {
-    logger.loader("appstate.json is empty or invalid. Will attempt auto-login if configured.", "warn");
+var appStateFiles = {
+    "appstate.json": appStateFile,
+    "appstate2.json": resolve(join(global.client.mainPath, "appstate2.json")),
+    "appstate3.json": resolve(join(global.client.mainPath, "appstate3.json"))
+};
+var appStates = {};
+for (const name of Object.keys(appStateFiles)) {
+    appStates[name] = readCookieFile(appStateFiles[name]);
+    if (appStates[name]) logger.loader(`Found ${name} cookies.`, "[ AUTO LOGIN ]");
 }
-
-var accountTxtFile = resolve(join(global.client.mainPath, "account.txt"));
-var accountTxt2File = resolve(join(global.client.mainPath, "account.txt2"));
-var accountTxt = readCookieFile(accountTxtFile);
-var accountTxt2 = readCookieFile(accountTxt2File);
-if (accountTxt) logger.loader("Found account.txt cookies.", "[ AUTO LOGIN ]");
-if (accountTxt2) logger.loader("Found account.txt2 cookies (secondary fallback).", "[ AUTO LOGIN ]");
+var appState = appStates["appstate.json"];
 
 //========= Auto Restart Logic (Goat Bot Port) =========//
 if (global.config.autoRestart && global.config.autoRestart.time) {
@@ -338,16 +332,13 @@ async function onBot({ models: botModel }) {
     const startBotSetup = async (api, loginSource) => {
         api.setOptions(global.config.FCAOption || global.config.optionsFca);
         const currentAppState = api.getAppState();
-        const isSecondary = loginSource && loginSource.type === "account2";
-        const sessionFile = isSecondary ? accountTxt2File : appStateFile;
+        // Refresh the exact file that produced this session. A credentials
+        // login has no source file, so it seeds appstate.json.
+        const sessionName = sessionFileFor(loginSource);
+        const sessionFile = appStateFiles[sessionName] || appStateFile;
         const serialized = JSON.stringify(currentAppState, null, '\x09');
         writeFileSync(sessionFile, serialized, { encoding: "utf8", mode: 0o600 });
         try { require("fs").chmodSync(sessionFile, 0o600); } catch (e) { /* best effort */ }
-        // Keep the primary cookie file fresh when it was the source.
-        if (loginSource && loginSource.type === "account") {
-            writeFileSync(accountTxtFile, serialized, { encoding: "utf8", mode: 0o600 });
-            try { require("fs").chmodSync(accountTxtFile, 0o600); } catch (e) { /* best effort */ }
-        }
         global.client.sessionFile = sessionFile;
         global.appState = currentAppState;
         global.client.api = api;
@@ -499,6 +490,25 @@ async function onBot({ models: botModel }) {
             return listener(message);
         };
         global.handleListen = api.listenMqtt(listenerCallback);
+
+        // --- Optional update check (never mandatory, never blocking) ---
+        // Runs only AFTER login and module loading, in the background. A failed
+        // fetch, a slow network, or an old version never stops the bot.
+        const updateSettings = global.config.updateNotification || {};
+        if (updateSettings.enable !== false && updateSettings.checkOnStart !== false) {
+            setImmediate(() => {
+                Promise.resolve()
+                    .then(() => require("./utils/updater.js").notifyOnStartup({
+                        api,
+                        config: global.config,
+                        repoDir: global.client.mainPath,
+                        log: (message) => logger.loader(message, "[ UPDATE ]")
+                    }))
+                    .catch((error) => {
+                        logger.loader(`Update check skipped: ${error && error.message ? error.message : error}`, "warn");
+                    });
+            });
+        }
     };
 
     // Credentials live in config.json (Mirai/ST-BOT style). Environment
@@ -516,12 +526,10 @@ async function onBot({ models: botModel }) {
         || botAccount.userAgent
         || "";
 
-    // Order: appstate.json (existing precedence) -> account.txt (primary)
-    // -> account.txt2 (secondary failover) -> config.json email/password.
-    const candidates = buildLoginCandidates({
-        appState,
-        accountTxt,
-        accountTxt2,
+    // Centralized order: appstate.json -> appstate2.json -> appstate3.json
+    // -> config.json email/password.
+    const candidates = loginOrder({
+        appStates,
         email,
         password,
         userAgent
@@ -529,7 +537,7 @@ async function onBot({ models: botModel }) {
 
     if (candidates.length === 0) {
         logger.loader(
-            "No appstate.json, account.txt, account.txt2, or botAccount.email/password in config.json. " +
+            "No appstate.json, appstate2.json, appstate3.json, or botAccount.email/password in config.json. " +
             "Add cookies or credentials to config.json (or log in manually once to create appstate.json).",
             "error"
         );
@@ -560,7 +568,7 @@ async function onBot({ models: botModel }) {
         startBotSetup(result.api, result.candidate);
     } catch (error) {
         logger.loader(
-            "All login methods failed (appstate/account.txt/account.txt2/config credentials). " +
+            "All login methods failed (appstate.json/appstate2.json/appstate3.json/config credentials). " +
             "Update the cookie file or botAccount credentials in config.json.",
             "error"
         );

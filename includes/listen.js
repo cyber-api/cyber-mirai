@@ -45,7 +45,7 @@ module.exports = function ({ api, models }) {
                 const appState = api.getAppState();
                 const mainPath = global.client.mainPath || process.cwd();
                 // Refresh the session file that actually produced this login:
-                // appstate.json for primary, account.txt2 for secondary.
+                // appstate.json / appstate2.json / appstate3.json, whichever logged in.
                 const appStatePath = global.client.sessionFile
                     || path.join(mainPath, (global.config.APPSTATEPATH || "appstate.json"));
                 fs.writeFileSync(appStatePath, JSON.stringify(appState, null, '\x09'), { encoding: "utf8", mode: 0o600 });

@@ -1,0 +1,4 @@
+{
+  "_note": "Primary fallback appstate. Used if appstate.json is missing or fails.",
+  "_data": []
+}

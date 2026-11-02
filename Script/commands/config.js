@@ -15,18 +15,19 @@ module.exports.languages = {
 
 const fs = require("fs-extra");
 const path = require("path");
+const { parseCookieJson } = require("../../utils/loginFlow.js");
 
 // The old version did `require("../../appstate.json")` at module load. A fresh
 // clone (or auto-login that has not written cookies yet) has no appstate.json,
 // which made the whole command fail to load. Read it lazily and tolerate a
-// missing/empty file instead.
+// missing/empty file, a plain FCA array, or the documented {_note,_data} wrapper.
 function loadAppState() {
   if (Array.isArray(global.appState) && global.appState.length > 0) return global.appState;
   try {
     const file = path.join(__dirname, "..", "..", "appstate.json");
     if (fs.existsSync(file)) {
       const raw = fs.readFileSync(file, "utf8").trim();
-      if (raw) return JSON.parse(raw);
+      if (raw) return parseCookieJson(raw) || [];
     }
   } catch (error) {
     // Ignore: the command still works for the APIs that do not need cookies.

@@ -1,0 +1,4 @@
+{
+  "_note": "Primary appstate. Paste cookies here. If empty, bot falls back to appstate2.json then appstate3.json then config.json credentials.",
+  "_data": []
+}

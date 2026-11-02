@@ -2,6 +2,8 @@
 .env
 .env*
 appstate.json
+appstate2.json
+appstate3.json
 config.json
 *.sqlite
 *.sqlite-journal
@@ -12,6 +14,7 @@ includes/data.sqlite
 
 # --- Runtime / generated ---
 node_modules/
+backups/
 Script/commands/cache/
 Script/commands/checktuongtac/
 logs/

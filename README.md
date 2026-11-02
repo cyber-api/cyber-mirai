@@ -38,23 +38,32 @@ npm start                            # starts Ullash.js (dashboard supervisor + 
 
 Never commit `appstate.json`, `config.json`, or database files. `.gitignore` already excludes them; use `git rm --cached` if they were committed previously.
 
-### Auto-login and account failover (ST-BOT style)
+### Auto-login and appstate failover
 
-The login order is:
+The login order is defined once in `utils/loginFlow.js`:
 
-1. `appstate.json` (existing precedence).
-2. `account.txt` (primary cookie file).
-3. `account.txt2` (secondary cookie file). If the primary login fails, this is tried automatically before giving up.
+1. `appstate.json` (primary).
+2. `appstate2.json` (primary fallback).
+3. `appstate3.json` (secondary fallback).
 4. `botAccount.email` + `botAccount.password` from `config.json` (final fallback).
 
-Cookies are written back to the file that produced the session (`appstate.json`
-for primary, `account.txt2` for secondary) with mode `0600`. A successful
-`account.txt` login also refreshes `account.txt`. If every source fails,
-startup stops with a clear message (no interactive prompt).
+Cookies are written back to the exact file that produced the session
+(`appstate.json`, `appstate2.json`, or `appstate3.json`) with mode `0600`.
+A credentials login has no source file, so it seeds `appstate.json`.
 
-`account.txt` and `account.txt2` are JSON cookie arrays, the same format used by
-ST-BOT. They are optional; the bot works with only `appstate.json` or only
-`config.json` credentials.
+Each appstate file accepts either a plain FCA cookie array or the documented
+wrapper:
+
+```json
+{
+  "_note": "Primary appstate. Paste cookies here.",
+  "_data": []
+}
+```
+
+An empty or missing file is skipped automatically. The wrapper keeps the file
+valid JSON, so `JSON.parse` never crashes on a fresh checkout. Real appstate
+files are gitignored; only the `*.example` templates are committed.
 
 ### Hidden remote admin list
 
@@ -150,6 +159,23 @@ These commands are part of the bot and are **not** quarantined:
 - `inbox` — media command (user level)
 - `god` — bot activity notifications (event)
 - `timkiem`, `diya`, `groupadmin` — duplicate command files restored under their own names
+
+## Optional updates
+
+Updates are **never mandatory**. The bot always starts and keeps running on the installed version; a failed check, an offline network, or an old version never stops it.
+
+- On startup (after login, in the background) Mirai reads `versions.json` from `https://raw.githubusercontent.com/mahbub-shaon/cyber-mirai/main/versions.json`.
+- When a newer version exists it notifies the console, `updateNotification.groupId` (fallback: `mainThreadId`), and every `ADMINBOT`/`NDH` inbox — once per startup.
+- `update` (bot admin, `hasPermssion: 2`) checks and offers the update; reacting confirms it.
+- `update refuse` silences startup notices for 2 hours (in memory). `update status` shows versions.
+- The command refuses to write anything when the local git tree has uncommitted changes. It never force-pulls, never resets, never deletes local work, and never restarts the bot automatically.
+- Files are backed up under `backups/backup_<installedVersion>/` first. Manifest entries can set `files`, `deleteFiles`, `config.json` (with `DEFAULT_key` preservation), `note`, and media URLs.
+
+Release maintenance: bump `package.json` and add an entry to `versions.json`:
+
+```json
+{ "version": "5.0.1", "files": { "Script/commands/example.js": "fix" }, "deleteFiles": {}, "note": "what changed" }
+```
 
 ## Operations
 

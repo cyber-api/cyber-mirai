@@ -6,13 +6,21 @@
         "password": "YOUR_BOT_PASSWORD",
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6.2 Safari/605.1.15",
         "autoUseWhenEmpty": true,
-        "notes": "Bot account configuration. When account.txt is empty, bot will automatically attempt to fetch cookies from this account. Note: 2FA is not supported - if your account has 2FA enabled, you'll need to login manually and save cookies to account.txt instead."
+        "notes": "Bot account configuration. When appstate.json, appstate2.json and appstate3.json are all empty or fail, the bot automatically tries these credentials. Note: 2FA is not supported - if your account has 2FA enabled, log in manually and save cookies to appstate.json instead."
     },
     "bioUpdate": {
         "enable": false,
         "bioText": "",
         "updateOnce": true,
         "notes": "Bio update system. When enabled, bot will update user bio on startup. If updateOnce is true, bio will only be updated once and not on every restart. Leave bioText empty to disable."
+    },
+    "updateNotification": {
+        "enable": true,
+        "checkOnStart": true,
+        "groupId": "",
+        "notifyAdmins": true,
+        "notifyConsole": true,
+        "notes": "Optional update notices. NEVER mandatory: the bot always starts and keeps running on the current version. When a newer version exists, notify the console, updateNotification.groupId (fallback: mainThreadId), and each ADMINBOT/NDH inbox. Set checkOnStart to false to stop startup checks. Users can run 'update refuse' to silence notices for 2 hours. Leave groupId empty to use mainThreadId."
     },
     "antiInbox": true,
     "language": "en",
