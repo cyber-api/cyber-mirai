@@ -528,15 +528,6 @@ async function saveFile() {
 			addLog(`File saved: ${currentFile}`, 'success');
 			showToast(message, data.reloaded ? 'success' : 'warning');
 			highlightFileContent('success');
-
-			// Auto-restart prompt for account.txt
-			if (currentFile === 'account.txt') {
-				setTimeout(() => {
-					if (confirm('Cookie file updated! Restart bot now to apply changes?')) {
-						restartBot();
-					}
-				}, 1000);
-			}
 		} else {
 			throw new Error(data.message);
 		}
@@ -746,176 +737,16 @@ function highlightFileContent(type = 'info') {
     }, 1000);
 }
 
-// Enhanced restart functionality
-async function restartBot() {
-    if (!confirm('Are you sure you want to restart the bot? This will temporarily stop all bot functions.')) {
-        return;
-    }
-
-    try {
-        addLog('Initiating bot restart...', 'warning');
-        showToast('Restarting bot...', 'warning');
-
-        const response = await fetch('/api/restart', {
-            method: 'POST'
-        });
-
-        const data = await response.json();
-
-        if (data.status === 'success') {
-            addLog('Bot restart initiated successfully', 'success');
-
-            // Enhanced countdown with progress
-            let countdown = 15;
-            const countdownInterval = setInterval(() => {
-                const progress = Math.round(((15 - countdown) / 15) * 100);
-                showToast(`Bot restarting... ${countdown}s (${progress}%)`, 'info');
-                countdown--;
-
-                if (countdown < 0) {
-                    clearInterval(countdownInterval);
-                    showToast('Bot should be online now. Refreshing page...', 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            }, 1000);
-
-            // Clear existing intervals
-            if (updateInterval) clearInterval(updateInterval);
-
-        } else {
-            throw new Error(data.message);
-        }
-    } catch (error) {
-        console.error('Error restarting bot:', error);
-        addLog('Error during bot restart', 'error');
-        showToast('Error restarting bot', 'error');
-    }
-}
-
-// Clear cookies and restart bot
-async function clearCookiesAndRestart() {
-    if (!confirm('⚠️ WARNING: This will clear account.txt (cookies) and restart the bot.\n\nThe bot will need to login again using credentials from config.json.\n\nAre you sure you want to continue?')) {
-        return;
-    }
-
-    try {
-        addLog('Clearing cookies and restarting bot...', 'warning');
-        showToast('Clearing cookies...', 'warning');
-
-        const response = await fetch('/api/clear-cookies-restart', {
-            method: 'POST'
-        });
-
-        const data = await response.json();
-
-        if (data.status === 'success') {
-            addLog('Cookies cleared, bot restarting...', 'success');
-            showToast(data.message, 'success');
-
-            // Enhanced countdown with progress
-            let countdown = 20;
-            const countdownInterval = setInterval(() => {
-                const progress = Math.round(((20 - countdown) / 20) * 100);
-                showToast(`Bot restarting with fresh login... ${countdown}s (${progress}%)`, 'info');
-                countdown--;
-
-                if (countdown < 0) {
-                    clearInterval(countdownInterval);
-                    showToast('Bot should be online now. Refreshing page...', 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            }, 1000);
-
-            // Clear existing intervals
-            if (updateInterval) clearInterval(updateInterval);
-
-        } else {
-            throw new Error(data.message);
-        }
-    } catch (error) {
-        console.error('Error clearing cookies and restarting:', error);
-        addLog('Error during clear cookies and restart', 'error');
-        showToast('Error: ' + error.message, 'error');
-    }
-}
-
-// Switch FCA type
-async function switchFcaType() {
-    const fcaType = document.getElementById('fcaTypeSelect').value;
-    const fcaNames = {
-        'stfca': 'ST-FCA',
-        'dongdev': '@dongdev/fca-unofficial'
-    };
-
-    if (!confirm(`⚠️ WARNING: Switch to ${fcaNames[fcaType]}?\n\nThis will:\n- Clear account.txt (cookies)\n- Restart the bot\n- Require fresh login\n\nContinue?`)) {
-        return;
-    }
-
-    try {
-        addLog(`Switching FCA to ${fcaNames[fcaType]}...`, 'warning');
-        showToast(`Switching to ${fcaNames[fcaType]}...`, 'warning');
-
-        const response = await fetch('/api/switch-fca', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ fcaType })
-        });
-
-        const data = await response.json();
-
-        if (data.status === 'success') {
-            addLog(`FCA switched to ${fcaNames[fcaType]}, bot restarting...`, 'success');
-            showToast(data.message, 'success');
-
-            // Enhanced countdown with progress
-            let countdown = 20;
-            const countdownInterval = setInterval(() => {
-                const progress = Math.round(((20 - countdown) / 20) * 100);
-                showToast(`Bot restarting with ${fcaNames[fcaType]}... ${countdown}s (${progress}%)`, 'info');
-                countdown--;
-
-                if (countdown < 0) {
-                    clearInterval(countdownInterval);
-                    showToast('Bot should be online now. Refreshing page...', 'success');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            }, 1000);
-
-            // Clear existing intervals
-            if (updateInterval) clearInterval(updateInterval);
-
-        } else {
-            throw new Error(data.message);
-        }
-    } catch (error) {
-        console.error('Error switching FCA type:', error);
-        addLog('Error during FCA switch', 'error');
-        showToast('Error: ' + error.message, 'error');
-    }
-}
-
-// Update current FCA type display on page load
+// Update the read-only FCA type display on page load
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/api/get-fca-type')
         .then(res => res.json())
         .then(data => {
             if (data.success) {
                 const currentFca = document.getElementById('currentFca');
-                const fcaSelect = document.getElementById('fcaTypeSelect');
                 if (currentFca) {
-                    currentFca.textContent = data.fcaType === 'dongdev' ? '@dongdev/fca' : 'stfca';
+                    currentFca.textContent = data.fcaType;
                     currentFca.className = `badge ${data.fcaType === 'stfca' ? 'bg-success' : 'bg-info'}`;
-                }
-                if (fcaSelect) {
-                    fcaSelect.value = data.fcaType;
                 }
             }
         })
