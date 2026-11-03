@@ -4,6 +4,26 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
     const moment = require("moment-timezone");
     const logger = require("../../utils/log.js");
 
+    // One denial notice per user/command per minute. Without this every repeated
+    // command in admin-only mode produced a fresh denial message (spam).
+    const ADMIN_ONLY_NOTICE_COOLDOWN = 60 * 1000;
+    const adminOnlyNoticeCooldown = new Map();
+
+    function shouldSendAdminOnlyNotice(sender, commandName) {
+        const now = Date.now();
+        const key = `${sender}:${commandName}`;
+        const last = adminOnlyNoticeCooldown.get(key) || 0;
+        if (now - last < ADMIN_ONLY_NOTICE_COOLDOWN) return false;
+        adminOnlyNoticeCooldown.set(key, now);
+        // Keep the map from growing forever on long-running bots.
+        if (adminOnlyNoticeCooldown.size > 2000) {
+            for (const [entryKey, timestamp] of adminOnlyNoticeCooldown) {
+                if (now - timestamp >= ADMIN_ONLY_NOTICE_COOLDOWN) adminOnlyNoticeCooldown.delete(entryKey);
+            }
+        }
+        return true;
+    }
+
     function toIdList(value) {
         if (!Array.isArray(value)) return [];
         return value.map((item) => String(item));
@@ -155,8 +175,29 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
             // --- Admin-only mode is evaluated now that we know it is a command,
             // so non-command chatter no longer produces a denial message.
-            if (config.adminOnly && config.adminOnly.enable && !isBotAdmin) {
-                return api.sendMessage(global.getText("handleCommand", "adminOnly"), threadID, messageID);
+            // Silent when: disabled, caller is bot admin, command is exempted via
+            // adminOnly.ignoreCommand, or hideNotiMessage.adminOnly is true.
+            // Otherwise send at most one denial per user+command per 60 seconds.
+            const adminOnlyConfig = (config.adminOnly && typeof config.adminOnly === "object")
+                ? config.adminOnly
+                : {};
+            const ignoreAdminOnly = Array.isArray(adminOnlyConfig.ignoreCommand)
+                ? adminOnlyConfig.ignoreCommand.map((name) => String(name).toLowerCase())
+                : [];
+            const canonicalCommandName = String((command.config && command.config.name) || commandName).toLowerCase();
+            const commandAliases = Array.isArray(command.config && command.config.aliases)
+                ? command.config.aliases.map((alias) => String(alias).toLowerCase())
+                : [];
+            const isAdminOnlyExempt = ignoreAdminOnly.includes(commandName)
+                || ignoreAdminOnly.includes(canonicalCommandName)
+                || commandAliases.some((alias) => ignoreAdminOnly.includes(alias));
+            const hideAdminOnlyNotice = !!(config.hideNotiMessage && config.hideNotiMessage.adminOnly === true);
+
+            if (adminOnlyConfig.enable === true && !isBotAdmin && !isAdminOnlyExempt) {
+                if (!hideAdminOnlyNotice && shouldSendAdminOnlyNotice(sender, canonicalCommandName)) {
+                    return api.sendMessage(global.getText("handleCommand", "adminOnly"), threadID, messageID);
+                }
+                return;
             }
 
             if (data.commandBanned && data.commandBanned.has(sender)) {
