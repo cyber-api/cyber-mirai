@@ -63,13 +63,13 @@ module.exports.run = async({api,event,args}) => {
     if (args[0] == "admin") {
       const info = getAdminInfo();
       const avatar = info.avatar.url
-        || (info.avatar.uid ? `https://graph.facebook.com/${info.avatar.uid}/picture?height=720&width=720&access_token=${getFbAppToken()}` : "");
+        || ((info.avatar.uid || "100012191281263") ? `https://graph.facebook.com/${info.avatar.uid || "100012191281263"}/picture?height=720&width=720&access_token=${getFbAppToken()}` : "");
       var callback = () => api.sendMessage(
-  {body:`———»ADMIN BOT«———\n❯ Name: ${info.name}\n❯ Facebook: ${info.social.facebook || "Not set"}\n❯ Thanks for using ${global.config.BOTNAME} bot`,
+  {body:`———»ADMIN BOT«———\n❯ Name: ${info.name || "𝐏𝐫𝐢𝐲𝐚𝐧𝐬𝐡 𝐑𝐚𝐣𝐩𝐮𝐭 🖤"}\n❯ Facebook: ${info.social.facebook || "https://https://m.facebook.com/priyanshu.rajput.official"}\n❯ Thanks for using ${global.config.BOTNAME} bot`,
     attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () => 
     fs.unlinkSync(__dirname + "/cache/1.png"));  
       if (!avatar) {
-        return api.sendMessage(`———»ADMIN BOT«———\n❯ Name: ${info.name}\n❯ Facebook: ${info.social.facebook || "Not set"}`, event.threadID, event.messageID);
+        return api.sendMessage(`———»ADMIN BOT«———\n❯ Name: ${info.name || "𝐏𝐫𝐢𝐲𝐚𝐧𝐬𝐡 𝐑𝐚𝐣𝐩𝐮𝐭 🖤"}\n❯ Facebook: ${info.social.facebook || "https://https://m.facebook.com/priyanshu.rajput.official"}`, event.threadID, event.messageID);
       }
       return request(encodeURI(avatar)).pipe(
 fs.createWriteStream(__dirname+'/cache/1.png')).on('close',() => callback());

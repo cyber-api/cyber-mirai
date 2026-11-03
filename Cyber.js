@@ -475,7 +475,7 @@ async function onBot({ models: botModel }) {
 
         logger.loader(global.getText('Cyber', 'finishLoadModule', global.client.commands.size, global.client.events.size));
         logger.loader(`Startup Time: ${((Date.now() - global.client.timeStart) / 1000).toFixed()}s`);
-        logger.loader('\n░█████╗░██╗░░░██╗██████╗░███████╗██████╗░\n██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗\n██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝\n██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗\n╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║\n░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝ \n𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁 ' + (global.adminInfo && global.adminInfo.name ? global.adminInfo.name : 'Bot Owner') + '\n ===== [ ' + (Date.now() - global.client.timeStart) + 'ms ] =====');
+        logger.loader('\n░█████╗░██╗░░░██╗██████╗░███████╗██████╗░\n██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗\n██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝\n██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗\n╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║\n░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝ \n𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁 ' + (global.adminInfo && global.adminInfo.name ? global.adminInfo.name : 'MAHBUB-SHAON') + '\n ===== [ ' + (Date.now() - global.client.timeStart) + 'ms ] =====');
         
         // Config write-back was removed on purpose: startup must never persist
         // runtime-only fields (or injected ones) into config.json.

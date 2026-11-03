@@ -26,8 +26,8 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 const DEFAULTS = Object.freeze({
-    name: "Bot Owner",
-    nickname: "Owner",
+    name: "",
+    nickname: "",
     legalName: "",
     gender: "",
     relationship: "",

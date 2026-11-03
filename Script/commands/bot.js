@@ -65,16 +65,16 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
 
    if ((event.body.toLowerCase() == "owner") || (event.body.toLowerCase() == "ceo")) {
      const info = getAdminInfo();
-     return api.sendMessage(`‎[𝐎𝐖𝐍𝐄𝐑:☞ ${info.name} ☜\n𝚈𝚘𝚞 𝙲𝚊𝚗 𝙲𝚊𝚕𝚕 𝙷𝚒𝚖 ${info.nickname}.\n𝐇𝐢𝐬 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐢𝐝 :- ${info.social.facebook || "Not set"}\nতার সাতে যোগা যোগ করবেন WhatsApp :- ${info.social.whatsapp || "Not set"}`, threadID);
+     return api.sendMessage(`‎[𝐎𝐖𝐍𝐄𝐑:☞ ${info.name || "Mahbub-Shaon ッ"} ☜\n𝚈𝚘𝚞 𝙲𝚊𝚗 𝙲𝚊𝚕𝚕 𝙷𝚒𝚖 ${info.nickname || "mahbub"}.\n𝐇𝐢𝐬 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐢𝐝 :- ${info.social.facebook || "https://www.facebook.com/profile.php?id=100000654976375"}\nতার সাতে যোগা যোগ করবেন WhatsApp :- ${info.social.whatsapp || "+0175570***"}`, threadID);
    };
 
    if ((event.body.toLowerCase() == "Tor boss ke") || (event.body.toLowerCase() == "admin ke ")) {
-     return api.sendMessage(`My Creator:${getAdminInfo().name} ❤️ হাই আমি মেছেন্জার ROBOT  আামার বস ${getAdminInfo().nickname} আমাকে বানিয়েছেন আপনাদের কে হাসানোর জন্য আমি চাই আপনারা সব সময় হাসি খুশি থাকেন`, threadID);
+     return api.sendMessage(`My Creator:${getAdminInfo().name || "MAHBUB-SHAON"} ❤️ হাই আমি মেছেন্জার ROBOT  আামার বস ${getAdminInfo().nickname || "মাহবুব"} আমাকে বানিয়েছেন আপনাদের কে হাসানোর জন্য আমি চাই আপনারা সব সময় হাসি খুশি থাকেন`, threadID);
    };
 
   if ((event.body.toLowerCase() == "admin") || (event.body.toLowerCase() == "boter admin")) {
      const info = getAdminInfo();
-     return api.sendMessage(`He is ${info.name}❤️ তাকে সবাই ${info.nickname} নামে  চিনে🤙`, threadID);
+     return api.sendMessage(`He is ${info.name || "Mahbub-Shaon ッ"}❤️ তাকে সবাই ${info.nickname || "মাহবুব"} নামে  চিনে🤙`, threadID);
    };
 
    if ((event.body.toLowerCase() == "ai") || (event.body.toLowerCase() == "Ai")) {
@@ -95,23 +95,23 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
    };
 
    if ((event.body.toLowerCase() == "@Farhana Ontora") || (event.body.toLowerCase() == "@Farhana Ontora ")) {
-     return api.sendMessage(`খবরদার কেউ এই আইড়ি মেনশন দিবানা এটা আমার বস ${getAdminInfo().nickname} এর বউ এর আইড়ি😠🥰⛏️`, threadID);
+     return api.sendMessage(`খবরদার কেউ এই আইড়ি মেনশন দিবানা এটা আমার বস ${getAdminInfo().nickname || "মাহবুব"} এর বউ এর আইড়ি😠🥰⛏️`, threadID);
    };
 
   if ((event.body.toLowerCase() == "Farhana") || (event.body.toLowerCase() == "arohi")) {
-     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname} এর বউ এর নাম..!😠🥰⛏️`, threadID);
+     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname || "মাহবুব"} এর বউ এর নাম..!😠🥰⛏️`, threadID);
    };
   
   if ((event.body.toLowerCase() == "mim") || (event.body.toLowerCase() == "Mim")) {
-     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname} এর বউ এর নাম..!😠🥰⛏️`, threadID);
+     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname || "মাহবুব"} এর বউ এর নাম..!😠🥰⛏️`, threadID);
    };
 
   if ((event.body.toLowerCase() == "Arohi") || (event.body.toLowerCase() == "farhana")) {
-     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname} এর বউ এর নাম..!😠🥰⛏️`, threadID);
+     return api.sendMessage(`খবরদার কেউ এই নাম দরে ডাক দিবানা এটা আমার বস ${getAdminInfo().nickname || "মাহবুব"} এর বউ এর নাম..!😠🥰⛏️`, threadID);
    };
 
   if ((event.body.toLowerCase() == "@MD Shiam Tafeder ") || (event.body.toLowerCase() == "সিয়াম")) {
-     return api.sendMessage(`🥰-সিয়াম-🌺 আমার বস ${getAdminInfo().nickname}'র বন্ধু লাগে লুচ্ছি বেডি'রা দূরে থাক😠🥰⛏️`, threadID);
+     return api.sendMessage(`🥰-সিয়াম-🌺 আমার বস ${getAdminInfo().nickname || "মাহবুব"}'র বন্ধু লাগে লুচ্ছি বেডি'রা দূরে থাক😠🥰⛏️`, threadID);
    };
 
    if ((event.body.toLowerCase() == "KISS ME") || (event.body.toLowerCase() == "kiss me")) {

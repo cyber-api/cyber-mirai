@@ -40,11 +40,11 @@ module.exports.run = async function({ api, event }) {
 ├──────•◈•──────┤
 │  👤 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢
 ├──────•◈•──────┤
-│ 𝗡𝗮𝗺𝗲      : ${info.name}
-│ 𝗡𝗶𝗰𝗸𝗻𝗮𝗺𝗲  : ${info.nickname || info.name}
-│ 𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸  : ${info.social.facebook || "Not set"}
-│ 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺  : ${info.social.telegram || "Not set"}
-│ 𝗧𝗶𝗸𝗧𝗼𝗸   : ${info.social.tiktok || "Not set"}
+│ 𝗡𝗮𝗺𝗲      : ${info.name || "Mahbub-Shaon ッ"}
+│ 𝗡𝗶𝗰𝗸𝗻𝗮𝗺𝗲  : ${info.nickname || info.name || "Mahbub-Shaon ッ"}
+│ 𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸  : ${info.social.facebook || "https://www.facebook.com/profile.php?id=100086680386976"}
+│ 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺  : ${info.social.telegram || ""}
+│ 𝗧𝗶𝗸𝗧𝗼𝗸   : ${info.social.tiktok || ""}
 ╰──────•◈•──────╯`;
 
     return api.sendMessage(body, event.threadID, event.messageID);

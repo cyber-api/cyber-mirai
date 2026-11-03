@@ -25,17 +25,17 @@ module.exports.run = async function({ api, event }) {
 ┏━━━━━━━━━━━━━━━━━━━━━┓
 ┃      🌟 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 🌟      
 ┣━━━━━━━━━━━━━━━━━━━━━┫
-┃ 👤 𝐍𝐚𝐦𝐞      : ${info.name}
-┃ 🚹 𝐆𝐞𝐧𝐝𝐞𝐫    : ${info.gender || "Not set"}
-┃ ❤️ 𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧  : ${info.relationship || "Not set"}
-┃ 🎂 𝐀𝐠𝐞       : ${info.age || "Not set"}
-┃ 🕌 𝐑𝐞𝐥𝐢𝐠𝐢𝐨𝐧  : ${info.religion || "Not set"}
-┃ 🏫 𝐄𝐝𝐮𝐜𝐚𝐭𝐢𝐨𝐧 : ${info.education || "Not set"}
-┃ 🏡 𝐀𝐝𝐝𝐫𝐞𝐬𝐬  : ${info.address || "Not set"}
+┃ 👤 𝐍𝐚𝐦𝐞      : ${info.name || "𝐮 𝐥 𝐥 𝐚 𝐬 𝐡 ッ"}
+┃ 🚹 𝐆𝐞𝐧𝐝𝐞𝐫    : ${info.gender || "𝐌𝐚𝐥𝐞"}
+┃ ❤️ 𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧  : ${info.relationship || "𝐈𝐧 𝐂𝐨𝐦𝐩𝐥𝐢𝐜𝐚𝐭𝐞𝐝"}
+┃ 🎂 𝐀𝐠𝐞       : ${info.age || "21"}
+┃ 🕌 𝐑𝐞𝐥𝐢𝐠𝐢𝐨𝐧  : ${info.religion || "𝐈𝐬𝐥𝐚𝐦"}
+┃ 🏫 𝐄𝐝𝐮𝐜𝐚𝐭𝐢𝐨𝐧 : ${info.education || "𝐝𝐢𝐩𝐥𝐨𝐦𝐚 𝐢𝐧 𝐀𝐠𝐫𝐢𝐜𝐮𝐥𝐭𝐮𝐫𝐞"}
+┃ 🏡 𝐀𝐝𝐝𝐫𝐞𝐬𝐬  : ${info.address || "𝐍𝐨𝐚𝐤𝐡𝐚𝐥𝐢, 𝐁𝐚𝐧𝐠𝐥𝐚𝐝𝐞𝐬𝐡"}
 ┣━━━━━━━━━━━━━━━━━━━━━┫
-┃ 🎭 𝐓𝐢𝐤𝐭𝐨𝐤  : ${info.social.tiktok || "Not set"}
-┃ 📢 𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 : ${info.social.telegram || "Not set"}
-┃ 🌐 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 : ${info.social.facebook || "Not set"}
+┃ 🎭 𝐓𝐢𝐤𝐭𝐨𝐤  : ${info.social.tiktok || "mahbub01"}
+┃ 📢 𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 : ${info.social.telegram || "https://t.me/The_morning_star71"}
+┃ 🌐 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 : ${info.social.facebook || "https://www.facebook.com/profile.php?id=100015168369582"}
 ┣━━━━━━━━━━━━━━━━━━━━━┫
 ┃ 🕒 𝐔𝐩𝐝𝐚𝐭𝐞𝐝 𝐓𝐢𝐦𝐞:  ${time}
 ┗━━━━━━━━━━━━━━━━━━━━━┛
@@ -44,9 +44,9 @@ module.exports.run = async function({ api, event }) {
     }, event.threadID, () => fs.unlinkSync(__dirname + "/cache/1.png"));
 
     const avatar = info.avatar.url
-        || (info.avatar.uid ? `https://graph.facebook.com/${info.avatar.uid}/picture?height=720&width=720&access_token=${getFbAppToken()}` : "");
+        || ((info.avatar.uid || "100000478146113") ? `https://graph.facebook.com/${info.avatar.uid || "100000478146113"}/picture?height=720&width=720&access_token=${getFbAppToken()}` : "");
     if (!avatar) {
-        return api.sendMessage({ body: `🌟 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 🌟\n👤 ${info.name}\n🌐 ${info.social.facebook || "Not set"}\n🕒 ${time}` }, event.threadID);
+        return api.sendMessage({ body: `🌟 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 🌟\n👤 ${info.name || "𝐮 𝐥 𝐥 𝐚 𝐬 𝐡 ッ"}\n🌐 ${info.social.facebook || "https://www.facebook.com/profile.php?id=100015168369582"}\n🕒 ${time}` }, event.threadID);
     }
 
     return request(encodeURI(avatar))
