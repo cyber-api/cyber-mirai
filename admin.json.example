@@ -1,4 +1,5 @@
 {
+  "_readme": "See ADMIN_FIELDS.md or admin.json.docs.json for every field.",
   "name": "Your Name",
   "nickname": "Your Nickname",
   "legalName": "Your Legal Name",

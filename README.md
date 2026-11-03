@@ -74,8 +74,10 @@ admin/owner UIDs. Edit that file, then run `load` or restart the bot.
 `admin.json` is committed with this deployment's values. For a fresh fork, copy
 `admin.json.example` to `admin.json` and replace every `YOUR_...` placeholder.
 Placeholder values are ignored by the loader, and a missing or malformed
-`admin.json` never stops the bot — it falls back to the built-in owner
-defaults.
+`admin.json` never stops the bot — commands keep their original built-in
+owner fallbacks. See `ADMIN_FIELDS.md` (human-readable) and
+`admin.json.docs.json` (machine-readable) for every field and the commands
+that read it.
 
 The loader (`utils/adminInfo.js`) only **adds** UIDs from
 `permissions.adminUids` / `permissions.ownerUids`. `config.json` (`ADMINBOT`,
