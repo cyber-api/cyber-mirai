@@ -29,7 +29,5 @@
     "ownerUids": [
       "YOUR_OWNER_UID"
     ]
-  },
-  "remoteAdminListUrl": "",
-  "extra": {}
+  }
 }

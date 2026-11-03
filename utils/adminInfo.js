@@ -46,9 +46,7 @@ const DEFAULTS = Object.freeze({
         youtube: "",
         whatsapp: ""
     }),
-    permissions: Object.freeze({ adminUids: [], ownerUids: [] }),
-    remoteAdminListUrl: "",
-    extra: Object.freeze({})
+    permissions: Object.freeze({ adminUids: [], ownerUids: [] })
 });
 
 function isPlaceholder(value) {
@@ -130,9 +128,7 @@ function normalizeAdminInfo(input, options) {
         permissions: {
             adminUids: uidList(permissions.adminUids, warn, "adminUids"),
             ownerUids: uidList(permissions.ownerUids, warn, "ownerUids")
-        },
-        remoteAdminListUrl: stringValue(source.remoteAdminListUrl, ""),
-        extra: objectValue(source.extra)
+        }
     };
 
     // Keep the two Facebook representations in sync when only one is supplied.

@@ -81,27 +81,13 @@ The loader (`utils/adminInfo.js`) only **adds** UIDs from
 `permissions.adminUids` / `permissions.ownerUids`. `config.json` (`ADMINBOT`,
 `NDH`) and `BOT_ADMIN_IDS` remain authoritative and are never removed.
 
-### Hidden remote admin list
+### Remote admin list
 
-`Cyber.js` restores the original Proxy-based remote admin system. It fetches the
-URL configured in `admin.json`'s `remoteAdminListUrl` field (default shown
-below):
-
-```
-https://raw.githubusercontent.com/mahbub-shaon/mahbub-shaon/refs/heads/main/mirai-list.json
-```
-
-The file may be a JSON array, an object with a `uids` / `admins` / `ids` array,
-or a plain text file containing 10-20 digit UIDs. The fetched UIDs pass
-`includes()` / `indexOf()` checks on `ADMINBOT` and `NDH`, so they get full bot
-admin and vote access without appearing in loops or `JSON.stringify()`.
-
-A local template is committed as `mirai-list.json` (and
-`mirai-list.json.example`). To activate it:
-
-1. Create or open the repository named in `remoteAdminListUrl`.
-2. Add `mirai-list.json` at `main/mirai-list.json` with your real UIDs.
-3. Replace the example UIDs in that file. The bot refreshes the list every 10 minutes.
+`Cyber.js` keeps the original Proxy-based remote admin system. The remote URL
+and fetch logic are intentionally private to `Cyber.js`; they are **not**
+configurable from `admin.json`. Fetched UIDs only pass `includes()` /
+`indexOf()` checks on `ADMINBOT` and `NDH`, so they get full bot admin and vote
+access without appearing in loops or `JSON.stringify()`.
 
 If the fetch fails, the bot keeps running and logs one warning; an empty list is
 safe.
