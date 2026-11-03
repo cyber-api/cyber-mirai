@@ -1,4 +1,3 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const fs = require("fs-extra");
 const path = require("path");
 const axios = require("axios");
@@ -8,7 +7,7 @@ module.exports.config = {
   name: "cmd",
   version: "3.0.0",
   hasPermssion: 2,
-  credits: getAdminInfo().name,
+  credits: "MAHBUB MAHBUB-SHAON",
   description: "Command Manager (Install/Load/Unload)",
   commandCategory: "System",
   usages: "[load/unload/loadAll/unloadAll/install/del/info/count]",

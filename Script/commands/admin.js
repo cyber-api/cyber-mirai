@@ -9,7 +9,7 @@ module.exports.config = {
     name: "admin",
     version: "1.0.0",
     hasPermssion: 0,
-    credits: getAdminInfo().name,
+    credits: "MAHBUB-SHAON", //don't change my credit,
     description: "Show Owner Info",
     commandCategory: "info",
     usages: "",

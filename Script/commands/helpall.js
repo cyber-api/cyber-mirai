@@ -4,7 +4,7 @@ module.exports.config = {
  name: "helpall",
  version: "1.0.2",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "MAHBUB SHAON",
  description: "FREE SET-UP MESSENGER",
  commandCategory: "system",
  usages: "[Name module]",

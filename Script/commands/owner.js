@@ -1,11 +1,10 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const admin = require("./admin.js");
 
 module.exports.config = {
     name: "owner",
     version: "1.1.0",
     hasPermssion: 0,
-    credits: getAdminInfo().name,
+    credits: "𝐂𝐘𝐁𝐄𝐑 ☢️_𖣘 -𝐁𝐎𝐓 ⚠️ 𝑻𝑬𝑨𝑴_ ☢️",
     description: "Show Owner Info",
     commandCategory: "prefix",
     usages: "",

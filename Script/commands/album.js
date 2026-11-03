@@ -1,4 +1,3 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
@@ -25,7 +24,7 @@ module.exports.config = {
  name: "album",
  version: "1.0.1",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "Mahbub-Shaon",
  description: "Manage and view video/photo albums",
  usePrefix: true,
  prefix: true,

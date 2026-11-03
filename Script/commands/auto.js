@@ -1,10 +1,9 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports = {
  config:{
  name: "autodl",
  version: "0.0.2",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "SHAON",
  description: "auto video download",
  commandCategory: "user",
  usages: "",

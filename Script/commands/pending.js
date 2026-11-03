@@ -1,8 +1,7 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports.config = {
 	name: "pending",
 	version: "1.0.5",
-	credits: getAdminInfo().name,
+	credits: "MAHBUB SHAON",
 	hasPermssion: 2,
 	description: "Manage bot's waiting messages",
 	commandCategory: "system",

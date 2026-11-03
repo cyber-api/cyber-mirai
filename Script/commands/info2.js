@@ -4,7 +4,7 @@ module.exports.config = {
     name: "info2",
     version: "1.1.0",
     hasPermssion: 0,
-    credits: getAdminInfo().name,
+    credits: "Ialamick Chat",
     description: "Admin and Bot info.",
     commandCategory: "info",
     usages: "",

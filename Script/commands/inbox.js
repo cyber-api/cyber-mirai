@@ -1,9 +1,8 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 module.exports.config = {
   name: "inbox",
   version: "1.0.0",
   hasPermssion: 0,
-  credits: getAdminInfo().name,
+  credits: "Shaon",
   description: "Send a random sad video",
   commandCategory: "media",
   usages: "",

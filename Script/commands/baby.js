@@ -1,4 +1,3 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const axios = require("axios");
 const simsim = "https://simsimi.cyberbot.top";
 
@@ -6,7 +5,7 @@ module.exports.config = {
  name: "baby",
  version: "1.0.3",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "MAHBUB-SHAON",
  description: "Cute AI Baby Chatbot | Talk, Teach & Chat with Emotion ☢️",
  commandCategory: "simsim",
  usages: "[message/query]",

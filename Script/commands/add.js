@@ -1,11 +1,10 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const axios = require('axios');
 
 module.exports.config = {
  name: "add",
  version: "1.0.0",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "Shaon",
  description: "Send a random sad video",
  commandCategory: "media",
  usages: "",

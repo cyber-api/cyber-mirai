@@ -1,10 +1,9 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const { getFbAppToken } = require("../../utils/credentials.js");
 module.exports.config = {
  name: "arrest",
  version: "2.0.0",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "MAHBUB SHAON",
  description: "Arrrest a friend you mention",
  commandCategory: "tagfun",
  usages: "[mention]",

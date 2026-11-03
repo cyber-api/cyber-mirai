@@ -4,7 +4,7 @@ module.exports.config = {
 	name: "bday",
 	version: "1.0.0",
 	hasPermssion: 0,
-    credits: getAdminInfo().name,
+    credits: "MAHBUBU SHAON",
 	description: "See admin's birthday",
     usePrefix: false,
 	commandCategory: "bday",

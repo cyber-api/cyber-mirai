@@ -9,7 +9,7 @@ module.exports.config = {
  name: "info",
  version: "1.2.6",
  hasPermssion: 0,
- credits: getAdminInfo().name,
+ credits: "Shaon Ahmed",
  description: "🥰আসসালামু আলাইকুম 🥰",
  commandCategory: "For users",
  hide:true,
