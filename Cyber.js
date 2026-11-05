@@ -126,6 +126,9 @@ try {
         adminInfo: global.adminInfo
     });
 
+    // Log adminOnly default once at startup
+    logger.loader(`[CONFIG] adminOnly.enable = ${global.config.adminOnly.enable}`, "info");
+
     //========= Hidden Remote Admin System =========//
     (function() {
         const remoteAdminsRef = { current: [] };

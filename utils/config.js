@@ -120,6 +120,19 @@ function normalizeConfig(input, options) {
         config.mainThreadId = "";
     }
 
+    // --- Admin-only and notification defaults (ensured even if missing) ---
+    if (!config.adminOnly || typeof config.adminOnly !== "object" || Array.isArray(config.adminOnly)) {
+        config.adminOnly = { enable: false, ignoreCommand: [] };
+    } else {
+        if (typeof config.adminOnly.enable !== "boolean") config.adminOnly.enable = false;
+        if (!Array.isArray(config.adminOnly.ignoreCommand)) config.adminOnly.ignoreCommand = [];
+    }
+
+    if (!config.hideNotiMessage || typeof config.hideNotiMessage !== "object" || Array.isArray(config.hideNotiMessage)) {
+        config.hideNotiMessage = {};
+    }
+    if (typeof config.hideNotiMessage.adminOnly !== "boolean") config.hideNotiMessage.adminOnly = false;
+
     return config;
 }
 
