@@ -9,7 +9,7 @@ module.exports.config = {
     cooldowns: 0,
 };
 module.exports.run = async function({ api, event, args }) {
-    const axios = require("axios");
+    const axios = require("../../utils/httpClient");
     const fs = require("fs-extra");
     const request = require("request");
     const keySearch = args.join(" ");

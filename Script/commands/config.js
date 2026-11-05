@@ -55,7 +55,7 @@ const headers = {
 
 module.exports.handleReply = async function({ api, event, handleReply }) {
   const botID = api.getCurrentUserID();
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
   
   const { type, author } = handleReply;
   const { threadID, messageID, senderID } = event;

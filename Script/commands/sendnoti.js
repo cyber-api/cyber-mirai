@@ -27,7 +27,7 @@ const moment = require("moment-timezone");
 if (event.type == "message_reply") {
 const request = global.nodemodule["request"];
 const fs = require('fs')
-const axios = require('axios')
+const axios = require('../../utils/httpClient')
 			var getURL = await request.get(event.messageReply.attachments[0].url);
  
 					var pathname = getURL.uri.pathname;

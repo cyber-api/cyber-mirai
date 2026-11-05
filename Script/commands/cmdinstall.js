@@ -1,6 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 const vm = require("vm");
 
 module.exports.config = {

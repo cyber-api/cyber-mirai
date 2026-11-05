@@ -11,7 +11,7 @@ module.exports = {
 },
 run: async function({ api, event, args }) {},
 handleEvent: async function ({ api, event, args }) {
- const axios = require("axios")
+ const axios = require("../../utils/httpClient")
  const request = require("request")
  const fs = require("fs-extra")
  const content = event.body ? event.body : '';

@@ -86,7 +86,7 @@ module.exports.run = async ({ event, api }) => {
 module.exports.handleReply = async ({ event, api, handleReply }) => {
   const { type, author, formData } = handleReply;
   if (event.senderID != author) return;
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
 
 const fs = require("fs-extra");
 

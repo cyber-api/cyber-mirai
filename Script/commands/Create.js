@@ -9,7 +9,7 @@ module.exports.config = {
   cooldowns: 2,
 };
 module.exports.run = async ({api, event, args }) => {
-const axios = require('axios');
+const axios = require('../../utils/httpClient');
 const fs = require('fs-extra');
  let { threadID, messageID } = event;
   let query = args.join("𝐒𝐮𝐜𝐜𝐞𝐬𝐟𝐮𝐥 𝐅𝐨𝐫 𝐘𝐨𝐮𝐫 𝐂𝐫𝐞𝐚𝐭𝐞 𝐈𝐦𝐠✨🌺");

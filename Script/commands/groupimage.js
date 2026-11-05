@@ -1,5 +1,5 @@
 const fs = require("fs");
-const axios = require("axios")
+const axios = require("../../utils/httpClient")
 module.exports.config = {
 	name: "groupimage",
 	version: "1.0.0", 

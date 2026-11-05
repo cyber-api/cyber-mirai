@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 const fs = require('fs')
 // TODO: replace mahbub-shaon with your real GitHub handle and ship the API
 // config file at this path (the previous API URL is dead).

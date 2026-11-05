@@ -10,7 +10,7 @@ module.exports.config = {
   dependencies: { "axios": "" }
 };
  
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 const bombingFlags = {};
  
 module.exports.run = async ({ api, event, args }) => {

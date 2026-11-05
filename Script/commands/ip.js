@@ -13,7 +13,7 @@ module.exports.config = {
 module.exports.run = async function({ api, args, event, __GLOBAL }) {
   const timeStart = Date.now();
   
-    const axios = require("axios");
+    const axios = require("../../utils/httpClient");
   if (!args[0]) {api.sendMessage("Please enter the ip you want to check",event.threadID, event.messageID);}
   else {
 var infoip = (await axios.get(`http://ip-api.com/json/${args.join(' ')}?fields=66846719`)).data;

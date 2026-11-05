@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node Ullash.js",
     "check": "node --check Cyber.js && node --check Ullash.js",
-    "test": "node --check Cyber.js && node --check Ullash.js"
+    "test": "node --check Cyber.js && node --check Ullash.js && node --test tests/httpClient.test.js"
   },
   "repository": {
     "type": "git",

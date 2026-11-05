@@ -9,7 +9,7 @@ module.exports.config = {
   cooldowns: 5
 };
 module.exports.run = async function({ api, args, event, permssion }) {
-   const axios = require('axios');
+   const axios = require('../../utils/httpClient');
    const lengthchar = (await axios.get('https://run.mocky.io/v3/0dcc2ccb-b5bd-45e7-ab57-5dbf9db17864')).data
   if(args[0] == "find" || args[0] == "tìm"){
     const t = (await axios.get(`${lengthchar[args[1]].imgAnime}`, {
@@ -49,7 +49,7 @@ module.exports.run = async function({ api, args, event, permssion }) {
   }, event.messageID);
 }
 module.exports.handleReply = async function({ api, event, args, handleReply, client, __GLOBAL, Threads, Users, Currencies }) {
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
   const lengthchar = (await axios.get('https://run.mocky.io/v3/0dcc2ccb-b5bd-45e7-ab57-5dbf9db17864')).data
   const fs = require("fs-extra");
   const request = require("request");

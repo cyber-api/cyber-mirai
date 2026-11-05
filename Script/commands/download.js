@@ -93,7 +93,7 @@ function safeFilename(parsed, requested) {
 }
 
 module.exports.run = async function ({ api, event, args }) {
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
 
   if (!args.length) {
     return api.sendMessage("Usage: download <link> || download <filename> <link>", event.threadID, event.messageID);

@@ -41,7 +41,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
  msg += "\n𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗮𝗻𝗱 𝗵𝗼𝘄 𝘁𝗼 𝘂𝘀𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱";
  }
  }
- const axios = require('axios');
+ const axios = require('../../utils/httpClient');
  const fs = require('fs-extra');
  const img = ["https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif"]
  var path = __dirname + "/cache/menu.gif"
@@ -70,7 +70,7 @@ module.exports.run = async function({ api, event, args }) {
  const { threadID, messageID } = event;
  const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
  const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
- const axios = require('axios');
+ const axios = require('../../utils/httpClient');
  const fs = require('fs-extra');
  const imgP = []
  const img = ["https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif"]

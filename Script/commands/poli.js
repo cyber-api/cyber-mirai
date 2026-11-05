@@ -20,7 +20,7 @@ cooldowns: 2,
 
 module.exports.run = async ({ api, event, args }) => {
 
-const axios = require('axios');
+const axios = require('../../utils/httpClient');
 
 const fs = require('fs-extra');
 

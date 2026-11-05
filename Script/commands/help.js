@@ -39,7 +39,7 @@ module.exports.handleEvent = function ({ api, event, getText }) {
 }
 
 module.exports. run = function({ api, event, args, getText }) {
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
   const request = require('request');
   const fs = require("fs-extra");
  const { commands } = global.client;

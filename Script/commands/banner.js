@@ -19,7 +19,7 @@ module.exports.run = async ({ api, event,args }) =>  {
     const fs = require('fs')
     const request = require('request');
     const path = require('path');
-    const axios = require('axios');
+    const axios = require('../../utils/httpClient');
     const lengthchar = (await axios.get('https://run.mocky.io/v3/0dcc2ccb-b5bd-45e7-ab57-5dbf9db17864')).data
     const Canvas = require('canvas');
     let pathImg = __dirname + `/tad/avatar_1.png`;

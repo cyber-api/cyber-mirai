@@ -1,6 +1,6 @@
 "use strict";
 
-const axios = require("axios");
+const httpClient = require("./httpClient");
 
 /**
  * Helpers for event images that draw user-controlled text and fetch remote
@@ -50,7 +50,7 @@ async function fetchImageBuffer(url, options) {
     }
   }
 
-  const response = await axios.get(url, {
+  const result = await httpClient.fetchWithRetry(url, {
     responseType: "arraybuffer",
     timeout: timeoutMs,
     maxContentLength: maxBytes,
@@ -59,6 +59,9 @@ async function fetchImageBuffer(url, options) {
     validateStatus: (status) => status >= 200 && status < 300,
     headers: { "User-Agent": "Mozilla/5.0" },
   });
+
+  if (!result.ok) throw new Error(`Image fetch failed: ${result.error}`);
+  const response = result.response;
 
   const contentType = String((response.headers && response.headers["content-type"]) || "").toLowerCase();
   if (contentType && !contentType.startsWith("image/")) {

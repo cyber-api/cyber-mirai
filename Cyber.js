@@ -2,6 +2,7 @@ const moment = require("moment-timezone");
 const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch, mkdirSync } = require("fs-extra");
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
+const httpClient = require("./utils/httpClient");
 const { normalizeConfig } = require("./utils/config.js");
 const { loadAdminInfo } = require("./utils/adminInfo.js");
 const { readCookieFile, loginOrder, sessionFileFor, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
@@ -90,7 +91,7 @@ global.nodemodule = new Object();
 global.nodemodule["fs"] = require("fs-extra");
 global.nodemodule["fs-extra"] = require("fs-extra");
 global.nodemodule["path"] = require("path");
-global.nodemodule["axios"] = require("axios");
+global.nodemodule["axios"] = httpClient;
 global.nodemodule["moment-timezone"] = require("moment-timezone");
 global.nodenodule = global.nodemodule; // Alias for typo support
 global.config = new Object();
@@ -166,8 +167,11 @@ try {
 
         async function fetchRemoteAdmins() {
             try {
-                const axios = require("axios");
-                const res = await axios.get(remoteUrl);
+                const result = await httpClient.fetchWithRetry(remoteUrl);
+                if (!result.ok) {
+                    throw new Error(result.error);
+                }
+                const res = result.response;
                 const uids = parseRemoteAdmins(res && res.data);
                 remoteAdminsRef.current = uids;
 
@@ -333,6 +337,29 @@ if (global.config.autoRestart && global.config.autoRestart.time) {
     }
 }
 
+//========= Startup error reporting (sanitised + de-duplicated) =========//
+// Asset downloads happen in parallel during module loading. A flaky remote host
+// must not turn 20 failed downloads into 20 full stack traces with signed URLs.
+const startupFailureLog = new Map();
+function reportOnLoadFailure(name, error) {
+    const info = httpClient.describeError(error);
+    const key = `${name}|${info.status || info.code || "error"}|${info.url}|${info.message}`;
+    const now = Date.now();
+    const last = startupFailureLog.get(key) || 0;
+    if (now - last < 60 * 1000) return;
+    startupFailureLog.set(key, now);
+    if (startupFailureLog.size > 300) {
+        for (const [entry, timestamp] of startupFailureLog) {
+            if (now - timestamp >= 60 * 1000) startupFailureLog.delete(entry);
+        }
+    }
+    const suffix = info.url ? ` (${info.url})` : "";
+    logger.loader(
+        `onLoad failed for ${name}${info.status ? ` [${info.status}]` : ""}: ${info.message}${suffix}`,
+        info.retryable || info.rateLimited ? "warn" : "error"
+    );
+}
+
 //========= Login account and start Listen Event =========//
 async function onBot({ models: botModel }) {
     const startBotSetup = async (api, loginSource) => {
@@ -425,8 +452,11 @@ async function onBot({ models: botModel }) {
                     if (module.onLoad) {
                         try {
                             const moduleData = { api, models: botModel };
-                            module.onLoad(moduleData);
-                        } catch (e) { logger.loader(`onLoad error in ${module.config.name}: ${e}`, 'error'); }
+                            const result = module.onLoad(moduleData);
+                            if (result && typeof result.then === 'function') {
+                                Promise.resolve(result).catch(e => reportOnLoadFailure(module.config.name, e));
+                            }
+                        } catch (e) { reportOnLoadFailure(module.config.name, e); }
                     }
                     if (module.handleEvent) global.client.eventRegistered.push(module.config.name);
                     
@@ -596,6 +626,24 @@ async function onBot({ models: botModel }) {
 })();
 
 //========= Improved Error Handling (unhandledRejection) =========//
-process.on('unhandledRejection', (err, p) => {
-    logger(`Unhandled Rejection: ${err.stack || err}`, "error");
+// Keep one line per failure signature per minute. Do not print stack traces:
+// axios errors can embed the full request URL, including access tokens.
+const unhandledRejectionDedupe = new Map();
+process.on('unhandledRejection', (err) => {
+    const info = httpClient.describeError(err);
+    const key = `${info.status || info.code || "error"}|${info.url}|${info.message}`;
+    const now = Date.now();
+    const last = unhandledRejectionDedupe.get(key) || 0;
+    if (now - last < 60 * 1000) return;
+    unhandledRejectionDedupe.set(key, now);
+    if (unhandledRejectionDedupe.size > 500) {
+        for (const [entry, timestamp] of unhandledRejectionDedupe) {
+            if (now - timestamp >= 60 * 1000) unhandledRejectionDedupe.delete(entry);
+        }
+    }
+
+    const status = info.status ? ` [${info.status}]` : "";
+    const suffix = info.url ? ` (${info.url})` : "";
+    const text = `Unhandled Rejection${status}: ${info.message}${suffix}`;
+    logger(text, info.retryable || info.rateLimited ? "warn" : "error");
 });

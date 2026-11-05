@@ -11,11 +11,14 @@
  *   the caller: network/proxy/JSON failures become `{ ok: false, error }`.
  * - The bot keeps running if the manifest is unreachable, malformed, or if the
  *   user never updates.
+ * - All network access goes through utils/httpClient (dedupe, retry/backoff,
+ *   5-min GET cache, per-host concurrency max 2, sanitized logging).
  */
 
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const httpClient = require("./httpClient");
 
 const REPO = "mahbub-shaon/cyber-mirai";
 const BRANCH = "main";
@@ -272,25 +275,27 @@ function emptyResult(currentVersion, error, extra) {
 }
 
 async function fetchJsonWithAxios(url, timeout) {
-    const axios = require("axios");
-    const response = await axios.get(url, {
+    // All network access goes through utils/httpClient: dedupe + retry + 5-min
+    // GET cache + per-host concurrency max 2 + sanitized logging. Updates must
+    // bypass the cache so a freshly published manifest is picked up immediately.
+    const result = await httpClient.fetchJson(url, {
         timeout: timeout || DEFAULT_TIMEOUT,
-        headers: { "User-Agent": "cyber-mirai-updater", "Cache-Control": "no-cache" },
-        validateStatus: (status) => status >= 200 && status < 300
+        cache: false,
+        headers: { "User-Agent": "cyber-mirai-updater", "Cache-Control": "no-cache" }
     });
-    return response.data;
+    if (!result.ok) throw httpClient.toError(result);
+    return result.data;
 }
 
 async function fetchBufferWithAxios(url, timeout) {
-    const axios = require("axios");
-    const response = await axios.get(url, {
+    const result = await httpClient.fetchBuffer(url, {
         timeout: timeout || DEFAULT_TIMEOUT,
-        responseType: "arraybuffer",
-        maxContentLength: MAX_FILE_BYTES,
-        headers: { "User-Agent": "cyber-mirai-updater" },
-        validateStatus: (status) => status >= 200 && status < 300
+        cache: false,
+        headers: { "User-Agent": "cyber-mirai-updater", "Cache-Control": "no-cache" },
+        maxContentLength: MAX_FILE_BYTES
     });
-    return Buffer.from(response.data);
+    if (!result.ok) throw httpClient.toError(result);
+    return Buffer.isBuffer(result.data) ? result.data : Buffer.from(result.data || []);
 }
 
 /**

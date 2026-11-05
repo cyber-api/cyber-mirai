@@ -1,6 +1,6 @@
 const { getFbAppToken } = require("../../utils/credentials.js");
 const { getAdminInfo } = require("../../utils/adminInfo.js");
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 const request = require("request");
 const fs = require("fs-extra");
 const moment = require("moment-timezone");

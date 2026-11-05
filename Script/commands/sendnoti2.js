@@ -24,7 +24,7 @@ module.exports.run = async ({ api, event, args, getText }) => {
 if (event.type == "message_reply") {
 const request = global.nodemodule["request"];
 const fs = require('fs')
-const axios = require('axios')
+const axios = require('../../utils/httpClient')
 
 
 

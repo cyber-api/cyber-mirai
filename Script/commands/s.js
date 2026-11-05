@@ -12,7 +12,7 @@ dependencies: []
 };
 
 module.exports.run = async function ({ api, event, args, Currencies, Users }) {
- const axios = require("axios")
+ const axios = require("../../utils/httpClient")
 var { threadID, messageID, body } = event,{ PREFIX } = global.config;
  async function streamURL(url, mime='jpg') {
  const dest = `${__dirname}/cache/${Date.now()}.${mime}`,

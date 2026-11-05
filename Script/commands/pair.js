@@ -63,7 +63,7 @@ async function circle(image) {
 }
 
 module.exports.run = async function ({ api, event }) {
- const axios = require("axios");
+ const axios = require("../../utils/httpClient");
  const fs = require("fs-extra");
  const { threadID, messageID, senderID } = event;
 

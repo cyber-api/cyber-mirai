@@ -10,7 +10,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ api, event }) => {
- const axios = require('axios');
+ const axios = require('../../utils/httpClient');
  const request = require('request');
  const fs = require("fs");
  axios.get('https://saikiapi-v3-production.up.railway.app/holo/rushia').then(res => {

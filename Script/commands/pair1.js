@@ -59,7 +59,7 @@ async function circle(image) {
     return await image.getBufferAsync("image/png");
 }
 module.exports.run = async function({ api, event, args, Users, Threads, Currencies }) {
-  const axios = require("axios");
+  const axios = require("../../utils/httpClient");
     const fs = require("fs-extra");
     const { threadID, messageID, senderID } = event;
     var tl = ['21%', '67%', '19%', '37%', '17%', '96%', '52%', '62%', '76%', '83%', '100%', '99%', "0%", "48%"];

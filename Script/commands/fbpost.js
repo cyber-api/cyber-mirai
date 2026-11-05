@@ -52,7 +52,7 @@ module.exports.run = async function({ api, event, args, client, __GLOBAL }) {
   if (args.join().indexOf('@') !== -1){ var uid = Object.keys(event.mentions) } */
 	const { loadImage, createCanvas } = require("canvas");
 	const fs = require("fs-extra");
-	const axios = require("axios")
+	const axios = require("../../utils/httpClient")
 	let avatar = __dirname + '/cache/avt.png';
 	let pathImg = __dirname + '/cache/porn.png';
 	var text = args.join(" ");

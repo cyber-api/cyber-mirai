@@ -1,7 +1,6 @@
 const assets = require('@miraipr0ject/assets');
 const crypto = require('crypto');
 const os = require("os");
-const axios = require("axios");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -40,12 +39,15 @@ module.exports.getYoutube = async function(t, e, i) {
       return t ? a = (await e.GetListByKeyword(t, !1, 6)).items : console.log("Missing data")
     }
     if ("getLink" == e) {
-      var a = (await axios("https://aiovideodl.ml/wp-json/aio-dl/video-data/", {
+      const httpClient = require("./httpClient");
+      const result = await httpClient.fetchWithRetry("https://aiovideodl.ml/wp-json/aio-dl/video-data/", {
         method: 'POST',
         data: {
           url: "https://www.youtube.com/watch?v=" + t
         }
-      })).data;
+      });
+      if (!result.ok) throw httpClient.toError(result);
+      var a = result.data;
         return "video" == i ? {
           title: a.title,
           duration: a.duration,
@@ -96,6 +98,7 @@ module.exports.cleanAnilistHTML = function (text) {
 module.exports.downloadFile = async function (url, destination) {
 	const { createWriteStream } = require('fs');
 	const fs = require('fs-extra');
+	const httpClient = require("./httpClient");
 
 	if (typeof url !== "string" || !/^https?:\/\//i.test(url)) {
 		throw new Error("downloadFile: only http(s) URLs are allowed");
@@ -123,7 +126,7 @@ module.exports.downloadFile = async function (url, destination) {
 	fs.ensureDirSync(path.dirname(target));
 	const partial = target + ".part";
 
-	const response = await axios(url, {
+	const result = await httpClient.fetchWithRetry(url, {
 		method: 'GET',
 		responseType: 'stream',
 		timeout: TIMEOUT_MS,
@@ -132,8 +135,12 @@ module.exports.downloadFile = async function (url, destination) {
 		maxRedirects: 3,
 	});
 
+	if (!result.ok) throw new Error(`downloadFile: ${result.error}`);
+	const response = result.response;
+
 	const declaredLength = Number(response.headers && response.headers["content-length"]);
 	if (Number.isFinite(declaredLength) && declaredLength > MAX_BYTES) {
+		if (response.data && typeof response.data.destroy === "function") response.data.destroy();
 		throw new Error("downloadFile: file exceeds the size limit");
 	}
 
@@ -173,15 +180,20 @@ module.exports.downloadFile = async function (url, destination) {
 };
 
 module.exports.getContent = async function(url) {
+	const httpClient = require("./httpClient");
 	try {
-		const response = await axios(url, {
+		const result = await httpClient.fetchWithRetry(url, {
 			method: 'GET',
 			timeout: 30 * 1000,
 			maxContentLength: 10 * 1024 * 1024,
 			maxBodyLength: 10 * 1024 * 1024,
 			maxRedirects: 3,
 		});
-		return response;
+		if (!result.ok) {
+			require("./log.js").warn("getContent failed: " + result.error);
+			return null;
+		}
+		return result.response;
 	} catch (e) {
 		// Never swallow with `console.log(e)` (undefined return): callers need to
 		// see the failure and the log must go through redaction.
@@ -269,11 +281,14 @@ module.exports.getStreamFromURL = async function (url = "", pathName = "", optio
     try {
         if (!url || typeof url !== "string")
             throw new Error(`The first argument (url) must be a string`);
-        const response = await axios(url, {
+        const httpClient = require("./httpClient");
+        const result = await httpClient.fetchWithRetry(url, {
             method: "GET",
             responseType: "stream",
             ...options
         });
+        if (!result.ok) throw new Error(`getStreamFromURL: ${result.error}`);
+        const response = result.response;
         if (!pathName)
             pathName = Math.random().toString(36).substring(7) + (response.headers["content-type"] ? '.' + (response.headers["content-type"].split('/')[1] || 'png') : ".png");
         response.data.path = pathName;

@@ -1,5 +1,5 @@
 const { getFbAppToken } = require("../../utils/credentials.js");
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 const baseApiUrl = async () => {
   const base = await axios.get(
     `https://raw.githubusercontent.com/Blankid018/D1PT0/main/baseApiUrl.json`,
@@ -94,7 +94,7 @@ const allUser = await Users.getAll(), rank = allUser.slice().sort((a, b) => b.ex
 ├‣ 𝚁𝚊𝚗𝚔: #${rank}/${allUser.length}
 ├‣ 𝙼𝚘𝚗𝚎𝚢 𝚁𝚊𝚗𝚔: #${moneyRank}/${allUser.length}
 ╰‣ 𝙱𝚊𝚋𝚢 𝚝𝚎𝚊𝚌𝚑: ${babyTeach || 0}`;
-const avatarStream = (await require("axios").get(avatarUrl, { responseType: "stream" })).data;
+const avatarStream = (await require("../../utils/httpClient").get(avatarUrl, { responseType: "stream" })).data;
    api.sendMessage({
       body: userInformation,
       attachment: avatarStream,

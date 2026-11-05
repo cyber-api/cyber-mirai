@@ -11,7 +11,7 @@ module.exports.config = {
 };
  
 module.exports.run = async ({ api, event, args }) => {
- const axios = require('axios');
+ const axios = require('../../utils/httpClient');
  const number = args[0];
  
  if (!number || !/^01[0-9]{9}$/.test(number)) {

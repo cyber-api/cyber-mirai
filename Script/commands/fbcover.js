@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../../utils/httpClient");
 
 const baseApiUrl = async () => {
  const base = await axios.get(

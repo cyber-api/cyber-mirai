@@ -3,7 +3,7 @@ module.exports = function ({ api, models }) {
     // প্রয়োজনীয় মডিউলগুলো লোড করা
     const fs = require('fs-extra');
     const path = require('path');
-    const axios = require("axios");
+    const httpClient = require("../utils/httpClient");
     const moment = require("moment-timezone");
     const log = require("../utils/log.js");
 
@@ -11,7 +11,7 @@ module.exports = function ({ api, models }) {
     global.nodemodule = global.nodemodule || {};
     global.nodemodule["fs"] = fs;
     global.nodemodule["path"] = path;
-    global.nodemodule["axios"] = axios;
+    global.nodemodule["axios"] = httpClient; // Use httpClient for compatibility
     global.nodemodule["moment-timezone"] = moment;
 
     // global.join সেট করা (TypeError ফিক্স করার জন্য)

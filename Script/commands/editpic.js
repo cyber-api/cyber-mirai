@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('../../utils/httpClient');
  
 const apiURL = "https://smfahim.xyz/gedit";
  

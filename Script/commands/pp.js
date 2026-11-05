@@ -11,7 +11,7 @@ module.exports.config = {
 
 module.exports.run = async function({ event, api, args, Users }) {
  const fs = require("fs-extra");
- const axios = require("axios");
+ const axios = require("../../utils/httpClient");
 
  const path = __dirname + "/cache/1.png";
 

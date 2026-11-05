@@ -14,7 +14,7 @@ module.exports.config = {
  }
 };
 
-const axios = require('axios');
+const axios = require('../../utils/httpClient');
 const FormData = require('form-data');
 const fs = require('fs-extra');
 const path = require('path');

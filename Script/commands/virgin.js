@@ -10,7 +10,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ api, event }) => {
-	const axios = require('axios');
+	const axios = require('../../utils/httpClient');
 	const request = require('request');
 	const fs = require("fs");
 	axios.get('https://ngoctrinh.ocvat2810.repl.co/').then(res => {

@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('../../utils/httpClient');
 
 module.exports.config = {
  name: "gpt",

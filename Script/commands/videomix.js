@@ -10,7 +10,7 @@ module.exports.config = {
 };
 
 module.exports.run = async function({ api, event }) {
- const axios = require('axios');
+ const axios = require('../../utils/httpClient');
  const request = require('request');
  const fs = require("fs");
  const apis = await axios.get('https://raw.githubusercontent.com/shaonproject/Shaon/main/api.json')
