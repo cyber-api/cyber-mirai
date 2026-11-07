@@ -38,6 +38,11 @@
         "enable": false,
         "ignoreCommand": []
     },
+    "webServer": {
+        "enable": true,
+        "port": null,
+        "notes": "Render Web Service health endpoint. Set enable=false when deploying as a Background Worker. When port is null, Render's PORT env var is used, then 10000."
+    },
     "adminBot": [
         "YOUR_ADMIN_UID"
     ],

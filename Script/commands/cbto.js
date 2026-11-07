@@ -31,8 +31,8 @@ event.body.indexOf("mahbub da")==0) {
 const request = global.nodemodule["request"];
 const fs = global.nodemodule["fs-extra"];
  var link = [
-"https://i.imgur.com/fGY8plC.mp4",
-"https://i.imgur.com/fGY8plC.mp4",
+"https://files.catbox.moe/y4m6h9.jpg",
+"https://files.catbox.moe/y4m6h9.jpg",
  ];
  var callback = () => api.sendMessage({body:`╭•┄┅════❁🌺❁════┅┄•╮\n প্রিয় মানুষ ডুবে থাকুক,,,\nহৃদওপিন্ডের বিশাল গভিরতায়,,!🌸 \n╰•┄┅════❁🌺❁════┅┄•╯\n\n ${name} ${getAdminInfo().nickname || "মাহবুব"} এর ইনবক্স :- ${getAdminInfo().social.facebook || "m.me/100086680386976"} \n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆`,attachment: fs.createReadStream(__dirname + "/cache/emon.jpeg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/emon.jpeg"), event.messageID);
  const timeStart = Date.now();

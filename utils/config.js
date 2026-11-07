@@ -133,6 +133,17 @@ function normalizeConfig(input, options) {
     }
     if (typeof config.hideNotiMessage.adminOnly !== "boolean") config.hideNotiMessage.adminOnly = false;
 
+    // --- Web service health endpoint (Render) ---
+    // Absent means "only start when Render supplies PORT". The example config
+    // sets enable=true for Web Service deployments.
+    if (!config.webServer || typeof config.webServer !== "object" || Array.isArray(config.webServer)) {
+        config.webServer = { enable: false, port: null };
+    } else {
+        if (typeof config.webServer.enable !== "boolean") config.webServer.enable = false;
+        const port = Number(config.webServer.port);
+        config.webServer.port = Number.isInteger(port) && port > 0 ? port : null;
+    }
+
     return config;
 }
 

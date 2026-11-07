@@ -11,25 +11,28 @@ const config = {
 
 const run = async ({ api, args, event }) => {
  try {
- const ID = event.messageReply.senderID || args[0];
- const mentionedUser = await api.getUserInfo(ID);
- if (mentionedUser && mentionedUser[ID]) {
- const userName = mentionedUser[ID].name;
- const text = args.join(" ");
- await api.sendMessage({
- body: `${userName} ${text}`,
- mentions: [{
- tag: userName,
- id: ID 
- }]
- }, event.threadID, event.messageID);
-} else {
- api.sendMessage("", event.threadID, event.messageID);
+  if (!event.messageReply || !event.messageReply.senderID) {
+    return api.sendMessage("Reply to a message first.", event.threadID, event.messageID);
+  }
+  const ID = event.messageReply.senderID || args[0];
+  const mentionedUser = await api.getUserInfo(ID);
+  if (mentionedUser && mentionedUser[ID]) {
+  const userName = mentionedUser[ID].name;
+  const text = args.join(" ");
+  await api.sendMessage({
+  body: `${userName} ${text}`,
+  mentions: [{
+  tag: userName,
+  id: ID 
+  }]
+  }, event.threadID, event.messageID);
+ } else {
+  api.sendMessage("", event.threadID, event.messageID);
+  }
+ } catch (error) {
+  console.log(error);
+  api.sendMessage(`Error: ${error.message}`, event.threadID, event.messageID);
  }
-} catch (error) {
- console.log(error);
- api.sendMessage(`Error: ${error.message}`, event.threadID, event.messageID);
-}
 };
 
 module.exports = {

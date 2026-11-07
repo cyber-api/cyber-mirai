@@ -4,7 +4,7 @@ A Facebook Messenger chat bot built on Mirai/Goat-Bot style script loading. Comm
 
 ## Requirements
 
-- Node.js **>= 20.18.1**
+- Node.js **20.x** (`>=20.0.0 <21.0.0`; required for the `canvas` native binary)
 - npm **>= 10**
 - A Facebook account session (email/password or `appstate.json`)
 
@@ -17,6 +17,22 @@ npm start                            # starts Ullash.js (dashboard supervisor + 
 ```
 
 `npm start` launches `Ullash.js`. It starts the bot in a child process and, if enabled, the local dashboard.
+
+### Deploying to Render
+
+The repository includes `render.yaml` and a `Procfile`, both using `node index.js`
+(a thin wrapper around `Ullash.js`). Set the Render environment variable
+`NODE_VERSION=20.20.2` so the native `canvas` binary matches the runtime.
+
+- **Web Service (recommended if you want the dashboard):** keep the service type
+  as Web Service. `Cyber.js` starts a tiny health server on `0.0.0.0` using
+  `process.env.PORT` (or `config.webServer.port`, then `10000`). `GET /` and
+  `GET /health` return `{ "status": "ok", "bot": "...", "version": "..." }`.
+- **Background Worker (bot only, no dashboard):** switch the service type to
+  Background Worker and set `webServer.enable` to `false` in `config.json`.
+
+`config.webServer.enable` defaults to `true` in `config.json.example`. The health
+server never touches the bot's command pipeline and only exposes status.
 
 ### Credentials and login
 

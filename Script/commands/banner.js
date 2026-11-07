@@ -27,7 +27,7 @@ module.exports.run = async ({ api, event,args }) =>  {
     let avtAnime = (
       await axios.get(encodeURI(`${lengthchar[text1 - 1].imgAnime}`), { responseType: "arraybuffer" })).data;
     fs.writeFileSync(pathAva, Buffer.from(avtAnime, "utf-8"));
-    let background = (await axios.get(encodeURI(`https://imgur.com/Ch778s2.png`), { responseType: "arraybuffer" })).data;
+    let background = (await axios.get(encodeURI(`https://files.catbox.moe/sitnxp.png`), { responseType: "arraybuffer" })).data;
     fs.writeFileSync(pathImg, Buffer.from(background, "utf-8"));
      if (!fs.existsSync(__dirname +
       `/tad/PastiOblique-7B0wK.otf`)) {

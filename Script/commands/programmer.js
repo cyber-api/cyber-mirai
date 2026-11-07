@@ -3,7 +3,7 @@ const fs = require("fs");
 const request = require("request");
 
 const link = [
- "https://i.imgur.com/ymvcyfg.mp4",
+ "https://files.catbox.moe/fojpny.mp4",
 ];
 
 module.exports.config = {

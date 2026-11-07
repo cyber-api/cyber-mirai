@@ -83,7 +83,7 @@ module.exports.run = async function ({ api, event, args, Users }) {
     )
   ).data;
   let getWanted = (
-    await axios.get(encodeURI(`https://i.imgur.com/hHKQMW8.jpg`), {
+    await axios.get(encodeURI(`https://files.catbox.moe/719sqq.jpg`), {
       responseType: "arraybuffer",
     })
   ).data;

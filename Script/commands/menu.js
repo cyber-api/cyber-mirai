@@ -43,7 +43,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
  }
  const axios = require('../../utils/httpClient');
  const fs = require('fs-extra');
- const img = ["https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif"]
+ const img = ["https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif"]
  var path = __dirname + "/cache/menu.gif"
  var rdimg = img[Math.floor(Math.random() * img.length)]; 
  const imgP = []
@@ -73,7 +73,7 @@ module.exports.run = async function({ api, event, args }) {
  const axios = require('../../utils/httpClient');
  const fs = require('fs-extra');
  const imgP = []
- const img = ["https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif", "https://i.imgur.com/LU7sSfI.gif"]
+ const img = ["https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif", "https://files.catbox.moe/wnif41.gif"]
  var path = __dirname + "/cache/menu.gif"
  var rdimg = img[Math.floor(Math.random() * img.length)]; 
 

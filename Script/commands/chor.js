@@ -34,7 +34,7 @@ try {
  var id = Object.keys(event.mentions)[0] || event.senderID;
  const canvas = Canvas.createCanvas(500, 670);
 	const ctx = canvas.getContext('2d');
-	const background = await Canvas.loadImage('https://i.imgur.com/ES28alv.png');
+	const background = await Canvas.loadImage('https://files.catbox.moe/0kdthb.png');
  
 	var avatar = await request.get(`https://graph.facebook.com/${id}/picture?width=512&height=512&access_token=${getFbAppToken()}`);
 	avatar = await this.circle(avatar.body);

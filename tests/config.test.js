@@ -97,3 +97,17 @@ test("0admin on/off still persists the toggle", async () => {
   assert.equal(sandbox.global.config.adminOnly.enable, false);
   assert.deepEqual(sent, ["adminOnlyEnabled", "adminOnlyDisabled"]);
 });
+
+test("webServer defaults to disabled with a null port", () => {
+  const config = normalizeConfig({}, { warn() {} });
+  assert.equal(config.webServer.enable, false);
+  assert.equal(config.webServer.port, null);
+});
+
+test("webServer keeps an explicit enable flag and numeric port", () => {
+  const config = normalizeConfig({
+    webServer: { enable: true, port: "10000" },
+  }, { warn() {} });
+  assert.equal(config.webServer.enable, true);
+  assert.equal(config.webServer.port, 10000);
+});

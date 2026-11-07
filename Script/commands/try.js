@@ -20,29 +20,29 @@ module.exports.onLoad = () => {
   let dirMaterial = __dirname + `/noprefix/12congiap/`; 
   if (!existsSync(dirMaterial + "noprefix" + "12congiap")) mkdirSync(dirMaterial, { recursive: true });
 
-  if (!existsSync(dirMaterial + "sửu.jpg")) request("https://i.imgur.com/11RFXQx.jpg").pipe(createWriteStream(dirMaterial + "sửu.jpg"))
+  if (!existsSync(dirMaterial + "sửu.jpg")) request("https://files.catbox.moe/96vrzc.jpeg").pipe(createWriteStream(dirMaterial + "sửu.jpg"))
 
-  if (!existsSync(dirMaterial + "tý.jpg")) request("https://i.imgur.com/5HxGOz7.jpg").pipe(createWriteStream(dirMaterial + "tý.jpg"))
+  if (!existsSync(dirMaterial + "tý.jpg")) request("https://files.catbox.moe/dlcgql.jpeg").pipe(createWriteStream(dirMaterial + "tý.jpg"))
 
-  if (!existsSync(dirMaterial + "dần.jpg")) request("https://i.imgur.com/gSzX7nL.jpg").pipe(createWriteStream(dirMaterial + "dần.jpg"))
+  if (!existsSync(dirMaterial + "dần.jpg")) request("https://files.catbox.moe/oc9doy.jpg").pipe(createWriteStream(dirMaterial + "dần.jpg"))
 
-  if (!existsSync(dirMaterial + "mão.jpg")) request("https://i.imgur.com/SVcdKJp.jpg").pipe(createWriteStream(dirMaterial + "mão.jpg"))
+  if (!existsSync(dirMaterial + "mão.jpg")) request("https://files.catbox.moe/jqc0rr.jpg").pipe(createWriteStream(dirMaterial + "mão.jpg"))
 
-  if (!existsSync(dirMaterial + "thìn.jpg")) request("https://i.imgur.com/ANdQTeq.jpg").pipe(createWriteStream(dirMaterial + "thìn.jpg"))
+  if (!existsSync(dirMaterial + "thìn.jpg")) request("https://files.catbox.moe/eetxp8.jpg").pipe(createWriteStream(dirMaterial + "thìn.jpg"))
 
-  if (!existsSync(dirMaterial + "tỵ.jpg")) request("https://i.imgur.com/lnxS2Xr.jpg").pipe(createWriteStream(dirMaterial + "tỵ.jpg"))
+  if (!existsSync(dirMaterial + "tỵ.jpg")) request("https://files.catbox.moe/24cm6d.jpg").pipe(createWriteStream(dirMaterial + "tỵ.jpg"))
 
-  if (!existsSync(dirMaterial + "ngọ.jpg")) request("https://i.imgur.com/FnKVUKI.jpg").pipe(createWriteStream(dirMaterial + "ngọ.jpg"))
+  if (!existsSync(dirMaterial + "ngọ.jpg")) request("https://files.catbox.moe/fd0058.jpg").pipe(createWriteStream(dirMaterial + "ngọ.jpg"))
 
-  if (!existsSync(dirMaterial + "mùi.jpg")) request("https://i.imgur.com/fOSI3wz.jpg").pipe(createWriteStream(dirMaterial + "mùi.jpg"))
+  if (!existsSync(dirMaterial + "mùi.jpg")) request("https://files.catbox.moe/ub1y00.jpg").pipe(createWriteStream(dirMaterial + "mùi.jpg"))
 
-  if (!existsSync(dirMaterial + "thân.jpg")) request("https://i.imgur.com/hPTcpV5.jpg").pipe(createWriteStream(dirMaterial + "thân.jpg"))
+  if (!existsSync(dirMaterial + "thân.jpg")) request("https://files.catbox.moe/g9cfg1.jpg").pipe(createWriteStream(dirMaterial + "thân.jpg"))
 
-  if (!existsSync(dirMaterial + "dậu.jpg")) request("https://i.imgur.com/chW3Tc1.jpg").pipe(createWriteStream(dirMaterial + "dậu.jpg"))
+  if (!existsSync(dirMaterial + "dậu.jpg")) request("https://files.catbox.moe/xf6jpv.jpg").pipe(createWriteStream(dirMaterial + "dậu.jpg"))
 
-  if (!existsSync(dirMaterial + "tuất.jpg")) request("https://i.imgur.com/7i7GU1t.jpg").pipe(createWriteStream(dirMaterial + "tuất.jpg"))
+  if (!existsSync(dirMaterial + "tuất.jpg")) request("https://files.catbox.moe/7wh1zv.jpg").pipe(createWriteStream(dirMaterial + "tuất.jpg"))
 
-  if (!existsSync(dirMaterial + "hợi.jpg")) request("https://i.imgur.com/hJ5nfUa.jpg").pipe(createWriteStream(dirMaterial + "hợi.jpg"))
+  if (!existsSync(dirMaterial + "hợi.jpg")) request("https://files.catbox.moe/eue379.jpg").pipe(createWriteStream(dirMaterial + "hợi.jpg"))
 
 }
 

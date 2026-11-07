@@ -29,19 +29,19 @@ event.body.indexOf("আসসালামু")==0) {
 const request = global.nodemodule["request"];
 const fs = global.nodemodule["fs-extra"];
     var link = [
-"https://i.imgur.com/JtenMLO.jpeg",
-"https://i.imgur.com/kjvZ9iO.jpeg",
-"https://i.imgur.com/uq1X7A4.jpeg",
-"https://i.imgur.com/dMRDrVv.jpeg",
-"https://i.imgur.com/cgtD9cs.jpeg",
-"https://i.imgur.com/YCVtjm3.jpeg",
-"https://i.imgur.com/RGUxNFG.jpeg",
-"https://i.imgur.com/dA3rT0E.jpeg",
-"https://i.imgur.com/oalGZL4.jpeg",
-"https://i.imgur.com/zhSVly7.jpeg",
-"https://i.imgur.com/1dCjbJt.jpeg",
-"https://i.imgur.com/q9TICm1.jpeg",
-"https://i.imgur.com/IlYTb8a.jpeg",
+"https://files.catbox.moe/yoh33l.jpeg",
+"https://files.catbox.moe/szkazr.jpeg",
+"https://files.catbox.moe/4wtgl8.jpeg",
+"https://files.catbox.moe/8dbwn7.jpeg",
+"https://files.catbox.moe/qzrdtc.jpeg",
+"https://files.catbox.moe/kjpnhn.jpeg",
+"https://files.catbox.moe/bv7tb1.jpeg",
+"https://files.catbox.moe/a9ny5f.jpeg",
+"https://files.catbox.moe/zldqy4.jpeg",
+"https://files.catbox.moe/rma0kf.jpeg",
+"https://files.catbox.moe/txhbja.jpeg",
+"https://files.catbox.moe/v4j3d7.jpeg",
+"https://files.catbox.moe/e0exwg.jpeg",
         ];
      var callback = () => api.sendMessage({body:`╭•┄┅════❁🌺❁════┅┄•╮\n    ওয়ালাইকুম সালাম-!!🖤💫\n╰•┄┅════❁🌺❁════┅┄•╯\n\n✿🦋༎প্রি্ঁয়্ঁ গ্রুপ্ঁ মে্ঁম্ঁবা্ঁর্ঁ ${name}༎✨🧡\n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆`,attachment: fs.createReadStream(__dirname + "/cache/emon.jpeg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/emon.jpeg"), event.messageID);
   const timeStart = Date.now();

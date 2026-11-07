@@ -23,7 +23,7 @@ module.exports.onLoad = async() => {
     const dirMaterial = __dirname + `/cache/`;
     const path = resolve(__dirname, 'cache', 'toilet1.png');
     if (!existsSync(dirMaterial + "")) mkdirSync(dirMaterial, { recursive: true });
-    if (!existsSync(path)) await downloadFile("https://i.imgur.com/vsJYfw5.png", path);
+    if (!existsSync(path)) await downloadFile("https://files.catbox.moe/hgidow.png", path);
 
 }
 

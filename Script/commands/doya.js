@@ -22,27 +22,27 @@ module.exports.onLoad = () => {
 
  if (!existsSync(dirMaterial + "doya1.jpg")) request("").pipe(createWriteStream(dirMaterial + "doya1.jpg"))
 
- if (!existsSync(dirMaterial + "doya2.jpg")) request("https://i.imgur.com/aESlOKd.jpeg").pipe(createWriteStream(dirMaterial + "doya2"))
+ if (!existsSync(dirMaterial + "doya2.jpg")) request("https://files.catbox.moe/tl6thd.jpeg").pipe(createWriteStream(dirMaterial + "doya2"))
 
- if (!existsSync(dirMaterial + "doya3.jpg")) request("https://i.imgur.com/3Bmg4Nd.jpeg").pipe(createWriteStream(dirMaterial + "doya3.jpg"))
+ if (!existsSync(dirMaterial + "doya3.jpg")) request("https://files.catbox.moe/ikbkrr.jpeg").pipe(createWriteStream(dirMaterial + "doya3.jpg"))
 
- if (!existsSync(dirMaterial + "doya4.jpg")) request("https://i.imgur.com/TUm1LQW.jpeg").pipe(createWriteStream(dirMaterial + "doya4.jpg"))
+ if (!existsSync(dirMaterial + "doya4.jpg")) request("https://files.catbox.moe/jb48tj.jpeg").pipe(createWriteStream(dirMaterial + "doya4.jpg"))
 
- if (!existsSync(dirMaterial + "doya5.jpg")) request("https://i.imgur.com/wp7hM0m.jpeg").pipe(createWriteStream(dirMaterial + "doya5.jpg"))
+ if (!existsSync(dirMaterial + "doya5.jpg")) request("https://files.catbox.moe/9nurwl.jpeg").pipe(createWriteStream(dirMaterial + "doya5.jpg"))
 
- if (!existsSync(dirMaterial + "doya6.jpg")) request("https://i.imgur.com/pFvUmsm.jpeg").pipe(createWriteStream(dirMaterial + "doya6.jpg"))
+ if (!existsSync(dirMaterial + "doya6.jpg")) request("https://files.catbox.moe/iggdqo.jpeg").pipe(createWriteStream(dirMaterial + "doya6.jpg"))
 
- if (!existsSync(dirMaterial + "doya7.jpg")) request("https://i.imgur.com/LH2qVcm.jpeg").pipe(createWriteStream(dirMaterial + "doya7.jpg"))
+ if (!existsSync(dirMaterial + "doya7.jpg")) request("https://files.catbox.moe/jy65vv.jpeg").pipe(createWriteStream(dirMaterial + "doya7.jpg"))
 
- if (!existsSync(dirMaterial + "doya8.jpg")) request("https://i.imgur.com/28Et6s2.jpeg").pipe(createWriteStream(dirMaterial + "doya8.jpg"))
+ if (!existsSync(dirMaterial + "doya8.jpg")) request("https://files.catbox.moe/125yea.jpeg").pipe(createWriteStream(dirMaterial + "doya8.jpg"))
 
- if (!existsSync(dirMaterial + "doya9.jpg")) request("https://i.imgur.com/NIjfdfz.jpeg").pipe(createWriteStream(dirMaterial + "doya9.jpg"))
+ if (!existsSync(dirMaterial + "doya9.jpg")) request("https://files.catbox.moe/zwmufm.jpeg").pipe(createWriteStream(dirMaterial + "doya9.jpg"))
 
- if (!existsSync(dirMaterial + "doya10.jpg")) request("https://i.imgur.com/1ufw46l.jpeg").pipe(createWriteStream(dirMaterial + "doya10.jpg"))
+ if (!existsSync(dirMaterial + "doya10.jpg")) request("https://files.catbox.moe/2n24zx.jpeg").pipe(createWriteStream(dirMaterial + "doya10.jpg"))
 
- if (!existsSync(dirMaterial + "doya11.jpg")) request("https://i.imgur.com/0wcNcmI.jpeg").pipe(createWriteStream(dirMaterial + "doya11.jpg"))
+ if (!existsSync(dirMaterial + "doya11.jpg")) request("https://files.catbox.moe/eyqzed.jpeg").pipe(createWriteStream(dirMaterial + "doya11.jpg"))
 
- if (!existsSync(dirMaterial + "doya12.jpg")) request("https://i.imgur.com/AnIgU1J.jpeg").pipe(createWriteStream(dirMaterial + "doya12.jpg"))
+ if (!existsSync(dirMaterial + "doya12.jpg")) request("https://files.catbox.moe/zwmufm.jpeg").pipe(createWriteStream(dirMaterial + "doya12.jpg"))
 
 }
 

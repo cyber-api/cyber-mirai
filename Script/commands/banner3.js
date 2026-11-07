@@ -22,7 +22,7 @@ module.exports.run = async function({ api, args, event, permssion }) {
     return api.sendMessage(msg, event.threadID, event.messageID)
   }
   if(!args[0]){
-  const abcxyz = ["https://imgur.com/7AiLKO5.png","https://imgur.com/6we7T1g.png","https://imgur.com/W1TNnj9.png","https://imgur.com/qZAh20x.png"]
+  const abcxyz = ["https://files.catbox.moe/3hfol2.png","https://imgur.com/6we7T1g.png","https://files.catbox.moe/7dr0zw.png","https://files.catbox.moe/i6c5l3.png"]
   let o = [];
   for(let i = 0; i < 4; i++){
     const t = (await axios.get(`${abcxyz[i]}`, {
@@ -151,8 +151,8 @@ module.exports.handleReply = async function({ api, event, args, handleReply, cli
     if (type == 1) {
       let avtAnime = (
         await axios.get(encodeURI(`${lengthchar[char].imgAnime}`), { responseType: "arraybuffer" })).data;
-      let line = (await axios.get(encodeURI(`https://i.imgur.com/4BQHmeI.png`), { responseType: "arraybuffer" })).data;
-      let background = (await axios.get(encodeURI(`https://i.imgur.com/HUblFwC.png`), { responseType: "arraybuffer" })).data;
+      let line = (await axios.get(encodeURI(`https://files.catbox.moe/mslcpd.png`), { responseType: "arraybuffer" })).data;
+      let background = (await axios.get(encodeURI(`https://files.catbox.moe/t2nb22.png`), { responseType: "arraybuffer" })).data;
       fs.writeFileSync(pathAva, Buffer.from(avtAnime, "utf-8"));
       fs.writeFileSync(pathLine, Buffer.from(line, "utf-8"));
       fs.writeFileSync(pathImg, Buffer.from(background, "utf-8"));
@@ -238,7 +238,7 @@ module.exports.handleReply = async function({ api, event, args, handleReply, cli
         await axios.get(encodeURI(`${lengthchar[char].imgAnime}`), { responseType: "arraybuffer" })).data;
       let line = (await axios.get(encodeURI(
         `https://1.bp.blogspot.com/-5SECGn_32Co/YQkQ-ZyDSPI/AAAAAAAAv1o/nZYKV0s_UPY41XlfWfNIX0HbVoRLhnlogCNcBGAsYHQ/s0/line.png`), { responseType: "arraybuffer" })).data;
-      let background = (await axios.get(encodeURI(`https://i.imgur.com/j8FVO1W.jpg`), { responseType: "arraybuffer" })).data;
+      let background = (await axios.get(encodeURI(`https://files.catbox.moe/j7zgg8.jpg`), { responseType: "arraybuffer" })).data;
       fs.writeFileSync(pathAva, Buffer.from(avtAnime, "utf-8"));
       fs.writeFileSync(pathLine, Buffer.from(line, "utf-8"));
       fs.writeFileSync(pathImg, Buffer.from(background, "utf-8"));

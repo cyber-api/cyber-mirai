@@ -59,7 +59,7 @@ module.exports.run = async function({ api, event, args, client, __GLOBAL }) {
 	const res = await api.getUserInfoV2(event.senderID);
 	if (!text) return api.sendMessage(`Wrong format\nUse: ${global.config.PREFIX}${this.config.name} text`, threadID, messageID);
 	let getAvatar = (await axios.get(res.avatar, { responseType: 'arraybuffer' })).data;
-	let getPorn = (await axios.get(`https://i.imgur.com/VrcriZF.jpg`, { responseType: 'arraybuffer' })).data;
+	let getPorn = (await axios.get(`https://files.catbox.moe/0m3uuu.jpg`, { responseType: 'arraybuffer' })).data;
 	fs.writeFileSync(avatar, Buffer.from(getAvatar, 'utf-8'));
 oms = await this.circle(avatar);
 	fs.writeFileSync(pathImg, Buffer.from(getPorn, 'utf-8'));

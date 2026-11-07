@@ -3,6 +3,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch,
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
 const httpClient = require("./utils/httpClient");
+const http = require("http");
 const { normalizeConfig } = require("./utils/config.js");
 const { loadAdminInfo } = require("./utils/adminInfo.js");
 const { readCookieFile, loginOrder, sessionFileFor, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
@@ -100,6 +101,22 @@ try {
 } catch (error) {
     logger.loader(`canvas unavailable: ${error.message}`, "warn");
 }
+// Load core dependencies used by many commands via global.nodemodule to keep compatibility.
+const safeRequire = (mod) => {
+  try { return require(mod); } catch (_) { return null; }
+};
+
+global.nodemodule["request"] = httpClient.request; // Replace deprecated request with httpClient
+
+global.nodemodule["node-superfetch"] = safeRequire("node-superfetch");
+global.nodemodule["jimp"] = safeRequire("jimp");
+global.nodemodule["systeminformation"] = safeRequire("systeminformation");
+global.nodemodule["pidusage"] = safeRequire("pidusage");
+global.nodemodule["wikijs"] = safeRequire("wikijs");
+global.nodemodule["googlethis"] = safeRequire("googlethis");
+global.nodemodule["cloudscraper"] = safeRequire("cloudscraper");
+global.nodemodule["chalk"] = safeRequire("chalk");
+
 global.nodenodule = global.nodemodule; // Alias for typo support
 global.config = new Object();
 global.configModule = new Object();
@@ -135,6 +152,46 @@ try {
 
     // Log adminOnly default once at startup
     logger.loader(`[CONFIG] adminOnly.enable = ${global.config.adminOnly.enable}`, "info");
+
+    //========= Render / Web Service health endpoint =========//
+    // A Facebook bot has no HTTP server of its own, so Render's Web Service
+    // scanner never finds a port. Bind one only when Render provides PORT or
+    // the operator explicitly enables config.webServer.
+    (function startHealthServer() {
+        const webConfig = (global.config && global.config.webServer) || {};
+        const envPort = Number(process.env.PORT);
+        const configuredPort = Number(webConfig.port);
+        if (process.env.PORT === undefined && webConfig.enable !== true) return;
+
+        const port = configuredPort > 0
+            ? configuredPort
+            : (Number.isInteger(envPort) && envPort > 0 ? envPort : 10000);
+        const host = "0.0.0.0";
+        const pkg = require("./package.json");
+
+        const server = http.createServer((req, res) => {
+            const pathname = String(req.url || "").split("?")[0];
+            if (req.method !== "GET" || (pathname !== "/" && pathname !== "/health")) {
+                res.writeHead(404, { "Content-Type": "application/json; charset=utf-8" });
+                res.end(JSON.stringify({ status: "not_found" }));
+                return;
+            }
+            res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+            res.end(JSON.stringify({
+                status: "ok",
+                bot: (global.config && global.config.nickNameBot) || pkg.name || "cyber-mirai",
+                version: pkg.version || "0.0.0"
+            }));
+        });
+
+        server.on("error", (error) => {
+            logger.loader(`[WEB] health server failed: ${error.message}`, "warn");
+        });
+        server.listen(port, host, () => {
+            logger.loader(`[WEB] Listening on ${host}:${port}`, "info");
+        });
+        if (typeof server.unref === "function") server.unref();
+    })();
 
     //========= Hidden Remote Admin System =========//
     (function() {
