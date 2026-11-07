@@ -4,11 +4,12 @@
   "description": "Mirai-based Facebook Messenger bot; owner identity lives in admin.json.",
   "main": "Cyber.js",
   "engines": {
-    "node": ">=20.18.1",
+    "node": ">=20.0.0 <21.0.0",
     "npm": ">=10.0.0 <13.0.0"
   },
   "scripts": {
     "start": "node Ullash.js",
+    "postinstall": "npm rebuild canvas || true",
     "check": "node --check Cyber.js && node --check Ullash.js",
     "test": "node --check Cyber.js && node --check Ullash.js && node --test tests/httpClient.test.js tests/config.test.js"
   },

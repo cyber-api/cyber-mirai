@@ -93,6 +93,13 @@ global.nodemodule["fs-extra"] = require("fs-extra");
 global.nodemodule["path"] = require("path");
 global.nodemodule["axios"] = httpClient;
 global.nodemodule["moment-timezone"] = require("moment-timezone");
+// Canvas is a native module. A stale binary must not stop the bot from booting:
+// commands that need it either fall back to text (Rank.js) or fail locally.
+try {
+    global.nodemodule["canvas"] = require("canvas");
+} catch (error) {
+    logger.loader(`canvas unavailable: ${error.message}`, "warn");
+}
 global.nodenodule = global.nodemodule; // Alias for typo support
 global.config = new Object();
 global.configModule = new Object();
