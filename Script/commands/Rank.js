@@ -29,16 +29,17 @@ module.exports.makeRankCard = async (data) => {
 	const Canvas = global.nodemodule["canvas"];
 	const request = global.nodemodule["node-superfetch"];
 	const __root = path.resolve(__dirname, "cache");
+	const assetsRoot = path.resolve(process.cwd(), "assets");
 	const PI = Math.PI;
 
     const { id, name, rank, level, expCurrent, expNextLevel } = data;
 
-	Canvas.registerFont(__root + "/regular-font.ttf", {
+	Canvas.registerFont(assetsRoot + "/fonts/regular-font.ttf", {
 		family: "Manrope",
 		weight: "regular",
 		style: "normal"
 	});
-	Canvas.registerFont(__root + "/bold-font.ttf", {
+	Canvas.registerFont(assetsRoot + "/fonts/bold-font.ttf", {
 		family: "Manrope",
 		weight: "bold",
 		style: "normal"
@@ -46,7 +47,7 @@ module.exports.makeRankCard = async (data) => {
 
 	const pathCustom = path.resolve(__dirname, "cache", "customrank");
 	var customDir = fs.readdirSync(pathCustom);
-	var dirImage = __root + "/rankcard.png";
+	var dirImage = assetsRoot + "/images/rankcard.png";
 	customDir = customDir.map(item => item.replace(/\.png/g, ""));
 
 	for (singleLimit of customDir) {
@@ -152,13 +153,22 @@ module.exports.getInfo = async (uid, Currencies) => {
 module.exports.onLoad = async function () {
 	const { resolve } = global.nodemodule["path"];
     const { existsSync, mkdirSync } = global.nodemodule["fs-extra"];
-    const { downloadFile } = global.utils;
+    const logger = require("../../utils/log.js");
 	const path = resolve(__dirname, "cache", "customrank");
     if (!existsSync(path)) mkdirSync(path, { recursive: true });
 
-    if (!existsSync(resolve(__dirname, 'cache', 'regular-font.ttf'))) await downloadFile("https://raw.githubusercontent.com/catalizcs/storage-data/master/rank/fonts/regular-font.ttf", resolve(__dirname, 'cache', 'regular-font.ttf'));
-	if (!existsSync(resolve(__dirname, 'cache', 'bold-font.ttf'))) await downloadFile("https://raw.githubusercontent.com/catalizcs/storage-data/master/rank/fonts/bold-font.ttf", resolve(__dirname, 'cache', 'bold-font.ttf'));
-	if (!existsSync(resolve(__dirname, 'cache', 'rankcard.png'))) await downloadFile("https://raw.githubusercontent.com/catalizcs/storage-data/master/rank/rank_card/rankcard.png", resolve(__dirname, 'cache', 'rankcard.png'));
+    // Rank assets are committed under assets/ so a dead third-party raw URL can
+    // never break startup. Missing assets are reported, not thrown: the command
+    // falls back to a text-only message at runtime.
+    const assetsRoot = resolve(process.cwd(), "assets");
+    const required = [
+        resolve(assetsRoot, "fonts", "regular-font.ttf"),
+        resolve(assetsRoot, "fonts", "bold-font.ttf"),
+        resolve(assetsRoot, "images", "rankcard.png"),
+    ];
+    for (const file of required) {
+        if (!existsSync(file)) logger.loader(`rank asset missing: ${file}`, "warn");
+    }
 }
 
 module.exports.run = async ({ event, api, args, Currencies, Users }) => {
