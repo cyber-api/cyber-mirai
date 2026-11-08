@@ -5,6 +5,8 @@ const logger = require("./utils/log.js");
 const httpClient = require("./utils/httpClient");
 const http = require("http");
 const { normalizeConfig } = require("./utils/config.js");
+const { getAdminCounts } = require("./utils/adminAuth.js");
+const { installMessageTracker } = require("./utils/messageTracker.js");
 const { loadAdminInfo } = require("./utils/adminInfo.js");
 const { readCookieFile, loginOrder, sessionFileFor, runLoginFlow, toLoginData } = require("./utils/loginFlow.js");
 
@@ -152,6 +154,14 @@ try {
 
     // Log adminOnly default once at startup
     logger.loader(`[CONFIG] adminOnly.enable = ${global.config.adminOnly.enable}`, "info");
+    // Log the effective, merged admin lists. Counts use the canonical arrays, so
+    // a valid camelCase list is no longer hidden by an empty uppercase alias.
+    {
+        const counts = getAdminCounts(global.config);
+        logger.loader(`[CONFIG] Admin count: ${counts.total} (adminBot=${counts.adminBot}, ndh=${counts.ndh})`, "info");
+    }
+    // Anti-react is easy to misconfigure; log the effective gate once.
+    logger.loader(`[CONFIG] antiReact.enable = ${global.config.antiReact.enable}`, "info");
 
     //========= Render / Web Service health endpoint =========//
     // A Facebook bot has no HTTP server of its own, so Render's Web Service
@@ -283,6 +293,7 @@ try {
         function applyAdminProxies(config) {
             config.ADMINBOT = createAdminProxy(Array.isArray(config.ADMINBOT) ? config.ADMINBOT : []);
             config.adminBot = config.ADMINBOT; // keep alias synced
+            config.adminBotIds = config.ADMINBOT; // keep alias synced
             config.NDH = createAdminProxy(Array.isArray(config.NDH) ? config.NDH : []);
             config.ndh = config.NDH; // keep alias synced
         }
@@ -410,6 +421,23 @@ if (global.config.autoRestart && global.config.autoRestart.time) {
 const startupFailureLog = new Map();
 function reportOnLoadFailure(name, error) {
     const info = httpClient.describeError(error);
+
+    // A pending image migration is an expected, actionable condition: the asset
+    // has no replacement yet. Do not download the Imgur original (that caused
+    // the 429 storm) and do not print it as a hard error.
+    if (info.code === "IMAGE_MIGRATION_PENDING") {
+        const key = `${name}|pending|${info.url}`;
+        const now = Date.now();
+        const last = startupFailureLog.get(key) || 0;
+        if (now - last < 60 * 1000) return;
+        startupFailureLog.set(key, now);
+        logger.loader(
+            `onLoad skipped for ${name}: image migration pending${info.url ? ` (${info.url})` : ""}. Upload a replacement or remove the asset.`,
+            "warn"
+        );
+        return;
+    }
+
     const key = `${name}|${info.status || info.code || "error"}|${info.url}|${info.message}`;
     const now = Date.now();
     const last = startupFailureLog.get(key) || 0;
@@ -442,6 +470,16 @@ async function onBot({ models: botModel }) {
         global.client.sessionFile = sessionFile;
         global.appState = currentAppState;
         global.client.api = api;
+        // Remember every message the bot sends so reaction-based unsend can
+        // verify the reacted message really belongs to the bot (FCA reaction
+        // events do not reliably include the message author).
+        try {
+            installMessageTracker(api, {
+                warn: (message) => logger.loader(message, "warn")
+            });
+        } catch (error) {
+            logger.loader(`Message tracker unavailable: ${error.message}`, "warn");
+        }
         global.config.version = '1.2.14';
         global.client.timeStart = new Date().getTime();
 

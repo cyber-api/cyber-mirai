@@ -1,16 +1,13 @@
 module.exports = function ({ api, models, Users, Threads, Currencies }) {
     const logger = require("../../utils/log.js");
+    const { isAdmin } = require("../../utils/adminAuth.js");
+    const { isBotMessage } = require("../../utils/messageTracker.js");
     const DEFAULT_REACTION_TTL = 30 * 60 * 1000; // 30 minutes
-
-    function toIdList(value) {
-        if (!Array.isArray(value)) return [];
-        return value.map((item) => String(item));
-    }
 
     function asEmojiList(value) {
         if (!value) return [];
-        if (Array.isArray(value)) return value;
-        return [value];
+        if (Array.isArray(value)) return value.map((entry) => String(entry));
+        return [String(value)];
     }
 
     function reactionExpired(entry, now) {
@@ -21,58 +18,79 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         return Boolean(created && now - created > ttl);
     }
 
+    function botUserId() {
+        try {
+            const id = api.getCurrentUserID();
+            return id == null ? null : String(id);
+        } catch (error) {
+            return null;
+        }
+    }
+
     return async function ({ event }) {
-        const { threadID, messageID, userID, reaction, senderID } = event;
+        const { threadID, messageID, reaction } = event;
+        // `userID` is the reactor on this FCA build. `senderID` is only a
+        // fallback: it previously held the reacted message's author (or was
+        // absent entirely), which is why unsend never fired.
+        const reactor = String(event.userID || event.senderID || "");
         const { config, client, data } = global;
         const { handleReaction } = client;
-        const antiReact = config.antiReact;
 
-        // The reactor is `userID`; `senderID` is the author of the reacted message.
-        const reactor = String(userID);
-        const messageAuthor = senderID != null ? String(senderID) : null;
+        if (!reactor) return;
 
-        const isBotAdmin = toIdList(config.ADMINBOT).includes(reactor)
-            || (Array.isArray(config.NDH) && config.NDH.includes(reactor));
-        const botID = (() => { try { return String(api.getCurrentUserID()); } catch (error) { return null; } })();
+        const botID = botUserId();
+        // Ignore the bot reacting to its own messages (or to anything else).
+        if (botID && reactor === botID) return;
+
+        const callerIsAdmin = isAdmin(reactor, config);
 
         // --- Thread Approval Check ---
         if (config.threadApproval && config.threadApproval.enable) {
             const threadData = data.threadData.get(threadID) || {};
-            if (threadData.approved !== true && !isBotAdmin) return;
+            if (threadData.approved !== true && !callerIsAdmin) return;
         }
 
         // --- Single Anti-React pipeline (replaces the duplicate in listen.js) ---
+        const antiReact = config.antiReact;
         if (antiReact && antiReact.enable) {
-            // ১. রিয়্যাকশন দিয়ে মেসেজ আনসেন্ড (reactByUnsend)
-            const unsendConfig = antiReact.reactByUnsend;
-            if (unsendConfig && (unsendConfig.enable === true || unsendConfig.enable === undefined)) {
+            const onlyAdminBot = antiReact.onlyAdminBot === true;
+
+            if (!onlyAdminBot || callerIsAdmin) {
+                // ১. রিয়্যাকশন দিয়ে বটের মেসেজ আনসেন্ড (reactByUnsend)
+                const unsendConfig = antiReact.reactByUnsend || {};
+                const unsendEnabled = unsendConfig.enable !== false;
                 const emojis = asEmojiList(unsendConfig.emojis);
-                if (emojis.includes(reaction)) {
-                    if (antiReact.onlyAdminBot && !isBotAdmin) return;
-                    // Only the bot's own messages may be removed. Previously any
-                    // message could be unsent, letting users delete others' chat.
-                    if (botID && messageAuthor === botID) {
-                        api.unsendMessage(messageID, (err) => {
-                            if (err) logger.error("Failed to unsend message via reaction", "[ ANTI-REACT ]");
-                        });
+                if (unsendEnabled && emojis.includes(String(reaction))) {
+                    const removeBotMessage = antiReact.removeBotMessage !== false;
+                    if (removeBotMessage && botID && isBotMessage(messageID)) {
+                        try {
+                            api.unsendMessage(messageID, (error) => {
+                                if (error) {
+                                    logger.error(`Failed to unsend bot message ${messageID}: ${error.message || error}`, "[ ANTI-REACT ]");
+                                }
+                            });
+                        } catch (error) {
+                            logger.error(`Anti-react unsend threw: ${error.message || error}`, "[ ANTI-REACT ]");
+                        }
                     }
                 }
-            }
 
-            // ২. রিয়্যাকশন দিয়ে ইউজারকে কিক করা (reactByRemove)
-            const kickConfig = antiReact.reactByRemove;
-            if (kickConfig && (kickConfig.enable === true || kickConfig.enable === undefined)) {
+                // ২. রিয়্যাকশন দিয়ে ইউজারকে কিক করা (reactByRemove)
+                const kickConfig = antiReact.reactByRemove || {};
                 const kickEmoji = kickConfig.emoji;
-                if (kickEmoji && reaction === kickEmoji) {
-                    if (!isBotAdmin) return; // kick is an admin-only action
-                    // Kick the reactor, never the message author, and never the bot.
+                if (kickConfig.enable === true && kickEmoji && String(reaction) === String(kickEmoji)) {
+                    if (!callerIsAdmin) return; // kick is an admin-only action
                     if (botID && reactor !== botID) {
-                        api.removeUserFromGroup(reactor, threadID, (err) => {
-                            if (err) {
-                                return api.sendMessage("❌ Cannot kick this user. They might be an admin or I don't have permission.", threadID);
-                            }
-                            api.sendMessage("🚫 User removed due to admin reaction.", threadID);
-                        });
+                        try {
+                            api.removeUserFromGroup(reactor, threadID, (error) => {
+                                if (error) {
+                                    return api.sendMessage("❌ Cannot kick this user. They might be an admin or I don't have permission.", threadID);
+                                }
+                                api.sendMessage("🚫 User removed due to admin reaction.", threadID);
+                            });
+                        } catch (error) {
+                            logger.error(`Anti-react kick threw: ${error.message || error}`, "[ ANTI-REACT ]");
+                        }
                     }
                 }
             }
@@ -125,9 +143,9 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 Threads,
                 Currencies,
                 handleReaction: handleReactionObj,
-                permssion: isBotAdmin ? 2 : 0,
-                permission: isBotAdmin ? 2 : 0,
-                isBotAdmin,
+                permssion: callerIsAdmin ? 2 : 0,
+                permission: callerIsAdmin ? 2 : 0,
+                isBotAdmin: callerIsAdmin,
                 getText: getText2
             };
             await command.handleReaction(Obj);

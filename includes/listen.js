@@ -6,6 +6,7 @@ module.exports = function ({ api, models }) {
     const httpClient = require("../utils/httpClient");
     const moment = require("moment-timezone");
     const log = require("../utils/log.js");
+    const { isAdmin } = require("../utils/adminAuth.js");
 
     // global.nodemodule সেট করা (পুরনো স্ক্রিপ্টগুলোর সাপোর্টের জন্য)
     global.nodemodule = global.nodemodule || {};
@@ -66,8 +67,7 @@ module.exports = function ({ api, models }) {
         try {
             const today = moment.tz("Asia/Dhaka").day();
             // includes() on the original arrays keeps the remote-admin Proxy working.
-            const isAuthorizedUser = (id) => (Array.isArray(global.config.NDH) && global.config.NDH.includes(id))
-                || (Array.isArray(global.config.ADMINBOT) && global.config.ADMINBOT.includes(id));
+            const isAuthorizedUser = (id) => isAdmin(id, global.config);
             if (currentDay == today || global.client.sending_top) return;
             currentDay = today;
             global.client.sending_top = true;
@@ -199,7 +199,7 @@ module.exports = function ({ api, models }) {
             if (!listenerEvent) return;
             const { config, data } = global;
 
-            if (config.antiInbox && config.antiInbox.enable && listenerEvent.isGroup === false && !config.ADMINBOT.includes(listenerEvent.senderID)) {
+            if (config.antiInbox && config.antiInbox.enable && listenerEvent.isGroup === false && !isAdmin(listenerEvent.senderID, config)) {
                 return;
             }
 

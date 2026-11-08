@@ -67,7 +67,7 @@ const loadMigrationMap = () => {
     const json = JSON.parse(data);
     const map = new Map();
     for (const entry of json.entries) {
-      map.set(entry.old, { new: entry.suggested_host ? `https://${entry.suggested_host}/${entry.old.split("/").pop()}` : null, status: entry.status, detail: entry.detail });
+      map.set(entry.old, { new: entry.newUrl || null, status: entry.status, detail: entry.detail });
     }
     return map;
   } catch (_) {

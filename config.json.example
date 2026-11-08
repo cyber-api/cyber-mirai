@@ -46,6 +46,9 @@
     "adminBot": [
         "YOUR_ADMIN_UID"
     ],
+    "adminBotIds": [],
+    "BOT_ADMIN_IDS": [],
+    "adminListNotes": "adminBot, ADMINBOT, adminBotIds and the BOT_ADMIN_IDS environment variable are merged into one list. Empty/placeholder values never override valid entries.",
     "ndh": [
         "YOUR_OWNER_UID"
     ],
@@ -175,6 +178,8 @@
     },
     "antiReact": {
         "enable": true,
+        "onlyAdminBot": false,
+        "removeBotMessage": true,
         "reactByUnsend": {
             "enable": true,
             "emojis": [
@@ -182,11 +187,10 @@
             ]
         },
         "reactByRemove": {
-            "enable": true,
+            "enable": false,
             "emoji": "⚠"
         },
-        "onlyAdminBot": true,
-        "notes": "If enabled, bot will unsend BOT MESSAGES when admins react with unsend emojis, and remove users when admins react with remove emoji. Only works for bot admins."
+        "notes": "When enabled, reacting to a message the BOT sent with an emoji in reactByUnsend.emojis unsends that bot message. Set onlyAdminBot=true to require a bot admin as the reactor. removeBotMessage=false disables the unsend action. reactByRemove kicks the reactor (admin-only) when enabled. Emoji defaults: 👍 for unsend, ⚠ for remove."
     },
     "hideNotiMessage": {
         "commandNotFound": false,
@@ -233,6 +237,7 @@
     "NDH": [
         "YOUR_OWNER_UID"
     ],
+    "adminAliasNotes": "Legacy uppercase aliases. Merged with adminBot/ndh; keeping both is safe.",
     "PREFIX": "!",
     "DeveloperMode": false,
     "FCA": "cyber-bot-fca",

@@ -39,6 +39,7 @@ test("0admin on/off still persists the toggle", async () => {
 
   const fakeRequire = (id) => {
     if (id === "request") return () => {};
+    if (id === "../../utils/adminAuth.js") return require("../utils/adminAuth.js");
     if (id === "fs-extra") {
       return {
         readdirSync() { return []; },

@@ -8,22 +8,71 @@
  * validation, or the environment-sourced admin IDs (F-27, F-33).
  */
 
+const { normalizeAdminConfig, normalizeUidList: normalizeUidListFromAuth } = require("./adminAuth.js");
+
+// Kept for backwards compatibility: callers/tests use (value, label, warn).
 function normalizeUidList(value, label, warn) {
-    const emit = typeof warn === "function" ? warn : () => {};
-    if (!Array.isArray(value)) {
-        if (value != null) emit(`Ignoring ${label}: expected an array of user IDs.`);
-        return [];
+    return normalizeUidListFromAuth(value, warn, label);
+}
+
+function normalizeEmojiList(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) return value.map((entry) => String(entry)).filter(Boolean);
+    return [String(value)];
+}
+
+/**
+ * The anti-react feature had several shapes over time: a bare boolean, only
+ * `enable`, or the full `reactByUnsend`/`reactByRemove` objects. Normalize them
+ * all so `handleReaction.js` can rely on one shape.
+ */
+function normalizeAntiReact(config, warn) {
+    const defaults = () => ({
+        enable: false,
+        onlyAdminBot: false,
+        removeBotMessage: true,
+        reactByUnsend: { enable: true, emojis: ["👍"] },
+        reactByRemove: { enable: false, emoji: "⚠" }
+    });
+
+    let raw = config.antiReact;
+    if (raw === undefined || raw === null) {
+        config.antiReact = defaults();
+        return config.antiReact;
     }
-    const result = [];
-    for (const entry of value) {
-        const uid = String(entry == null ? "" : entry).trim();
-        if (!/^\d{5,20}$/.test(uid)) {
-            emit(`Ignoring invalid ${label} entry: ${uid.slice(0, 40)}`);
-            continue;
-        }
-        if (!result.includes(uid)) result.push(uid);
+    if (raw === true || raw === false) raw = { enable: raw };
+    if (typeof raw !== "object" || Array.isArray(raw)) {
+        warn("Ignoring antiReact: expected an object.");
+        config.antiReact = defaults();
+        return config.antiReact;
     }
-    return result;
+
+    const antiReact = raw;
+    // An existing object means the operator opted in; only an explicit false
+    // turns the feature off.
+    if (typeof antiReact.enable !== "boolean") antiReact.enable = true;
+    if (typeof antiReact.onlyAdminBot !== "boolean") antiReact.onlyAdminBot = false;
+    if (typeof antiReact.removeBotMessage !== "boolean") antiReact.removeBotMessage = true;
+
+    const unsend = antiReact.reactByUnsend;
+    if (!unsend || typeof unsend !== "object" || Array.isArray(unsend)) {
+        antiReact.reactByUnsend = { enable: true, emojis: ["👍"] };
+    } else {
+        if (typeof unsend.enable !== "boolean") unsend.enable = true;
+        const emojis = normalizeEmojiList(unsend.emojis);
+        unsend.emojis = emojis.length ? emojis : ["👍"];
+    }
+
+    const remove = antiReact.reactByRemove;
+    if (!remove || typeof remove !== "object" || Array.isArray(remove)) {
+        antiReact.reactByRemove = { enable: false, emoji: "⚠" };
+    } else {
+        if (typeof remove.enable !== "boolean") remove.enable = false;
+        remove.emoji = typeof remove.emoji === "string" && remove.emoji ? remove.emoji : "⚠";
+    }
+
+    config.antiReact = antiReact;
+    return antiReact;
 }
 
 function normalizeConfig(input, options) {
@@ -36,25 +85,15 @@ function normalizeConfig(input, options) {
         : {};
 
     // --- local admin lists (the hidden remote Proxy is installed in Cyber.js) ---
-    config.ADMINBOT = normalizeUidList(config.ADMINBOT || config.adminBot, "ADMINBOT", warn);
-    const envAdmins = String(env.BOT_ADMIN_IDS || "")
-        .split(",")
-        .map((id) => id.trim())
-        .filter(Boolean);
-    for (const uid of envAdmins) {
-        if (/^\d{5,20}$/.test(uid) && !config.ADMINBOT.includes(uid)) config.ADMINBOT.push(uid);
-    }
-    config.adminBot = config.ADMINBOT;
-
-    config.NDH = normalizeUidList(config.NDH || config.ndh, "NDH", warn);
-    config.ndh = config.NDH;
-
-    // --- optional owner/admin identity file ---
-    // admin.json may add UIDs, but never removes the local config or env entries.
-    if (opts.adminInfo && typeof opts.adminInfo === "object") {
-        const { mergeAdminUids } = require("./adminInfo.js");
-        mergeAdminUids(config, opts.adminInfo);
-    }
+    // Merge every accepted alias (`ADMINBOT`, `adminBot`, `adminBotIds`,
+    // `BOT_ADMIN_IDS`, `NDH`, `ndh`) plus the environment list and admin.json.
+    // The old `||` chain discarded a valid camelCase list whenever the
+    // uppercase key existed but was empty/placeholder.
+    normalizeAdminConfig(config, {
+        warn,
+        env,
+        adminInfo: opts.adminInfo
+    });
 
     // --- canonical aliases ---
     config.PREFIX = typeof config.PREFIX === "string" && config.PREFIX
@@ -90,6 +129,8 @@ function normalizeConfig(input, options) {
             if (typeof config[key].enable !== "boolean") config[key].enable = true;
         }
     }
+
+    normalizeAntiReact(config, warn);
 
     config.commandDisabled = Array.isArray(config.commandDisabled) ? config.commandDisabled : [];
     config.eventDisabled = Array.isArray(config.eventDisabled) ? config.eventDisabled : [];
@@ -147,4 +188,4 @@ function normalizeConfig(input, options) {
     return config;
 }
 
-module.exports = { normalizeConfig, normalizeUidList };
+module.exports = { normalizeConfig, normalizeUidList, normalizeAntiReact, normalizeEmojiList };

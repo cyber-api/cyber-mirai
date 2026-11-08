@@ -1,12 +1,127 @@
 {
   "generatedAt": "2026-11-07T06:51:27.826Z",
-  "note": "Old imgur URLs that could not be uploaded automatically. Fill in a working URL and replace the old URL in the listed files.",
+  "note": "Imgur URL migration map. Entries with status=migrated are rewritten to newUrl before any request. Entries with status=needs-user-upload are skipped (never fetched) and the caller falls back gracefully.",
+  "counts": {
+    "migrated": 462,
+    "pending": 55,
+    "total": 517
+  },
   "entries": [
+    {
+      "old": "https://i.imgur.com/0X706YR.jpg",
+      "newUrl": "https://files.catbox.moe/tkofmf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/0EMIF5N.jpg",
+      "newUrl": "https://files.catbox.moe/hl2x02.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/0C6OMog.jpg",
+      "newUrl": "https://files.catbox.moe/hvipcz.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/0qCoPhR.jpg",
+      "newUrl": "https://files.catbox.moe/6baath.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/0y9UHo3.jpg",
+      "newUrl": "https://files.catbox.moe/98j3g7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/0wcNcmI.jpeg",
+      "newUrl": "https://files.catbox.moe/eyqzed.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1ElFRik.jpg",
+      "newUrl": "https://files.catbox.moe/rh4yqm.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/11RFXQx.jpg",
+      "newUrl": "https://files.catbox.moe/96vrzc.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1M8Qo3e.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1dCjbJt.jpeg",
+      "newUrl": "https://files.catbox.moe/txhbja.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1Zr3rcS.jpg",
+      "newUrl": "https://files.catbox.moe/8wvgvp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1plDf6o.png",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1qOGiYV.jpg",
+      "newUrl": "https://files.catbox.moe/monuwt.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/1ufw46l.jpeg",
+      "newUrl": "https://files.catbox.moe/2n24zx.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/21xuPR1.jpg",
+      "newUrl": "https://files.catbox.moe/px279x.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/28Et6s2.jpeg",
+      "newUrl": "https://files.catbox.moe/125yea.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/2Hx0Bff.jpg",
+      "newUrl": "https://files.catbox.moe/6qh0k8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/2NK5XTr.jpeg",
+      "newUrl": "https://files.catbox.moe/m8ho6a.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/2bY5bSV.jpg",
+      "newUrl": "https://files.catbox.moe/z223de.jpg",
+      "status": "migrated"
+    },
     {
       "old": "https://i.imgur.com/1d4PKgo.jpeg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/2iXk7mU.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/2lO8cZg.jpg",
+      "newUrl": "https://files.catbox.moe/nsopst.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/2s6oXka.jpg",
+      "newUrl": "https://files.catbox.moe/dkv4uz.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/2VVnQdy.jpg",
@@ -15,10 +130,160 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/31XSmVj.mp4",
+      "newUrl": "https://files.catbox.moe/s2ptyj.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/3Adx4WN.jpg",
+      "newUrl": "https://files.catbox.moe/ysnf0i.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/3Bmg4Nd.jpeg",
+      "newUrl": "https://files.catbox.moe/ikbkrr.jpeg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/2ggq8wM.png",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/3JSCTMb.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/3eMPpUl.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/3aOuDZ9.jpg",
+      "newUrl": "https://files.catbox.moe/osg0v0.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4ATHG80.png",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4B6q7qo.jpg",
+      "newUrl": "https://files.catbox.moe/5svfju.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4BQHmeI.png",
+      "newUrl": "https://files.catbox.moe/mslcpd.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4CCcn4w.jpg",
+      "newUrl": "https://files.catbox.moe/s3op0k.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4NMv9DQ.jpg",
+      "newUrl": "https://files.catbox.moe/l5nvbx.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4XiF5dQ.jpg",
+      "newUrl": "https://files.catbox.moe/s8m5jq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4gx3rnh.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4nFOS0w.jpg",
+      "newUrl": "https://files.catbox.moe/uvhlda.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/4sZxV7H.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5HUayMT.jpg",
+      "newUrl": "https://files.catbox.moe/gnsbn3.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5HsEx6v.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5Ov0TeS.jpg",
+      "newUrl": "https://files.catbox.moe/oz25x7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5HxGOz7.jpg",
+      "newUrl": "https://files.catbox.moe/dlcgql.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5idifU6.jpeg",
+      "newUrl": "https://files.catbox.moe/ecopwl.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/5lQBE5S.jpg",
+      "newUrl": "https://files.catbox.moe/n4xkux.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/63iydJC.jpg",
+      "newUrl": "https://files.catbox.moe/uqntgx.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/66CoeG7.jpeg",
+      "newUrl": "https://files.catbox.moe/76i0ti.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6Hh2eap.jpg",
+      "newUrl": "https://files.catbox.moe/451jw7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6TF2Xft.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6YrFPL6.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6YzpZyq.jpg",
+      "newUrl": "https://files.catbox.moe/1ko628.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6fOxdex.png",
+      "newUrl": "https://files.catbox.moe/z09u9b.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6hufzML.jpg",
+      "newUrl": "https://files.catbox.moe/tw67nu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/6tILjzR.jpg",
+      "newUrl": "https://files.catbox.moe/n3e9g5.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/51NYqmO.mp4",
@@ -27,10 +292,50 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/6yjeFrc.jpeg",
+      "newUrl": "https://files.catbox.moe/6g316c.jpeg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/6A42EIx.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/7JKSRQi.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7cYzLYP.jpg",
+      "newUrl": "https://files.catbox.moe/6juvjy.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7i7GU1t.jpg",
+      "newUrl": "https://files.catbox.moe/7wh1zv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7lPqHjw.jpg",
+      "newUrl": "https://files.catbox.moe/bv5cbj.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7mwcaYl.jpg",
+      "newUrl": "https://files.catbox.moe/8y2ne7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7sefpqA.jpg",
+      "newUrl": "https://files.catbox.moe/uapeb3.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7w3hmYF.jpg",
+      "newUrl": "https://files.catbox.moe/tcwqh9.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/6wWebFc.mp4",
@@ -39,10 +344,60 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/7wAImE3.jpg",
+      "newUrl": "https://files.catbox.moe/r71kx8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8GM1pn9.jpg",
+      "newUrl": "https://files.catbox.moe/nhgx0b.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/7zfnhkO.jpg",
+      "newUrl": "https://files.catbox.moe/tkyzn5.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8V1Z1c8.jpg",
+      "newUrl": "https://files.catbox.moe/30dpaz.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8XbncY7.jpg",
+      "newUrl": "https://files.catbox.moe/6p75m8.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/7FNPBkX.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/8hEm7Ib.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8Y8NrSw.jpg",
+      "newUrl": "https://files.catbox.moe/ewyhjd.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8wvo2rv.jpg",
+      "newUrl": "https://files.catbox.moe/lwzwfu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/99QmViE.jpg",
+      "newUrl": "https://files.catbox.moe/nklp3w.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9JR6W3w.jpg",
+      "newUrl": "https://files.catbox.moe/y2xsmk.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/9MyDAos.jpeg",
@@ -51,10 +406,160 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/9SzyANt.jpg",
+      "newUrl": "https://files.catbox.moe/lunjex.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9M1v1qK.mp4",
+      "newUrl": "https://files.catbox.moe/6t5spb.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9X7xHrc.jpg",
+      "newUrl": "https://files.catbox.moe/s9gufc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9bwh3qa.jpg",
+      "newUrl": "https://files.catbox.moe/5g0au9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9ij2ZBZ.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/9rwW06s.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/A1C9CNt.jpg",
+      "newUrl": "https://files.catbox.moe/79kqac.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/A2bkbNb.jpg",
+      "newUrl": "https://files.catbox.moe/00u0t7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/8k6OOZg.mp4",
+      "newUrl": "https://files.catbox.moe/3ss6ea.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ANdQTeq.jpg",
+      "newUrl": "https://files.catbox.moe/eetxp8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/AXmBgGk.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/AlSxfCU.jpg",
+      "newUrl": "https://files.catbox.moe/26it81.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/AnIgU1J.jpeg",
+      "newUrl": "https://files.catbox.moe/zwmufm.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Ar2Mtvy.jpg",
+      "newUrl": "https://files.catbox.moe/cnw5b9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/B3xmc6u.jpg",
+      "newUrl": "https://files.catbox.moe/up7ui9.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/9VLIeHE.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/BDVgpWb.jpg",
+      "newUrl": "https://files.catbox.moe/2alups.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BEpH4tL.jpg",
+      "newUrl": "https://files.catbox.moe/6r0o0g.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BF7REhe.jpg",
+      "newUrl": "https://files.catbox.moe/qbu3gm.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BFuXq0I.jpg",
+      "newUrl": "https://files.catbox.moe/cn0uk2.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BIaJ0rP.jpg",
+      "newUrl": "https://files.catbox.moe/cdkijk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BQDcmQ7.jpg",
+      "newUrl": "https://files.catbox.moe/sumwm9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BSreuve.jpg",
+      "newUrl": "https://files.catbox.moe/2w8t32.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BUo8Gip.jpg",
+      "newUrl": "https://files.catbox.moe/5mkzic.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BcjRdU8.jpg",
+      "newUrl": "https://files.catbox.moe/2nnlpv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BtSlsSS.jpg",
+      "newUrl": "https://files.catbox.moe/66db77.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/C3b91UO.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/C4f0pdf.jpg",
+      "newUrl": "https://files.catbox.moe/kpt521.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/CGvFkMn.jpg",
+      "newUrl": "https://files.catbox.moe/8my77j.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/COb8HI9.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/COu7WrN.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/B6TOC4a.jpg",
@@ -63,16 +568,111 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/CURZ2xi.jpg",
+      "newUrl": "https://files.catbox.moe/rg6zn8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/CZ3u4pG.jpg",
+      "newUrl": "https://files.catbox.moe/iysdwh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/D0Yk3cA.jpg",
+      "newUrl": "https://files.catbox.moe/71u864.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/D3WqpgT.jpg",
+      "newUrl": "https://files.catbox.moe/ujufdg.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/D8Kzo1X.jpg",
+      "newUrl": "https://files.catbox.moe/ch6wic.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/DBBCMT5.jpg",
+      "newUrl": "https://files.catbox.moe/k5xqlh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/DGTIp1i.jpg",
+      "newUrl": "https://files.catbox.moe/z78zsn.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/DLElS0y.jpg",
+      "newUrl": "https://files.catbox.moe/5xfvry.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/DQ391x5.jpeg",
+      "newUrl": "https://files.catbox.moe/qq6mfx.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/BJ6yXNe.jpg",
+      "newUrl": "https://files.catbox.moe/s2f3gv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Dm7H99b.jpg",
+      "newUrl": "https://files.catbox.moe/d2x3wy.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/E3bMZMM.jpg",
+      "newUrl": "https://files.catbox.moe/40jgjp.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/DwDTSsS.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/EADdeTw.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/E5axqu9.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/EHD734u.jpg",
+      "newUrl": "https://files.catbox.moe/ntdg5t.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/EO0YsOT.jpg",
+      "newUrl": "https://files.catbox.moe/r4nelf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ES28alv.png",
+      "newUrl": "https://files.catbox.moe/0kdthb.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ESHNJxr.jpeg",
+      "newUrl": "https://files.catbox.moe/tcab6y.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/EapRG2l.jpg",
+      "newUrl": "https://files.catbox.moe/cw0nq4.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ErngTHc.jpg",
+      "newUrl": "https://files.catbox.moe/mskiiq.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/D7HZFSg.mp4",
@@ -87,10 +687,40 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/FJNdTMe.jpg",
+      "newUrl": "https://files.catbox.moe/p9smo8.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/EvOv3jE.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/FLGuvcu.jpeg",
+      "newUrl": "https://files.catbox.moe/bknuc7.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/FQklA6q.jpg",
+      "newUrl": "https://files.catbox.moe/gtfmgk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/FbI0kGj.jpg",
+      "newUrl": "https://files.catbox.moe/xwdjwb.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/FnKVUKI.jpg",
+      "newUrl": "https://files.catbox.moe/fd0058.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/GBfY6QF.jpg",
+      "newUrl": "https://files.catbox.moe/n7ciw5.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/EgUy7v0.mp4",
@@ -99,16 +729,146 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/GJbWcCy.jpg",
+      "newUrl": "https://files.catbox.moe/9derb4.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/GXPQYtT.png",
+      "newUrl": "https://files.catbox.moe/mtls7h.png",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/GGmRov3.png",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/Gw33heq.jpg",
+      "newUrl": "https://files.catbox.moe/h93mjc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/GwbXEte.jpg",
+      "newUrl": "https://files.catbox.moe/839i3s.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/H4txTF9.jpg",
+      "newUrl": "https://files.catbox.moe/2rqwc2.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/H8YGlIn.jpg",
+      "newUrl": "https://files.catbox.moe/pvk17v.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/HAHOYFm.jpg",
+      "newUrl": "https://files.catbox.moe/n2f4cl.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/HPaSlBu.jpeg",
+      "newUrl": "https://files.catbox.moe/0yuk20.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/HUblFwC.png",
+      "newUrl": "https://files.catbox.moe/t2nb22.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IBY0JJ1.jpg",
+      "newUrl": "https://files.catbox.moe/anj3qp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IEellAV.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IMubWyZ.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IQLPXsn.jpg",
+      "newUrl": "https://files.catbox.moe/prfp9e.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/FbnZI40.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/IfdtKRK.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IhRr8Gx.jpg",
+      "newUrl": "https://files.catbox.moe/7yznab.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IlYTb8a.jpeg",
+      "newUrl": "https://files.catbox.moe/e0exwg.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/IzhVUTo.jpg",
+      "newUrl": "https://files.catbox.moe/2bi045.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/J9rhsQn.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Gd49ZSo.mp4",
+      "newUrl": "https://files.catbox.moe/1foq6m.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/JL99iUN.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/JMAQfKP.jpg",
+      "newUrl": "https://files.catbox.moe/wsqgug.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/JceYbZ9.jpg",
+      "newUrl": "https://files.catbox.moe/zbs0xk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Jl7sYMm.jpeg",
+      "newUrl": "https://files.catbox.moe/yukat7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/JmwQicn.jpeg",
+      "newUrl": "https://files.catbox.moe/o73i6t.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Jo6JRP2.jpeg",
+      "newUrl": "https://files.catbox.moe/o2g535.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/JtenMLO.jpeg",
+      "newUrl": "https://files.catbox.moe/yoh33l.jpeg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/IjDqg2G.mp4",
@@ -123,10 +883,65 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/KSJQf1f.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/KZ9R9HY.jpg",
+      "newUrl": "https://files.catbox.moe/f996rh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/KrAQO5Z.jpg",
+      "newUrl": "https://files.catbox.moe/n2dzky.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/KtneWEN.jpg",
+      "newUrl": "https://files.catbox.moe/b6ysw9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/L5ZEaPA.jpeg",
+      "newUrl": "https://files.catbox.moe/s33xvh.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/LH2qVcm.jpeg",
+      "newUrl": "https://files.catbox.moe/jy65vv.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/LH9RZdn.jpg",
+      "newUrl": "https://files.catbox.moe/h0s44y.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/K5RfFYF.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/LYW6vCV.jpg",
+      "newUrl": "https://files.catbox.moe/ksyzwi.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/LbwoVjX.jpg",
+      "newUrl": "https://files.catbox.moe/foqonj.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/LrOjwMX.jpg",
+      "newUrl": "https://files.catbox.moe/q9hopx.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/MIG763l.jpg",
+      "newUrl": "https://files.catbox.moe/z532z3.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/K2LTmaA.mp4",
@@ -135,10 +950,110 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/MO2n9c8.jpg",
+      "newUrl": "https://files.catbox.moe/4caflw.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/MW0N2it.jpg",
+      "newUrl": "https://files.catbox.moe/nbn49t.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Mn9GMDf.jpg",
+      "newUrl": "https://files.catbox.moe/fhgy2k.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/MrnFFTs.jpeg",
+      "newUrl": "https://files.catbox.moe/9wh72e.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/MwvLw2x.jpg",
+      "newUrl": "https://files.catbox.moe/bsdj49.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/N0BCsl7.jpg",
+      "newUrl": "https://files.catbox.moe/gf61h7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NBRKOfg.jpg",
+      "newUrl": "https://files.catbox.moe/qx34ab.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NIDfRlO.jpg",
+      "newUrl": "https://files.catbox.moe/xdofj2.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NIjfdfz.jpeg",
+      "newUrl": "https://files.catbox.moe/zwmufm.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/LU7sSfI.gif",
+      "newUrl": "https://files.catbox.moe/wnif41.gif",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Nd5nrJW.jpg",
+      "newUrl": "https://files.catbox.moe/ii8ss4.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NdB4Jpv.jpg",
+      "newUrl": "https://files.catbox.moe/z5bmox.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NhnPV3T.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/NFxf731.mp4",
+      "newUrl": "https://files.catbox.moe/ko9yyk.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/OEjUJpt.jpg",
+      "newUrl": "https://files.catbox.moe/s4b98h.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/OHfqttV.jpg",
+      "newUrl": "https://files.catbox.moe/zj1k9t.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/NaVsFmQ.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/OO2HHbe.jpg",
+      "newUrl": "https://files.catbox.moe/49sdyc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/OPZ9857.jpg",
+      "newUrl": "https://files.catbox.moe/mr7qly.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/OQQeOP3.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/OTH5p7Z.jpg",
+      "newUrl": "https://files.catbox.moe/uzjthb.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/O9JDYv0.mp4",
@@ -147,10 +1062,65 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/Oc5v81n.jpg",
+      "newUrl": "https://files.catbox.moe/dk1ldc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/P2wkD52.jpg",
+      "newUrl": "https://files.catbox.moe/si17he.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/PFV6etU.jpg",
+      "newUrl": "https://files.catbox.moe/sv9g2c.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/PiEEsSU.jpg",
+      "newUrl": "https://files.catbox.moe/xphot5.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/PtiAaHm.jpg",
+      "newUrl": "https://files.catbox.moe/wpc344.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Put4cUm.jpg",
+      "newUrl": "https://files.catbox.moe/4cha6o.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/PwSkA3b.jpg",
+      "newUrl": "https://files.catbox.moe/g0m143.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Q6m1EEm.jpg",
+      "newUrl": "https://files.catbox.moe/lfsjdp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/QDnkQZh.jpeg",
+      "newUrl": "https://files.catbox.moe/l434nr.jpeg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/OKKlDBN.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/QNnnXIc.jpg",
+      "newUrl": "https://files.catbox.moe/f8md68.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/QOMUwDy.jpg",
+      "newUrl": "https://files.catbox.moe/02vewi.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/QQjV0Ec.jpeg",
@@ -165,10 +1135,80 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/QkddlpG.png",
+      "newUrl": "https://files.catbox.moe/fstzc3.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RGUxNFG.jpeg",
+      "newUrl": "https://files.catbox.moe/bv7tb1.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RH1YinJ.jpg",
+      "newUrl": "https://files.catbox.moe/nldbfq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/PPamCPI.mp4",
+      "newUrl": "https://files.catbox.moe/9i69n6.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RHoJdo4.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ReJPvHq.jpg",
+      "newUrl": "https://files.catbox.moe/0msjws.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RiNrjIO.jpg",
+      "newUrl": "https://files.catbox.moe/3tdyne.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RrPuRfT.jpg",
+      "newUrl": "https://files.catbox.moe/xcvmxp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RqaTxa4.jpg",
+      "newUrl": "https://files.catbox.moe/1lt5kv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/S482v7g.jpg",
+      "newUrl": "https://files.catbox.moe/iphtpu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/RzlDJy9.jpeg",
+      "newUrl": "https://files.catbox.moe/qe7zay.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/S83pmyW.jpg",
+      "newUrl": "https://files.catbox.moe/fqu3zb.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/QhlqGb1.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/SN9dO2X.jpg",
+      "newUrl": "https://files.catbox.moe/rxsnha.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/SVcdKJp.jpg",
+      "newUrl": "https://files.catbox.moe/jqc0rr.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/SHiXJ0G.jpg",
@@ -183,10 +1223,95 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/Sd8M4P1.jpg",
+      "newUrl": "https://files.catbox.moe/mh2wbf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/SmOYXY5.jpg",
+      "newUrl": "https://files.catbox.moe/0epayy.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Sbw1Ek5.jpeg",
+      "newUrl": "https://files.catbox.moe/rhgo9z.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/SwLufsH.jpg",
+      "newUrl": "https://files.catbox.moe/ylx9hz.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/SzzeFeV.jpg",
+      "newUrl": "https://files.catbox.moe/fabi7o.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TFwWRzh.jpg",
+      "newUrl": "https://files.catbox.moe/gkf7dt.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TUm1LQW.jpeg",
+      "newUrl": "https://files.catbox.moe/jb48tj.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TaxJ5C0.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TWnfUPu.jpg",
+      "newUrl": "https://files.catbox.moe/m4jkee.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TeT8dXA.jpg",
+      "newUrl": "https://files.catbox.moe/hxmd67.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Tj6adbm.jpeg",
+      "newUrl": "https://files.catbox.moe/d3z77d.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/TmfIRv5.jpg",
+      "newUrl": "https://files.catbox.moe/1q9irb.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/U1dHNbT.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/U8snOes.jpg",
+      "newUrl": "https://files.catbox.moe/181t1u.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/SaSgjuB.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/UVk3zcd.jpg",
+      "newUrl": "https://files.catbox.moe/1yihwq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/UP8wysc.jpg",
+      "newUrl": "https://files.catbox.moe/7yos5o.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/UzkdFiS.jpg",
+      "newUrl": "https://files.catbox.moe/c6rwh3.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/ULtFVPQ.mp4",
@@ -201,10 +1326,110 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/VFRn575.jpg",
+      "newUrl": "https://files.catbox.moe/s7dsz8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VHoGuJS.jpg",
+      "newUrl": "https://files.catbox.moe/w1rppr.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VTXRcYo.jpg",
+      "newUrl": "https://files.catbox.moe/afcwn0.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VaKdGyK.jpg",
+      "newUrl": "https://files.catbox.moe/26jvci.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VhUKFn6.jpg",
+      "newUrl": "https://files.catbox.moe/ywospk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VjrmG8l.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VrcriZF.jpg",
+      "newUrl": "https://files.catbox.moe/0m3uuu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VvD1BO7.jpg",
+      "newUrl": "https://files.catbox.moe/fozq5r.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VwbnHjt.jpg",
+      "newUrl": "https://files.catbox.moe/0krbyl.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/WFSU1Fg.jpg",
+      "newUrl": "https://files.catbox.moe/zn5y59.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/WOITKH9.jpg",
+      "newUrl": "https://files.catbox.moe/d46uvb.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/WXQIgMz.jpeg",
+      "newUrl": "https://files.catbox.moe/utby7g.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/WjkPmwu.jpg",
+      "newUrl": "https://files.catbox.moe/lco0jh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/WnuiI8E.jpg",
+      "newUrl": "https://files.catbox.moe/smuvdn.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/X41jmrh.jpeg",
+      "newUrl": "https://files.catbox.moe/omq8wg.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://imgur.com/KDKgqvq.png",
+      "newUrl": "https://files.catbox.moe/rntgnk.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://imgur.com/qZAh20x.png",
+      "newUrl": "https://files.catbox.moe/i6c5l3.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://imgur.com/Ch778s2.png",
+      "newUrl": "https://files.catbox.moe/sitnxp.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://imgur.com/W1TNnj9.png",
+      "newUrl": "https://files.catbox.moe/7dr0zw.png",
+      "status": "migrated"
+    },
+    {
       "old": "https://imgur.com/nqUIi2S.png",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/zoQxUwC.jpg",
+      "newUrl": "https://files.catbox.moe/8quv1h.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://imgur.com/FcbMto5.jpeg",
@@ -213,10 +1438,395 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://imgur.com/7AiLKO5.png",
+      "newUrl": "https://files.catbox.moe/3hfol2.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/zhSVly7.jpeg",
+      "newUrl": "https://files.catbox.moe/rma0kf.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/zgGE7XX.jpg",
+      "newUrl": "https://files.catbox.moe/htd7z0.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/zW5Yjr6.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/zCP4AzS.jpg",
+      "newUrl": "https://files.catbox.moe/zb5psf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/z7ZeFky.jpg",
+      "newUrl": "https://files.catbox.moe/51qpwi.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/z9X2gPw.jpg",
+      "newUrl": "https://files.catbox.moe/ro86g9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/z7RmDnI.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ytlBQar.jpg",
+      "newUrl": "https://files.catbox.moe/gol4sm.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ybM9Wtr.jpeg",
+      "newUrl": "https://files.catbox.moe/gatv0b.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/yAr7DHH.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/xfaDpuj.jpeg",
+      "newUrl": "https://files.catbox.moe/9skyzk.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/xZTrxXX.jpg",
+      "newUrl": "https://files.catbox.moe/deigsp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/xUVu8UA.jpg",
+      "newUrl": "https://files.catbox.moe/ximgff.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/xFIa63u.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wvIRzqH.jpg",
+      "newUrl": "https://files.catbox.moe/c40yni.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wrydrf6.jpg",
+      "newUrl": "https://files.catbox.moe/oowxxu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/xu6lBXk.mp4",
+      "newUrl": "https://files.catbox.moe/a8w6fq.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XAG9XXY.jpg",
+      "newUrl": "https://files.catbox.moe/rrrese.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XWbFJ67.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XfYz6wN.jpeg",
+      "newUrl": "https://files.catbox.moe/cropz8.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XRNqQwD.jpg",
+      "newUrl": "https://files.catbox.moe/mh9mn1.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XJYsBGt.jpg",
+      "newUrl": "https://files.catbox.moe/m4vqqd.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XzyO1x6.jpg",
+      "newUrl": "https://files.catbox.moe/lj7zcp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YCVtjm3.jpeg",
+      "newUrl": "https://files.catbox.moe/kjpnhn.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YOVZBYH.jpg",
+      "newUrl": "https://files.catbox.moe/76tbqi.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YQQ4OSq.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YbWXwDd.jpg",
+      "newUrl": "https://files.catbox.moe/s9lwe3.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YdcVmTe.jpg",
+      "newUrl": "https://files.catbox.moe/qtfzr7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YgIPVwa.jpg",
+      "newUrl": "https://files.catbox.moe/7cmjf7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Yrenc2R.jpg",
+      "newUrl": "https://files.catbox.moe/5f3oav.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XjfJHh9.mp4",
+      "newUrl": "https://files.catbox.moe/g3cqn9.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/YyNjYOU.jpeg",
+      "newUrl": "https://files.catbox.moe/pqxxo2.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/VhBb8SR.png",
+      "newUrl": "https://files.catbox.moe/lp0opy.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Yyb0sdO.jpg",
+      "newUrl": "https://files.catbox.moe/hxfxzf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZLCFLkt.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Z4674C4.jpeg",
+      "newUrl": "https://files.catbox.moe/tae9wh.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZUbdLcH.jpg",
+      "newUrl": "https://files.catbox.moe/xphot5.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZfnJQHj.jpg",
+      "newUrl": "https://files.catbox.moe/g0wajx.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZlY19ug.jpg",
+      "newUrl": "https://files.catbox.moe/fw8wgq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZsHL2Y2.jpg",
+      "newUrl": "https://files.catbox.moe/ue3v0e.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/Zw9KZBd.jpg",
+      "newUrl": "https://files.catbox.moe/xazh0n.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/XHrkPt4.mp4",
+      "newUrl": "https://files.catbox.moe/z2fa04.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZtWfHHx.png",
+      "newUrl": "https://files.catbox.moe/inlsou.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/a5FmXef.jpg",
+      "newUrl": "https://files.catbox.moe/tph9l8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/aBwvOal.jpg",
+      "newUrl": "https://files.catbox.moe/k6esij.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/aESlOKd.jpeg",
+      "newUrl": "https://files.catbox.moe/tl6thd.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/aGuU2tB.jpg",
+      "newUrl": "https://files.catbox.moe/u9ql2x.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/aiFNcBf.jpg",
+      "newUrl": "https://files.catbox.moe/ncqfvo.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/aiNRtVF.jpg",
+      "newUrl": "https://files.catbox.moe/es4bkw.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/amHzUJO.jpg",
+      "newUrl": "https://files.catbox.moe/cfp6fq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/asKxDK8.jpg",
+      "newUrl": "https://files.catbox.moe/q14swv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/b8KE45g.jpg",
+      "newUrl": "https://files.catbox.moe/14kcw5.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/b8vDMuU.jpg",
+      "newUrl": "https://files.catbox.moe/r64x19.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bSAggk1.jpg",
+      "newUrl": "https://files.catbox.moe/w6gdxk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bXHiz1E.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bXVBasN.jpg",
+      "newUrl": "https://files.catbox.moe/8quv1h.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bovYCdz.jpg",
+      "newUrl": "https://files.catbox.moe/1cw5ci.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bpzaZda.jpg",
+      "newUrl": "https://files.catbox.moe/gv81e4.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/byXallB.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/bMM8iJZ.jpg",
+      "newUrl": "https://files.catbox.moe/oh5260.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/caEX9gQ.jpg",
+      "newUrl": "https://files.catbox.moe/mqk3th.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/cgtD9cs.jpeg",
+      "newUrl": "https://files.catbox.moe/qzrdtc.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/chW3Tc1.jpg",
+      "newUrl": "https://files.catbox.moe/xf6jpv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/cwaipdJ.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dA3rT0E.jpeg",
+      "newUrl": "https://files.catbox.moe/a9ny5f.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dKEAsb9.jpg",
+      "newUrl": "https://files.catbox.moe/6oyca9.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/Y6uBzxx.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/dMRDrVv.jpeg",
+      "newUrl": "https://files.catbox.moe/8dbwn7.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ZkpN7kz.jpg",
+      "newUrl": "https://files.catbox.moe/behiv7.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dYZ3Fvm.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dQg3YHi.jpg",
+      "newUrl": "https://files.catbox.moe/d3pxdo.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dfBFRCY.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dmUAjtN.jpg",
+      "newUrl": "https://files.catbox.moe/nirgjt.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/dtBMiNZ.jpg",
+      "newUrl": "https://files.catbox.moe/f8ni1k.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/eAqbfri.jpg",
+      "newUrl": "https://files.catbox.moe/zczfxq.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/eGIF9B1.jpg",
+      "newUrl": "https://files.catbox.moe/pwrpfl.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ehEVYQK.jpg",
+      "newUrl": "https://files.catbox.moe/9upht6.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/Y8MPzLv.mp4",
@@ -225,10 +1835,95 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/erB6gj3.jpg",
+      "newUrl": "https://files.catbox.moe/virzj3.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ep1gG3r.png",
+      "newUrl": "https://files.catbox.moe/2dh3xn.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/euiRsRb.jpg",
+      "newUrl": "https://files.catbox.moe/1fv5hz.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fGSX9z3.jpg",
+      "newUrl": "https://files.catbox.moe/mek6va.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fGY8plC.mp4",
+      "newUrl": "https://files.catbox.moe/y4m6h9.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/czv7Fz5.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/fOSI3wz.jpg",
+      "newUrl": "https://files.catbox.moe/ub1y00.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fWsdzoT.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fhC0uQO.jpg",
+      "newUrl": "https://files.catbox.moe/p5osgk.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fiyW8dO.jpg",
+      "newUrl": "https://files.catbox.moe/io0xpx.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/flMpukD.jpg",
+      "newUrl": "https://files.catbox.moe/v8lsor.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/fvZlGx4.jpg",
+      "newUrl": "https://files.catbox.moe/fq0anv.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/frkJZ1M.jpg",
+      "newUrl": "https://files.catbox.moe/8ovams.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/g0rKS8v.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/g5zU3Mg.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gMoTt6l.jpg",
+      "newUrl": "https://files.catbox.moe/ly7dun.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gSzX7nL.jpg",
+      "newUrl": "https://files.catbox.moe/oc9doy.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gXFNJGi.jpg",
+      "newUrl": "https://files.catbox.moe/c6w9yc.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/dcldScy.jpg",
@@ -237,10 +1932,75 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/gaNJLgU.jpg",
+      "newUrl": "https://files.catbox.moe/uaa544.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gc17ZIL.jpeg",
+      "newUrl": "https://files.catbox.moe/85xmfv.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gvOK3Rk.jpg",
+      "newUrl": "https://files.catbox.moe/mqwdvd.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hA7p8M3.jpg",
+      "newUrl": "https://files.catbox.moe/s9eoos.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/gjCymKq.jpg",
+      "newUrl": "https://files.catbox.moe/5nzcmc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/h0CMDtn.jpeg",
+      "newUrl": "https://files.catbox.moe/fhll87.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hJ5nfUa.jpg",
+      "newUrl": "https://files.catbox.moe/eue379.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hNb9WCk.jpg",
+      "newUrl": "https://files.catbox.moe/4ifhvc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hHKQMW8.jpg",
+      "newUrl": "https://files.catbox.moe/719sqq.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/ebT27Ho.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/hPTcpV5.jpg",
+      "newUrl": "https://files.catbox.moe/g9cfg1.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hTU9zhX.png",
+      "newUrl": "https://files.catbox.moe/61iarh.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hVqaTKa.jpg",
+      "newUrl": "https://files.catbox.moe/2gz9xf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hefR6oA.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/bbigbCj.mp4",
@@ -249,10 +2009,375 @@
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/hjmok8Q.jpg",
+      "newUrl": "https://files.catbox.moe/ne0ckc.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hZxona6.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hncJisT.jpg",
+      "newUrl": "https://files.catbox.moe/uejpqa.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hr0EHTb.jpg",
+      "newUrl": "https://files.catbox.moe/339l1n.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/i9C8TaY.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/i0lZw0Z.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/hmKmmam.jpg",
+      "newUrl": "https://files.catbox.moe/2yfmey.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/j4WDARE.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ikevA6M.jpg",
+      "newUrl": "https://files.catbox.moe/aj0o87.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/iaOiAXe.jpeg",
+      "newUrl": "https://files.catbox.moe/he0zkm.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/jHzuUKA.jpg",
+      "newUrl": "https://files.catbox.moe/69uhfg.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/j8FVO1W.jpg",
+      "newUrl": "https://files.catbox.moe/j7zgg8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/jKA05vC.jpg",
+      "newUrl": "https://files.catbox.moe/c7766b.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/jL9zgtp.jpg",
+      "newUrl": "https://files.catbox.moe/lscges.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/jVgapSO.jpg",
+      "newUrl": "https://files.catbox.moe/8pxmue.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/jVxUXTK.jpg",
+      "newUrl": "https://files.catbox.moe/0f6qgd.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/k0kgL6g.jpg",
+      "newUrl": "https://files.catbox.moe/lkgjc9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/i9vKvTd.mp4",
+      "newUrl": "https://files.catbox.moe/mxyauf.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/k7hFQDI.jpg",
+      "newUrl": "https://files.catbox.moe/x3ijbj.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/kCnHvly.jpg",
+      "newUrl": "https://files.catbox.moe/wqm1wu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/kCtN9ET.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/kTH9hI0.jpg",
+      "newUrl": "https://files.catbox.moe/lfjwzf.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/kjvZ9iO.jpeg",
+      "newUrl": "https://files.catbox.moe/szkazr.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/koQjHE8.jpg",
+      "newUrl": "https://files.catbox.moe/3ict1y.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/lGUiOWJ.jpg",
+      "newUrl": "https://files.catbox.moe/fzhjt6.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/i6Iy7iN.mp4",
+      "newUrl": "https://files.catbox.moe/vfj25m.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/laWJCD1.jpg",
+      "newUrl": "https://files.catbox.moe/yt8lnj.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ljSjY66.jpg",
+      "newUrl": "https://files.catbox.moe/nj4ikg.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/lnxS2Xr.jpg",
+      "newUrl": "https://files.catbox.moe/24cm6d.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/loz0CDt.jpg",
+      "newUrl": "https://files.catbox.moe/ak78qm.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/m7dBh5G.jpg",
+      "newUrl": "https://files.catbox.moe/fr5e82.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/mfA3aZm.jpg",
+      "newUrl": "https://files.catbox.moe/tg182c.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/n2FGJFe.jpg",
+      "newUrl": "https://files.catbox.moe/cz17c8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/nGG1Rq3.jpg",
+      "newUrl": "https://files.catbox.moe/3j6t3m.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/nViB6oJ.jpg",
+      "newUrl": "https://files.catbox.moe/jwe72s.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/ncg20xm.jpg",
+      "newUrl": "https://files.catbox.moe/7nb4lz.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/iQbs8eX.jpg",
+      "newUrl": "https://files.catbox.moe/jvaj3z.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/nfaJSc8.jpg",
+      "newUrl": "https://files.catbox.moe/m6lkia.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/o13FtAd.jpg",
+      "newUrl": "https://files.catbox.moe/i9zk22.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/oCeGlm4.jpg",
+      "newUrl": "https://files.catbox.moe/jntu9a.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/jR6DcLT.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/oTy9Ylw.jpg",
+      "newUrl": "https://files.catbox.moe/rzqk5h.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/mqEYRdy.mp4",
+      "newUrl": "https://files.catbox.moe/my1l1n.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/oalGZL4.jpeg",
+      "newUrl": "https://files.catbox.moe/zldqy4.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/olfWeCl.jpg",
+      "newUrl": "https://files.catbox.moe/kready.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/otrQpMc.jpg",
+      "newUrl": "https://files.catbox.moe/z9bl95.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/onfBoPC.jpg",
+      "newUrl": "https://files.catbox.moe/ljznlp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/owd3yEE.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pFvUmsm.jpeg",
+      "newUrl": "https://files.catbox.moe/iggdqo.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pI2yFKW.jpg",
+      "newUrl": "https://files.catbox.moe/1lk36j.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pLHUONd.jpg",
+      "newUrl": "https://files.catbox.moe/wwmuq8.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pXC6YUo.jpg",
+      "newUrl": "https://files.catbox.moe/bru6uh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pkchwDe.jpg",
+      "newUrl": "https://files.catbox.moe/94bq9s.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pfClCuw.jpg",
+      "newUrl": "https://files.catbox.moe/9hod3d.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/puwolKD.jpg",
+      "newUrl": "https://files.catbox.moe/l47fqt.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/pwIiuie.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/q9TICm1.jpeg",
+      "newUrl": "https://files.catbox.moe/v4j3d7.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/qEJ1Bac.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/qUQACV6.jpg",
+      "newUrl": "https://files.catbox.moe/8dx9tp.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/qdFVoSy.jpg",
+      "newUrl": "https://files.catbox.moe/ncntdj.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/qmkwLUx.png",
+      "newUrl": "https://files.catbox.moe/qs25dz.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/r3k76o1.jpg",
+      "newUrl": "https://files.catbox.moe/f7uruo.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/qt8TmLM.jpg",
+      "newUrl": "https://files.catbox.moe/gf54qo.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rF7elZ9.jpg",
+      "newUrl": "https://files.catbox.moe/ufrtjo.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rM8A3Zl.jpg",
+      "newUrl": "https://files.catbox.moe/4odn7e.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/oxFuJYw.mp4",
+      "newUrl": "https://files.catbox.moe/kqfm4t.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rZ0xm2d.jpg",
+      "newUrl": "https://files.catbox.moe/cqmoxh.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/raUIgUZ.jpg",
+      "newUrl": "https://files.catbox.moe/el5yqe.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rbYjAZ2.jpeg",
+      "newUrl": "https://files.catbox.moe/wssyo8.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rgPnYTJ.jpg",
+      "newUrl": "https://files.catbox.moe/565b2u.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rl5DsnE.jpeg",
+      "newUrl": "https://files.catbox.moe/zdt8h2.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rpLbigJ.jpg",
+      "newUrl": "https://files.catbox.moe/40cqq3.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rqbC4ES.jpg",
+      "newUrl": "https://files.catbox.moe/sc6fcw.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rzlJZst.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/lgQghHX.mp4",
@@ -273,10 +2398,95 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/s7lWVBQ.jpeg",
+      "newUrl": "https://files.catbox.moe/rpughl.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/s84ogtX.jpg",
+      "newUrl": "https://files.catbox.moe/j7bubr.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/sAUL2X0.jpg",
+      "newUrl": "https://files.catbox.moe/bz8hxb.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/sIIKN0X.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/rfzt2WQ.jpg",
+      "newUrl": "https://files.catbox.moe/orrifn.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/sJvWPWK.jpg",
+      "newUrl": "https://files.catbox.moe/ex4b6s.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/sUCiNka.jpg",
+      "newUrl": "https://files.catbox.moe/zb2049.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/seb2NbZ.jpg",
+      "newUrl": "https://files.catbox.moe/e7goi9.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/t5uQRhT.jpg",
+      "newUrl": "https://files.catbox.moe/28thzs.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tC2Sy8a.jpg",
+      "newUrl": "https://files.catbox.moe/wqbftm.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tKJbKC3.jpg",
+      "newUrl": "https://files.catbox.moe/6qjt77.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tMwtFht.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tasryGt.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tbXQXmA.jpg",
+      "newUrl": "https://files.catbox.moe/8yc9ga.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/tsUsL6B.jpg",
+      "newUrl": "https://files.catbox.moe/usppwn.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/u1YieFf.jpg",
+      "newUrl": "https://files.catbox.moe/3j6t3m.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/s2k6F7b.jpg",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/uC2YI3l.jpg",
+      "newUrl": "https://files.catbox.moe/inw2u0.jpg",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/s3t1Aag.jpg",
@@ -285,16 +2495,116 @@
       "detail": "needs-user-upload (download 000000, 0 bytes)"
     },
     {
+      "old": "https://i.imgur.com/uL4vzUm.jpg",
+      "newUrl": "https://files.catbox.moe/nx4q0q.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/uWKiNLn.jpg",
+      "newUrl": "https://files.catbox.moe/ghkb8a.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/uXi1lrg.jpeg",
+      "newUrl": "https://files.catbox.moe/6qh1h9.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/uiqy66z.jpg",
+      "newUrl": "https://files.catbox.moe/hqtk81.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/uns90FG.jpg",
+      "newUrl": "https://files.catbox.moe/1ko628.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/uq1X7A4.jpeg",
+      "newUrl": "https://files.catbox.moe/4wtgl8.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/v3MUQ23.jpg",
+      "newUrl": "https://files.catbox.moe/bhwo7x.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vAsgQst.jpg",
+      "newUrl": "https://files.catbox.moe/8d26nc.jpg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/ozRevxt.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
     },
     {
+      "old": "https://i.imgur.com/vVynRQK.jpg",
+      "newUrl": "https://files.catbox.moe/z9iqww.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vXJ177V.jpg",
+      "newUrl": "https://files.catbox.moe/3375kb.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vn4rXA4.jpg",
+      "newUrl": "https://files.catbox.moe/dj7fqs.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vJBXAhy.jpg",
+      "newUrl": "https://files.catbox.moe/q0w0xn.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vkLlOgs.jpeg",
+      "newUrl": "https://files.catbox.moe/is02pr.jpeg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/vsJYfw5.png",
+      "newUrl": "https://files.catbox.moe/hgidow.png",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/sDNohv4.mp4",
+      "newUrl": "https://files.catbox.moe/hpz6m8.mp4",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wCqcDtS.jpg",
+      "newUrl": "https://files.catbox.moe/zc6uik.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wfB1cU7.jpg",
+      "newUrl": "https://files.catbox.moe/dkb3zu.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wh5c2F8.jpg",
+      "newUrl": "https://files.catbox.moe/zprda1.jpg",
+      "status": "migrated"
+    },
+    {
+      "old": "https://i.imgur.com/wp7hM0m.jpeg",
+      "newUrl": "https://files.catbox.moe/9nurwl.jpeg",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/txnRTKf.png",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (download 000000, 0 bytes)"
+    },
+    {
+      "old": "https://i.imgur.com/vUe9Zlv.mp4",
+      "newUrl": "https://files.catbox.moe/p8yzk2.mp4",
+      "status": "migrated"
     },
     {
       "old": "https://i.imgur.com/vv1HsMC.mp4",
@@ -309,10 +2619,33 @@
       "detail": "needs-user-upload (download 000000, 1367011 bytes)"
     },
     {
+      "old": "https://i.imgur.com/ymvcyfg.mp4",
+      "newUrl": "https://files.catbox.moe/fojpny.mp4",
+      "status": "migrated"
+    },
+    {
       "old": "https://i.imgur.com/wX8WJh3.mp4",
       "suggested_host": "catbox.moe",
       "status": "needs-user-upload",
       "detail": "needs-user-upload (catbox: )"
+    },
+    {
+      "old": "https://i.imgur.com/PlVBaM1.jpg",
+      "suggested_host": "catbox.moe",
+      "status": "needs-user-upload",
+      "detail": "detected in crush.js onLoad (split string; missed by the original scan)"
+    },
+    {
+      "old": "https://i.imgur.com/j96ooUs.jpeg",
+      "suggested_host": "catbox.moe",
+      "status": "needs-user-upload",
+      "detail": "detected in kiss.js onLoad (split string; missed by the original scan)"
+    },
+    {
+      "old": "https://i.imgur.com/ha8gxu5.jpg",
+      "suggested_host": "catbox.moe",
+      "status": "needs-user-upload",
+      "detail": "detected in date2.js onLoad (split string; missed by the original scan)"
     }
   ]
 }

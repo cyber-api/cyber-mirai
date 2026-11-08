@@ -135,7 +135,14 @@ module.exports.downloadFile = async function (url, destination) {
 		maxRedirects: 3,
 	});
 
-	if (!result.ok) throw new Error(`downloadFile: ${result.error}`);
+	if (!result.ok) {
+		const error = new Error(`downloadFile: ${result.error}`);
+		// Preserve typed failures (e.g. IMAGE_MIGRATION_PENDING) so onLoad
+		// reporting can skip them as warnings instead of printing a stack.
+		if (result.code) error.code = result.code;
+		if (result.url) error.url = result.url;
+		throw error;
+	}
 	const response = result.response;
 
 	const declaredLength = Number(response.headers && response.headers["content-length"]);
@@ -301,11 +308,8 @@ module.exports.getStreamFromURL = async function (url = "", pathName = "", optio
 
 module.exports.isAdmin = function (senderID) {
     if (!senderID) return false;
-    const sender = String(senderID);
-    // includes() on the original arrays keeps the remote-admin Proxy working.
-    const isBot = Array.isArray(global.config.ADMINBOT) && global.config.ADMINBOT.includes(sender);
-    const isOwner = Array.isArray(global.config.NDH) && global.config.NDH.includes(sender);
-    return isBot || isOwner;
+    // Single source of truth (also handles the remote-admin Proxy).
+    return require("./adminAuth.js").isAdmin(senderID, global.config);
 };
 
 module.exports.getRole = function (threadData, senderID) {

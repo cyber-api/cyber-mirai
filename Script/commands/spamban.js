@@ -1,3 +1,4 @@
+const { isAdmin } = require("../../utils/adminAuth.js");
 const num = 10; // prefixed messages within `timee` seconds before a ban
 const timee = 120;
 
@@ -17,8 +18,7 @@ const logger = require("../../utils/log.js");
 module.exports.run = async function ({ api, event, args, Threads }) {
   const action = String(args[0] || "").toLowerCase();
   const sender = String(event.senderID || "");
-  const isBotAdmin = (global.config.ADMINBOT || []).map(String).includes(sender)
-    || (global.config.NDH || []).map(String).includes(sender);
+  const isBotAdmin = isAdmin(sender, global.config);
 
   if ((action === "on" || action === "off") && isBotAdmin) {
     const threadData = await Threads.getData(event.threadID);

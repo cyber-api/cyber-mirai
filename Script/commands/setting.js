@@ -1,3 +1,4 @@
+const { isAdmin } = require("../../utils/adminAuth.js");
 module.exports.config = {
    name: "settings",
     version: "1.0.0",
@@ -72,7 +73,7 @@ module.exports.handleReply = async function({
   args, event, Users,Threads, api, handleReply, permssion
 }) {
   const { threadID, messageID, senderID } = event;
-  const isBotAdmin = (global.config.ADMINBOT || []).concat(global.config.NDH || []).map(String).includes(String(senderID));
+  const isBotAdmin = isAdmin(String(senderID), global.config);
   switch (handleReply.type) {
     case "choosee": {
       switch (event.body) {

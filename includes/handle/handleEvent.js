@@ -1,6 +1,7 @@
 module.exports = function ({ api, models, Users, Threads, Currencies }) {
     const logger = require("../../utils/log.js");
     const moment = require("moment-timezone");
+    const { isAdmin } = require("../../utils/adminAuth.js");
 
     const configuredTimeout = process.env.EVENT_TIMEOUT_MS
         || (global.config && global.config.EVENT_TIMEOUT_MS)
@@ -35,9 +36,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         if (!events || typeof events.entries !== "function") return;
 
         const actor = author != null ? String(author) : "";
-        // includes() on the original arrays keeps the remote-admin Proxy working.
-        const isBotAdmin = toIdList(config.ADMINBOT).includes(actor)
-            || (Array.isArray(config.NDH) && config.NDH.includes(actor));
+        const isBotAdmin = isAdmin(actor, config);
 
         // --- Thread Approval Check ---
         if (config.threadApproval && config.threadApproval.enable) {

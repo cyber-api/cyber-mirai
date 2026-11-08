@@ -28,6 +28,7 @@
 
 const crypto = require("crypto");
 const { URL } = require("url");
+const imageResolver = require("./imageResolver.js");
 
 const DEFAULTS = {
   timeout: 30 * 1000,
@@ -199,6 +200,15 @@ function normaliseConfig(input, second, third) {
   }
   if (!/^https?:\/\//i.test(config.url)) {
     throw new TypeError("httpClient: only http(s) URLs are supported");
+  }
+
+  // Rewrite migrated Imgur URLs and fail fast on pending ones. This is the one
+  // choke point every command reaches through, including the legacy
+  // `global.utils.downloadFile` helper and obfuscated `onLoad` handlers.
+  const resolved = imageResolver.resolveUrl(config.url);
+  if (resolved.changed) {
+    config.__imageMigrationOriginal = resolved.original;
+    config.url = resolved.url;
   }
   return config;
 }
@@ -642,7 +652,7 @@ async function request(input, second, third) {
       status: undefined,
       code: error.code,
       error: sanitizeMessage(error.message),
-      url: "",
+      url: sanitizeUrl(error.url || ""),
       attempts: 0,
       retryable: false,
       rateLimited: false,

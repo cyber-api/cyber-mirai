@@ -1,5 +1,6 @@
 var request = require("request");
 const { readdirSync, readFileSync, writeFileSync, existsSync, copySync, createWriteStream, createReadStream } = require("fs-extra");
+const { isAdmin, isOwner } = require("../../utils/adminAuth.js");
 
 module.exports.config = {
 	name: "0admin",
@@ -102,10 +103,46 @@ module.exports.run = async function ({ api, event, args, Users, permssion, getTe
 
  const mention = Object.keys(mentions || {});
 
+ // Resolve the caller once through the shared admin helper. `permssion` comes
+ // from handleCommand, which uses the same helper, so both stay in sync.
+ const senderID = String(event.senderID || event.author || "");
+ const callerIsAdmin = isAdmin(senderID, global.config) || Number(permssion) >= 2;
+ const callerIsOwner = isOwner(senderID, global.config) || Number(permssion) === 3;
+ // The `[ADMIN]` tag is part of the message only when the caller is actually
+ // recognised as an admin through the same boolean used for permission checks.
+ const adminText = (text) => {
+  const stripped = String(text == null ? "" : text).replace(/^\[ADMIN\]\s*/i, "");
+  return callerIsAdmin ? `[ADMIN] ${stripped}` : stripped;
+ };
+ const deny = (commandName) => adminText(getText("notHavePermssion", commandName));
+
  delete require.cache[require.resolve(configPath)];
  var config = require(configPath);
 
  const persistConfig = () => writeFileSync(configPath, JSON.stringify(config, null, 4));
+
+ // The raw config file may use either the uppercase or camelCase spelling.
+ // Write every alias so a later reload cannot resurrect a removed admin.
+ const LIST_ALIASES = {
+  ADMINBOT: ["ADMINBOT", "adminBot", "adminBotIds"],
+  NDH: ["NDH", "ndh"]
+ };
+ const ensureList = (key) => {
+  if (!Array.isArray(config[key])) config[key] = [];
+  return config[key];
+ };
+ const addToLists = (key, id) => {
+  for (const alias of LIST_ALIASES[key]) {
+   const list = ensureList(alias);
+   if (!list.some((entry) => String(entry) === String(id))) list.push(id);
+  }
+ };
+ const removeFromLists = (key, id) => {
+  for (const alias of LIST_ALIASES[key]) {
+   if (!Array.isArray(config[alias])) continue;
+   config[alias] = config[alias].filter((entry) => String(entry) !== String(id));
+  }
+ };
 
  const ensureAdminOnlyObject = () => {
  if (!config.adminOnly || typeof config.adminOnly !== "object" || Array.isArray(config.adminOnly)) {
@@ -156,8 +193,8 @@ module.exports.run = async function ({ api, event, args, Users, permssion, getTe
  };
 
  const requireOwner = () => {
- if (permssion != 3) {
- api.sendMessage(getText("notHavePermssion", args[0] || "0admin"), threadID, messageID);
+ if (!callerIsOwner) {
+ api.sendMessage(deny(args[0] || "0admin"), threadID, messageID);
  return false;
  }
  return true;
@@ -240,7 +277,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
  }
 
  case "add": {
- if (permssion != 3) return api.sendMessage(getText("notHavePermssion", "add"), threadID, messageID);
+ if (!callerIsOwner) return api.sendMessage(deny("add"), threadID, messageID);
 
  if (event.type == "message_reply") content[0] = event.messageReply.senderID;
 
@@ -249,7 +286,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
 
  for (const id of mention) {
  ADMINBOT.push(id);
- config.ADMINBOT.push(id);
+ addToLists("ADMINBOT", id);
  listAdd.push(`${id} - ${event.mentions[id]}`);
  }
 
@@ -259,7 +296,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
 
  else if (!isNaN(content[0])) {
  ADMINBOT.push(content[0]);
- config.ADMINBOT.push(content[0]);
+ addToLists("ADMINBOT", content[0]);
 
  const name = (await Users.getData(content[0])).name;
 
@@ -269,7 +306,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
  }
 
  case "addndh": {
- if (permssion != 3) return api.sendMessage(getText("notHavePermssion", "addndh"), threadID, messageID);
+ if (!callerIsOwner) return api.sendMessage(deny("addndh"), threadID, messageID);
 
  if (event.type == "message_reply") content[0] = event.messageReply.senderID;
 
@@ -278,7 +315,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
 
  for (const id of mention) {
  NDH.push(id);
- config.NDH.push(id);
+ addToLists("NDH", id);
  listAdd.push(`${id} - ${event.mentions[id]}`);
  }
 
@@ -289,15 +326,15 @@ Usage → ${global.config.PREFIX}0admin <command>`
 
  case "remove":
  case "rm": {
- if (permssion != 3) return api.sendMessage(getText("notHavePermssion", "remove"), threadID, messageID);
+ if (!callerIsOwner) return api.sendMessage(deny("remove"), threadID, messageID);
 
  if (mention.length != 0) {
  let list = [];
 
  for (const id of mention) {
- const index = config.ADMINBOT.findIndex(i => i == id);
- ADMINBOT.splice(index, 1);
- config.ADMINBOT.splice(index, 1);
+ removeFromLists("ADMINBOT", id);
+ const globalIndex = ADMINBOT.findIndex(i => String(i) === String(id));
+ if (globalIndex > -1) ADMINBOT.splice(globalIndex, 1);
  list.push(`${id}`);
  }
 
@@ -325,7 +362,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
  }
 
  case "ndhonly": {
- if (permssion < 2) return api.sendMessage("Permission denied.", threadID);
+ if (!callerIsAdmin) return api.sendMessage("Permission denied.", threadID);
 
  config.ndhOnly = !config.ndhOnly;
 
@@ -341,7 +378,7 @@ Usage → ${global.config.PREFIX}0admin <command>`
  }
 
  case "ibonly": {
- if (permssion != 3) return api.sendMessage("Permission denied.", threadID);
+ if (!callerIsOwner) return api.sendMessage("Permission denied.", threadID);
 
  config.adminPaOnly = !config.adminPaOnly;
 

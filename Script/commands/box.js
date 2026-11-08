@@ -1,3 +1,4 @@
+const { isAdmin } = require("../../utils/adminAuth.js");
 module.exports.config = {
 	name: "group",
 	version: "1.0.0",
@@ -35,7 +36,7 @@ if(args[0] == "me"){
 		const threadInfo = await api.getThreadInfo(event.threadID)
 		const find = threadInfo.adminIDs.find(el => el.id == api.getCurrentUserID());
 		if(!find) api.sendMessage("BOT needs to throw admin to use ?", event.threadID, event.messageID)
-	  else if(!global.config.ADMINBOT.includes(event.senderID)) api.sendMessage("Cunt powers ?", event.threadID, event.messageID)
+	  else if(!isAdmin(String(event.senderID), global.config)) api.sendMessage("Cunt powers ?", event.threadID, event.messageID)
      else api.changeAdminStatus(event.threadID, event.senderID, true);
      }
 } 

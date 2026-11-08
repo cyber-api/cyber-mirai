@@ -1,5 +1,6 @@
 module.exports = function ({ api, models, Users, Threads, Currencies }) {
     const DEFAULT_REPLY_TTL = 24 * 60 * 60 * 1000; // 24h safety net for menu entries
+    const { isAdmin, isOwner: isOwnerId } = require("../../utils/adminAuth.js");
 
     function replyStoreHas(store, key) {
         if (!store) return false;
@@ -34,11 +35,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
     // Mirrors the central permission model: 0 user, 1 thread admin, 2 bot admin, 3 owner.
     function resolveLevel(senderID, threadInfo, isBotAdmin) {
         const sender = String(senderID);
-        const admins = (global.config.ADMINBOT || []).map(String);
-        // includes() on the original arrays keeps the remote-admin Proxy working.
-        const isOwner = (Array.isArray(global.config.NDH) && global.config.NDH.includes(sender))
-            || (admins.length > 0 && admins[0] === sender);
-        if (isOwner) return 3;
+        if (isOwnerId(sender, global.config)) return 3;
         if (isBotAdmin) return 2;
         const adminIDs = (threadInfo && threadInfo.adminIDs) || [];
         const isThreadAdmin = adminIDs.some((item) => String(item.id) === sender);
@@ -55,8 +52,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         if (!handleReply || !event.messageReply.messageID) return;
 
         const sender = String(senderID);
-        const isBotAdmin = (Array.isArray(config.ADMINBOT) && config.ADMINBOT.includes(sender))
-            || (Array.isArray(config.NDH) && config.NDH.includes(sender));
+        const isBotAdmin = isAdmin(sender, config);
 
         // --- Admin Only Mode Fix ---
         if (config.adminOnly && config.adminOnly.enable && !isBotAdmin) {

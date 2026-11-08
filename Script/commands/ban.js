@@ -1,3 +1,4 @@
+const { isAdmin } = require("../../utils/adminAuth.js");
 module.exports.config = {
 	name: "ban",
 	version: "2.0.5",
@@ -114,7 +115,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
   else if(args[0] == "unban") {
   	var id = parseInt(args[1]), mybox = bans.banned[threadID];
   	var info = await api.getThreadInfo(threadID);
-	if (!info.adminIDs.some(item => item.id == senderID) && !(global.config.ADMINBOT).includes(senderID)) return api.sendMessage('❎Right cunt border!', threadID, messageID);
+	if (!info.adminIDs.some(item => item.id == senderID) && !isAdmin(senderID, global.config)) return api.sendMessage('❎Right cunt border!', threadID, messageID);
 	
   	if(!id) return api.sendMessage("❎Need to enter the id of the person to be removed from the banned list of the group", threadID, messageID);
   	bans.banned;
@@ -136,7 +137,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
   }
   else if(args[0] == "reset") {
   	var info = await api.getThreadInfo(threadID);
-	if (!info.adminIDs.some(item => item.id == senderID) && !(global.config.ADMINBOT).includes(senderID)) return api.sendMessage('❎Right cunt border!', threadID, messageID);
+	if (!info.adminIDs.some(item => item.id == senderID) && !isAdmin(senderID, global.config)) return api.sendMessage('❎Right cunt border!', threadID, messageID);
   	
   	bans.warns[threadID] = {};
   	bans.banned[threadID] = [];
@@ -149,7 +150,7 @@ module.exports.run = async function({ api, args, Users, event, Threads, utils, c
    
        //◆━━━━━━◆get iduser and reason<<<<<<<<\\
        var info = await api.getThreadInfo(threadID);
-	if (!info.adminIDs.some(item => item.id == senderID) && !(global.config.ADMINBOT).includes(senderID)) return api.sendMessage('Right cunt border!', threadID, messageID);
+	if (!info.adminIDs.some(item => item.id == senderID) && !isAdmin(senderID, global.config)) return api.sendMessage('Right cunt border!', threadID, messageID);
   var reason = "";
 		  if (event.type == "message_reply") {
 		  	var iduser = [];
