@@ -41,7 +41,8 @@
     "webServer": {
         "enable": true,
         "port": null,
-        "notes": "Render Web Service health endpoint. Set enable=false when deploying as a Background Worker. When port is null, Render's PORT env var is used, then 10000."
+        "ui": "simple",
+        "notes": "Render Web Service endpoint. ui=\"simple\" serves public/index.html at /; ui=\"dashboard\" redirects / to /dashboard. /health and /api/health always return JSON. Set enable=false when deploying as a Background Worker. When port is null, Render's PORT env var is used, then 10000."
     },
     "adminBot": [
         "YOUR_ADMIN_UID"

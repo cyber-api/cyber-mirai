@@ -11,7 +11,7 @@
     "start": "node Ullash.js",
     "postinstall": "npm rebuild canvas || true",
     "check": "node --check Cyber.js && node --check Ullash.js",
-    "test": "node --check Cyber.js && node --check Ullash.js && node --check utils/adminAuth.js && node --check utils/imageResolver.js && node --check utils/messageTracker.js && node --check utils/credentials.js && node --check Script/commands/help.js && node --test tests/httpClient.test.js tests/config.test.js tests/adminAuth.test.js tests/messageTracker.test.js tests/credentials.test.js tests/handleCommand.test.js"
+    "test": "node --check Cyber.js && node --check Ullash.js && node --check utils/adminAuth.js && node --check utils/imageResolver.js && node --check utils/messageTracker.js && node --check utils/credentials.js && node --check utils/webServer.js && node --check Script/commands/help.js && node --check Script/commands/console.js && node --test tests/httpClient.test.js tests/config.test.js tests/adminAuth.test.js tests/messageTracker.test.js tests/credentials.test.js tests/handleCommand.test.js tests/console.test.js tests/web.test.js"
   },
   "repository": {
     "type": "git",

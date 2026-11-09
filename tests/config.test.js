@@ -99,10 +99,11 @@ test("0admin on/off still persists the toggle", async () => {
   assert.deepEqual(sent, ["adminOnlyEnabled", "adminOnlyDisabled"]);
 });
 
-test("webServer defaults to disabled with a null port", () => {
+test("webServer defaults to disabled with a null port and simple UI", () => {
   const config = normalizeConfig({}, { warn() {} });
   assert.equal(config.webServer.enable, false);
   assert.equal(config.webServer.port, null);
+  assert.equal(config.webServer.ui, "simple");
 });
 
 test("webServer keeps an explicit enable flag and numeric port", () => {
@@ -111,4 +112,17 @@ test("webServer keeps an explicit enable flag and numeric port", () => {
   }, { warn() {} });
   assert.equal(config.webServer.enable, true);
   assert.equal(config.webServer.port, 10000);
+  assert.equal(config.webServer.ui, "simple");
+});
+
+test("webServer.ui supports dashboard and rejects unknown values", () => {
+  const dashboard = normalizeConfig({
+    webServer: { enable: true, port: 10000, ui: "Dashboard" },
+  }, { warn() {} });
+  assert.equal(dashboard.webServer.ui, "dashboard");
+
+  const unknown = normalizeConfig({
+    webServer: { enable: true, port: 10000, ui: "fancy" },
+  }, { warn() {} });
+  assert.equal(unknown.webServer.ui, "simple");
 });

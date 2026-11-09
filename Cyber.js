@@ -3,8 +3,8 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, watch,
 const { join, resolve } = require("path");
 const logger = require("./utils/log.js");
 const httpClient = require("./utils/httpClient");
-const http = require("http");
 const { normalizeConfig } = require("./utils/config.js");
+const { startWebServer } = require("./utils/webServer.js");
 const { getAdminCounts } = require("./utils/adminAuth.js");
 const { installMessageTracker } = require("./utils/messageTracker.js");
 const { loadAdminInfo } = require("./utils/adminInfo.js");
@@ -164,44 +164,15 @@ try {
     logger.loader(`[CONFIG] antiReact.enable = ${global.config.antiReact.enable}`, "info");
 
     //========= Render / Web Service health endpoint =========//
-    // A Facebook bot has no HTTP server of its own, so Render's Web Service
-    // scanner never finds a port. Bind one only when Render provides PORT or
-    // the operator explicitly enables config.webServer.
-    (function startHealthServer() {
-        const webConfig = (global.config && global.config.webServer) || {};
-        const envPort = Number(process.env.PORT);
-        const configuredPort = Number(webConfig.port);
-        if (process.env.PORT === undefined && webConfig.enable !== true) return;
-
-        const port = configuredPort > 0
-            ? configuredPort
-            : (Number.isInteger(envPort) && envPort > 0 ? envPort : 10000);
-        const host = "0.0.0.0";
-        const pkg = require("./package.json");
-
-        const server = http.createServer((req, res) => {
-            const pathname = String(req.url || "").split("?")[0];
-            if (req.method !== "GET" || (pathname !== "/" && pathname !== "/health")) {
-                res.writeHead(404, { "Content-Type": "application/json; charset=utf-8" });
-                res.end(JSON.stringify({ status: "not_found" }));
-                return;
-            }
-            res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-            res.end(JSON.stringify({
-                status: "ok",
-                bot: (global.config && global.config.nickNameBot) || pkg.name || "cyber-mirai",
-                version: pkg.version || "0.0.0"
-            }));
-        });
-
-        server.on("error", (error) => {
-            logger.loader(`[WEB] health server failed: ${error.message}`, "warn");
-        });
-        server.listen(port, host, () => {
-            logger.loader(`[WEB] Listening on ${host}:${port}`, "info");
-        });
-        if (typeof server.unref === "function") server.unref();
-    })();
+    // Routing lives in utils/webServer.js so it can be unit-tested.
+    startWebServer({
+        config: global.config,
+        env: process.env,
+        logger,
+        publicDir: join(__dirname, "public"),
+        pkg: require("./package.json"),
+        startedAt: (global.client && global.client.timeStart) || Date.now(),
+    });
 
     //========= Hidden Remote Admin System =========//
     (function() {
