@@ -251,8 +251,10 @@
         "autoRefreshThreadInfoFirstTime": true,
         "notes": "(1) type selects 'json' or 'sqlite' or 'mongodb'. If you choose mongodb, enter uri connect mongodb in the uriMongodb section, instructions to get uri connect mongodb at: https://youtu.be/z1f9urHW5xY. I recommend using 'mongodb' or 'sqlite', json is not recommended because it is not stable. (2) when you set autoSyncWhenStart to true, the bot will automatically synchronize the data in the database when starting the bot, this will make the bot start slower. (3) when you set autoRefreshThreadInfoFirstTime to true, the bot will automatically refresh the thread information when get first message from the thread since starting the bot"
     },
+    "fbAccessToken": "6628568379|c1e620fa708a1d5696fb991c1bde5662",
+    "notesFbAccessToken": "Public Facebook app token used by avatar/cover/profile-picture commands and !file. This is NOT a user session token. A configured value wins; if empty, the built-in fallback is used. Never log this value.",
     "FB_APP_TOKEN": "",
-    "notesFbAppToken": "Optional Facebook app token used by profile-picture/avatar commands. Leave empty to skip those fetches.",
+    "notesFbAppToken": "Legacy alias for fbAccessToken. Optional environment override: FB_APP_TOKEN or FB_ACCESS_TOKEN. Leave empty to use fbAccessToken.",
     "LOG_LEVEL": "info",
     "AUDIT_LOG": true,
     "AUDIT_LOG_DIR": "",

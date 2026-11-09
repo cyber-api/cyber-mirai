@@ -1,4 +1,5 @@
 const { getAdminInfo } = require("../../utils/adminInfo.js");
+const { getFbAppToken } = require("../../utils/credentials.js");
 
 module.exports.config = {
 	name: "bday",
@@ -26,7 +27,7 @@ module.exports.run =  ({ api, event, args, client, Users, Threads, __GLOBAL, Cur
   {body:`Time left until ${info.name || "Admin - Light"} birthday\n» ${days} days\n ${hours} hours\n ${minutes} minutes\n ${seconds} seconds. «`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () =>
     fs.unlinkSync(__dirname + "/cache/1.png"));
       const avatar = info.avatar.url
-        || ((info.avatar.uid || "100086680386976") ? `https://graph.facebook.com/${info.avatar.uid || "100086680386976"}/picture?height=720&width=720&access_token=66262` : "");
+        || ((info.avatar.uid || "100086680386976") ? `https://graph.facebook.com/${info.avatar.uid || "100086680386976"}/picture?height=720&width=720&access_token=${getFbAppToken()}` : "");
       if (!avatar) {
         return api.sendMessage(`Time left until ${info.name || "Admin - Light"} birthday\n» ${days} days\n ${hours} hours\n ${minutes} minutes\n ${seconds} seconds. «`, event.threadID);
       }

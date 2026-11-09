@@ -1,4 +1,27 @@
 const { getAdminInfo } = require("../../utils/adminInfo.js");
+const logger = require("../../utils/log.js");
+
+/** Commands are loaded asynchronously; never assume config exists. */
+function safeCommand(commands, name) {
+        if (!commands || typeof commands.get !== "function") return null;
+        const key = String(name == null ? "" : name).toLowerCase();
+        const direct = commands.get(key);
+        if (direct && direct.config) return direct;
+        for (const [registeredName, command] of commands) {
+                if (!command || !command.config) continue;
+                if (String(registeredName).toLowerCase() === key) return command;
+                if (String(command.config.name || "").toLowerCase() === key) return command;
+        }
+        return null;
+}
+
+function safeConfig(command) {
+        return command && command.config && typeof command.config === "object" ? command.config : null;
+}
+
+function safeString(value, fallback) {
+        return value === undefined || value === null || value === "" ? fallback : String(value);
+}
 
 module.exports.config = {
         name: "help",
@@ -31,31 +54,40 @@ module.exports.handleEvent = function ({ api, event, getText }) {
 
  if (!body || typeof body == "undefined" || body.indexOf("help") != 0) return;
  const splitBody = body.slice(body.indexOf("help")).trim().split(/\s+/);
- if (splitBody.length == 1 || !commands.has(splitBody[1].toLowerCase())) return;
+ if (splitBody.length == 1) return;
+ const command = safeCommand(commands, splitBody[1]);
+ const commandConfig = safeConfig(command);
+ if (!commandConfig) {
+  if (splitBody[1]) logger.loader(`[HELP] Skipped ${splitBody[1]}: missing config`, "warn");
+  return;
+ }
  const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
- const command = commands.get(splitBody[1].toLowerCase());
  const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
- return api.sendMessage(getText("moduleInfo", command.config.name, command.config.description, `${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}`, command.config.commandCategory, command.config.cooldowns, ((command.config.hasPermssion == 0) ? getText("user") : (command.config.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), command.config.credits), threadID, messageID);
+ return api.sendMessage(getText("moduleInfo", safeString(commandConfig.name, splitBody[1]), safeString(commandConfig.description, ""), `${prefix}${safeString(commandConfig.name, splitBody[1])} ${safeString(commandConfig.usages, "")}`, safeString(commandConfig.commandCategory, "uncategorized"), safeString(commandConfig.cooldowns, "0"), ((commandConfig.hasPermssion == 0) ? getText("user") : (commandConfig.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), safeString(commandConfig.credits, "")), threadID, messageID);
 }
 
 module.exports.run = function({ api, event, args, getText }) {
   const httpClient = require("../../utils/httpClient");
   const fs = require("fs-extra");
-  const { commands } = global.client;
+  const commands = global.client.commands;
   const { threadID, messageID } = event;
-  const command = commands.get((args[0] || "").toLowerCase());
+  const command = safeCommand(commands, args[0] || "");
   const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
-  const { autoUnsend, delayUnsend } = global.configModule[this.config.name];
+  const settings = global.configModule && global.configModule[this.config.name] || {};
+  const autoUnsend = settings.autoUnsend !== false; // default true
+  const delayUnsend = Number(settings.delayUnsend) || 20;
   const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
 
   if (args[0] == "all") {
     const commandList = commands.values();
     var group = [], msg = "";
     for (const commandConfig of commandList) {
-      if (!group.some(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase())) {
-        group.push({ group: commandConfig.config.commandCategory.toLowerCase(), cmds: [commandConfig.config.name] });
+      if (!commandConfig || !commandConfig.config) continue;
+      const category = safeString(commandConfig.config.commandCategory, "uncategorized").toLowerCase();
+      if (!group.some(item => item.group.toLowerCase() == category)) {
+        group.push({ group: category, cmds: [safeString(commandConfig.config.name, "unknown")] });
       } else {
-        group.find(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase()).cmds.push(commandConfig.config.name);
+        group.find(item => item.group.toLowerCase() == category).cmds.push(safeString(commandConfig.config.name, "unknown"));
       }
     }
     group.forEach(commandGroup => msg += `❄️ ${commandGroup.group.charAt(0).toUpperCase() + commandGroup.group.slice(1)} \n${commandGroup.cmds.join(' • ')}\n\n`);
@@ -107,17 +139,17 @@ module.exports.run = function({ api, event, args, getText }) {
     let i = 0;
     let msg = "";
 
-    for (var [name, value] of (commands)) {
-      name += ``;
-      arrayInfo.push(name);
+    for (var [name, commandInfo] of (commands)) {
+      if (!commandInfo || !commandInfo.config) continue;
+      arrayInfo.push({ data: name, config: commandInfo.config });
     }
 
-    arrayInfo.sort((a, b) => a.data - b.data);
+    arrayInfo.sort((a, b) => a.data.localeCompare(b.data));
     const first = numberOfOnePage * page - numberOfOnePage;
     i = first;
     const helpView = arrayInfo.slice(first, first + numberOfOnePage);
 
-    for (let cmds of helpView) msg += `•—»[ ${cmds} ]«—•\n`;
+    for (let entry of helpView) msg += `•—»[ ${entry.data} ]«—•\n`;
     const siu = `╭──────•◈•──────╮\n |        𝗝𝘀𝗧𝗮𝗮𝗸 𝗰𝗧𝗮𝗆 𝗯𝗼𝗆\n |   🄲🄾🄼🄼🄰🄽🄳 🄻🄸🅂🅃       \n╰──────•◈•──────╯`;
     const text = `╭──────•◈•──────╮\n│𝗨𝘀𝗲 ${prefix}help [Name?]\n│𝗨𝘀𝗲 ${prefix}help [Page?]\n│𝗛𝗔𝗠𝗧 𝗆𝗧𝗧𝗅𝗁 : │ ${getAdminInfo().name || "Mahbub-Shaon ッ"}\n│𝗧𝗔𝗧𝗍𝗍 : [${arrayInfo.length}]\n│📛🅶🅷🅶🅶🅴📛 :  [${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)}]\n╰──────•◈•──────╯`;
     const links = [
@@ -139,9 +171,20 @@ module.exports.run = function({ api, event, args, getText }) {
       fs.writeFileSync(__dirname + "/cache/loidbutter.jpg", bufferRes.data);
       api.sendMessage({ body: siu + "\n\n" + msg + text, attachment: fs.createReadStream(__dirname + "/cache/loidbutter.jpg") }, event.threadID, () => fs.unlinkSync(__dirname + "/cache/loidbutter.jpg"), event.messageID);
     })();
+
+    // The list branch above already sent its reply. Falling through used to
+    // reach `command.config` with `command === undefined`, which threw
+    // "Cannot read properties of undefined (reading 'config')".
+    return;
   }
 
-  const leiamname = getText("moduleInfo", command.config.name, command.config.description, `${(command.config.usages) ? command.config.usages : ""}`, command.config.commandCategory, command.config.cooldowns, ((command.config.hasPermssion == 0) ? getText("user") : (command.config.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), command.config.credits);
+  const commandConfig = safeConfig(command);
+  if (!commandConfig) {
+    logger.loader(`[HELP] Skipped ${args[0] || "(unknown)"}: missing config`, "warn");
+    return;
+  }
+
+  const leiamname = getText("moduleInfo", safeString(commandConfig.name, args[0] || "unknown"), safeString(commandConfig.description, ""), safeString(commandConfig.usages, ""), safeString(commandConfig.commandCategory, "uncategorized"), safeString(commandConfig.cooldowns, "0"), ((commandConfig.hasPermssion == 0) ? getText("user") : (commandConfig.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), safeString(commandConfig.credits, ""));
 
   const link = ["https://i.postimg.cc/QdgH08j6/Messenger-creation-C2-A39-DCF-A8-E7-4-FC7-8715-2559476-FEEF4.gif"];
   (async () => {

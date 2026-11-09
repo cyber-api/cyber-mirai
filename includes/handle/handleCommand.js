@@ -49,6 +49,14 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
             if (!body || !senderID) return;
 
+            // Once this dispatcher decides to reply for a prefixed message, the
+            // passive event dispatcher (`handleCommandEvent`) must not also run
+            // for it. Otherwise a command that has both `run` and `handleEvent`
+            // (or a fuzzy "did you mean" plus a noprefix listener) answers twice.
+            const markConsumed = () => {
+                event.__cyberCommandConsumed = true;
+            };
+
             const sender = String(senderID);
             // Single source of truth: merges ADMINBOT/adminBot/adminBotIds/
             // BOT_ADMIN_IDS and NDH/ndh. `includes()` runs on the original
@@ -88,6 +96,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 const threadData = data.threadData.get(threadID) || {};
                 if (threadData.approved !== true && !isBotAdmin) {
                     if (config.threadApproval.sendThreadMessage) {
+                        markConsumed();
                         return api.sendMessage(global.getText("handleCommand", "notApproved"), threadID, messageID);
                     }
                     return;
@@ -103,11 +112,13 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
             // --- ৪. Banned Check ---
             if (data.userBanned.has(sender) && !isBotAdmin) {
                 const banInfo = data.userBanned.get(sender);
+                markConsumed();
                 return api.sendMessage(global.getText("handleCommand", "userBanned", banInfo.reason), threadID, messageID);
             }
 
             // --- Thread Banned Check ---
             if (data.threadBanned.has(threadID.toString()) && !isBotAdmin) {
+                markConsumed();
                 return api.sendMessage(global.getText("handleCommand", "threadBanned"), threadID, messageID);
             }
 
@@ -162,13 +173,28 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 });
 
             if (!command) {
-                if (!(config.hideNotiMessage && config.hideNotiMessage.commandNotFound)) {
-                    const allCommandName = Array.from(commands.keys());
-                    const checker = stringSimilarity.findBestMatch(commandName, allCommandName);
-                    if (checker.bestMatch.rating >= 0.5) {
-                        return api.sendMessage(global.getText("handleCommand", "commandNotExist", checker.bestMatch.target), threadID, messageID);
-                    }
+                // Exactly one of: "did you mean" (fuzzy > 0.7) or "not found".
+                // Never both, and never in addition to a valid command reply.
+                markConsumed();
+                if (config.hideNotiMessage && config.hideNotiMessage.commandNotFound) return;
+
+                const allCommandName = Array.from(commands.keys());
+                let best = null;
+                try {
+                    best = stringSimilarity.findBestMatch(commandName, allCommandName).bestMatch;
+                } catch (error) {
+                    best = null;
                 }
+
+                if (best && best.rating > 0.7) {
+                    return api.sendMessage(global.getText("handleCommand", "commandNotExist", best.target), threadID, messageID);
+                }
+                return api.sendMessage(global.getText("handleCommand", "commandNotFound", commandName), threadID, messageID);
+            }
+
+            // If the command is a non‑prefix (handleEvent) type, let the event handler deal with it.
+            if (typeof command.handleEvent === "function") {
+                // This command will be processed via handleCommandEvent, not here.
                 return;
             }
 
@@ -194,6 +220,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
             if (adminOnlyConfig.enable === true && !isBotAdmin && !isAdminOnlyExempt) {
                 if (!hideAdminOnlyNotice && shouldSendAdminOnlyNotice(sender, canonicalCommandName)) {
+                    markConsumed();
                     return api.sendMessage(global.getText("handleCommand", "adminOnly"), threadID, messageID);
                 }
                 return;
@@ -202,11 +229,13 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
             if (data.commandBanned && data.commandBanned.has(sender)) {
                 const bannedCommands = data.commandBanned.get(sender);
                 if (bannedCommands.includes(commandName)) {
+                    markConsumed();
                     return api.sendMessage(global.getText("handleCommand", "commandUserBanned", commandName), threadID, messageID);
                 }
             }
 
             if (command.config.commandCategory && command.config.commandCategory.toLowerCase() == 'nsfw' && !threadSetting.NSFW && !isBotAdmin) {
+                markConsumed();
                 return api.sendMessage(global.getText("handleCommand", "threadNotAllowNSFW"), threadID, messageID);
             }
 
@@ -232,9 +261,11 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
             if (requiredLevel === null) {
                 logger.loader(`Invalid hasPermssion on command "${commandName}" (${declared}); denying.`, "warn");
                 if (!isOwner) {
+                    markConsumed();
                     return api.sendMessage(global.getText("handleCommand", "permssionNotEnough", commandName), threadID, messageID);
                 }
             } else if (callerLevel < requiredLevel) {
+                markConsumed();
                 return api.sendMessage(global.getText("handleCommand", "permssionNotEnough", commandName), threadID, messageID);
             }
 
@@ -276,6 +307,10 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
                 const dateNow = Date.now();
                 const time = moment.tz("Asia/Dhaka").format("HH:mm:ss DD/MM/YYYY");
+
+                // A command that also exposes `handleEvent` must not run both
+                // paths for the same prefixed message.
+                event.__cyberHandledCommandName = canonicalCommandName;
 
                 const result = command.run(Obj);
                 if (result instanceof Promise) await result;

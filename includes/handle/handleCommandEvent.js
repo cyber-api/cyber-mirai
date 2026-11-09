@@ -21,6 +21,11 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
         if (!senderID || !threadID) return;
 
+        // The prefixed-command dispatcher already answered this message. Running
+        // passive/noprefix handlers too is what produced the duplicate reply
+        // (for example a fuzzy "did you mean Obot" plus Obot's own handleEvent).
+        if (event.__cyberCommandConsumed) return;
+
         const sender = String(senderID);
         const isBotAdmin = isAdmin(sender, config);
         const isOwner = isOwnerId(sender, config);
@@ -52,6 +57,13 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         for (const name of eventRegistered) {
             const command = commands.get(name);
             if (!command || typeof command.handleEvent !== "function") continue;
+
+            // Do not re-run the event side of a command that was already run
+            // through the prefixed dispatcher for this exact message.
+            if (event.__cyberHandledCommandName
+                && String(name).toLowerCase() === String(event.__cyberHandledCommandName).toLowerCase()) {
+                continue;
+            }
 
             try {
                 // Passive listeners run for every member, so only gate the ones

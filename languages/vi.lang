@@ -62,6 +62,7 @@ users.needObject=⚠️ Lỗi kiểu: Cần một Đối tượng.
 handleCommand.userBanned=🚫 Truy cập bị từ chối: Bạn đã bị cấm dùng bot do vi phạm chính sách.\nLý do: %1
 handleCommand.threadBanned=⛔️ Nhóm bị cấm: Nhóm này đã bị hạn chế sử dụng bot.\n\n📞 Vui lòng liên hệ quản trị viên để biết thêm.
 handleCommand.commandNotExist=⚠️ Lệnh không hợp lệ\n\nLệnh bạn nhập không tồn tại.\nCó phải bạn muốn ⟨ %1 ⟩?\n\nVui lòng kiểm tra lại và thử lại.
+handleCommand.commandNotFound=⚠️ Lệnh không hợp lệ\n\nKhông có lệnh nào tên "%1".\n\nDùng lệnh help để xem danh sách lệnh.
 handleCommand.commandThreadBanned=🚫 Bị hạn chế: Nhóm của bạn không được phép dùng lệnh "%1".
 handleCommand.commandUserBanned=🚫 Bị hạn chế: Bạn không được phép dùng lệnh "%1".
 handleCommand.threadNotAllowNSFW=⚠️ NSFW bị hạn chế: Lệnh này không được phép trong nhóm này.

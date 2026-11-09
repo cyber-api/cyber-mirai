@@ -63,6 +63,7 @@ users.needObject=⚠️ 𝗧𝘆𝗽𝗲 𝗘𝗿𝗿𝗼𝗿: Expected an Objec
 handleCommand.userBanned=🚫 𝗔𝗰𝗰𝗲𝘀𝘀 𝗗𝗲𝗻𝗶𝗲𝗱: You have been banned from using the bot due to policy violations.\nReason: %1
 handleCommand.threadBanned=⛔️ 𝗚𝗿𝗼𝘂𝗽 𝗕𝗮𝗻𝗻𝗲𝗱: This group has been restricted from using the bot.\n\n📞 Please contact the administrator for more information.
 handleCommand.commandNotExist=⚠️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗖𝗼𝗺𝗺𝗮𝗻𝗱\n\nThe command you entered does not exist.\nDid you mean: ⟨ %1 ⟩?\n\nPlease check your input and try again.
+handleCommand.commandNotFound=⚠️ 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗖𝗼𝗺𝗺𝗮𝗻𝗱\n\nThe command "%1" does not exist.\n\nType the help command to see the command list.
 handleCommand.commandThreadBanned=🚫 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: Your group is not allowed to use the command "%1".
 handleCommand.commandUserBanned=🚫 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: You are not allowed to use the command "%1".
 handleCommand.threadNotAllowNSFW=⚠️ 𝗡𝗦𝗙𝗪 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: This command is not allowed in this group.
