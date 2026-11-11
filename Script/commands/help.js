@@ -1,200 +1,383 @@
-const { getAdminInfo } = require("../../utils/adminInfo.js");
 const logger = require("../../utils/log.js");
+
+/**
+ * Help command.
+ *
+ * Keeps the defensive guards added in the previous fix (commands are loaded
+ * asynchronously, so `command.config` must never be read blindly), but the
+ * control flow is now explicit:
+ *
+ *   !help                 -> categories + their commands
+ *   !help all             -> same as !help
+ *   !help <command>       -> command details (name, usage, permission, …)
+ *   !help <category>      -> commands in that category
+ *   !help <page number>   -> flat paginated list
+ *   !help <unknown>       -> friendly "not found" reply
+ *
+ * No-prefix "help …" is handled by `handleEvent`, but only when the query
+ * actually matches a command/category, so ordinary chatter like "help me"
+ * never produces a reply.
+ */
+
+const COMMANDS_PER_PAGE = 20;
+const MAX_NAMES_PER_CATEGORY = 40;
+
+function safeCommands() {
+  try {
+    const commands = global.client && global.client.commands;
+    return commands && typeof commands.values === "function" ? commands : null;
+  } catch (error) {
+    return null;
+  }
+}
 
 /** Commands are loaded asynchronously; never assume config exists. */
 function safeCommand(commands, name) {
-        if (!commands || typeof commands.get !== "function") return null;
-        const key = String(name == null ? "" : name).toLowerCase();
-        const direct = commands.get(key);
-        if (direct && direct.config) return direct;
-        for (const [registeredName, command] of commands) {
-                if (!command || !command.config) continue;
-                if (String(registeredName).toLowerCase() === key) return command;
-                if (String(command.config.name || "").toLowerCase() === key) return command;
-        }
-        return null;
+  if (!commands || typeof commands.get !== "function") return null;
+  const key = String(name == null ? "" : name).toLowerCase();
+  if (!key) return null;
+  const direct = commands.get(key);
+  if (direct && direct.config) return direct;
+  for (const [registeredName, command] of commands) {
+    if (!command || !command.config) continue;
+    if (String(registeredName).toLowerCase() === key) return command;
+    if (String(command.config.name || "").toLowerCase() === key) return command;
+    if (Array.isArray(command.config.aliases)) {
+      if (command.config.aliases.some((alias) => String(alias).toLowerCase() === key)) return command;
+    } else if (typeof command.config.aliases === "string") {
+      if (command.config.aliases.toLowerCase() === key) return command;
+    }
+  }
+  return null;
 }
 
 function safeConfig(command) {
-        return command && command.config && typeof command.config === "object" ? command.config : null;
+  return command && command.config && typeof command.config === "object" ? command.config : null;
 }
 
 function safeString(value, fallback) {
-        return value === undefined || value === null || value === "" ? fallback : String(value);
+  return value === undefined || value === null || value === "" ? fallback : String(value);
+}
+
+function safeThreadData(threadID) {
+  try {
+    const store = global.data && global.data.threadData;
+    if (!store || typeof store.get !== "function") return {};
+    return store.get(threadID) || store.get(String(threadID)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function safePrefix(threadID) {
+  const threadData = safeThreadData(threadID);
+  if (Object.prototype.hasOwnProperty.call(threadData, "PREFIX") && threadData.PREFIX) {
+    return threadData.PREFIX;
+  }
+  return (global.config && (global.config.PREFIX || global.config.prefix)) || "!";
+}
+
+function commandEntries(commands) {
+  const entries = [];
+  if (!commands) return entries;
+  try {
+    for (const [key, command] of commands) {
+      const config = safeConfig(command);
+      if (!config) continue;
+      entries.push({
+        key: String(key),
+        name: safeString(config.name, String(key)),
+        config
+      });
+    }
+  } catch (error) {
+    // A partially-built map must not break help.
+  }
+  entries.sort((a, b) => a.name.localeCompare(b.name));
+  return entries;
+}
+
+function categoryOf(config) {
+  return safeString(config && config.commandCategory, "uncategorized").toLowerCase();
+}
+
+function groupByCategory(entries) {
+  const groups = new Map();
+  for (const entry of entries) {
+    const category = categoryOf(entry.config);
+    if (!groups.has(category)) groups.set(category, []);
+    groups.get(category).push(entry);
+  }
+  return groups;
+}
+
+function translate(getText, key, ...args) {
+  let value = "";
+  try {
+    value = typeof getText === "function" ? getText(key, ...args) : "";
+  } catch (error) {
+    value = "";
+  }
+  if (!value || value === key) {
+    const fallback = (module.exports.languages.en && module.exports.languages.en[key]) || key;
+    value = fallback;
+    args.forEach((arg, index) => {
+      value = value.replace(new RegExp(`%${index + 1}`, "g"), String(arg));
+    });
+  }
+  return value;
+}
+
+function permissionLabel(config, getText) {
+  const level = Number(config && config.hasPermssion);
+  if (level === 1) return translate(getText, "adminGroup");
+  if (level >= 2) return translate(getText, "adminBot");
+  return translate(getText, "user");
+}
+
+function usageLine(entry, prefix) {
+  const config = entry.config;
+  const name = safeString(config.name, entry.name);
+  const usages = safeString(config.usages, "");
+  return `${prefix}${name}${usages ? " " + usages : ""}`;
+}
+
+function formatDetails(entry, prefix, getText) {
+  const config = entry.config;
+  const name = safeString(config.name, entry.name);
+  const aliases = Array.isArray(config.aliases)
+    ? config.aliases.map((alias) => String(alias)).filter(Boolean)
+    : (typeof config.aliases === "string" && config.aliases ? [config.aliases] : []);
+  const lines = [
+    "╭──────•◈•──────╮",
+    `│ 🔹 ${name}`,
+    `│ 📝 ${safeString(config.description, "No description")}`,
+    `│ 📂 ${safeString(config.commandCategory, "uncategorized")}`,
+    `│ 🔐 ${permissionLabel(config, getText)}`,
+    `│ ⏱️ ${safeString(config.cooldowns, "0")}s`,
+    `│ 💡 ${usageLine(entry, prefix)}`
+  ];
+  if (aliases.length) lines.push(`│ 🔄 ${aliases.join(", ")}`);
+  lines.push(`│ 👤 ${safeString(config.credits, "Unknown")}`);
+  lines.push("╰──────•◈•──────╯");
+  return lines.join("\n");
+}
+
+function formatCategories(groups, prefix, total, getText) {
+  const lines = [
+    "╭──────•◈•──────╮",
+    "│   📋 COMMAND CATEGORIES",
+    "├────────────────"
+  ];
+  for (const category of Array.from(groups.keys()).sort()) {
+    const entries = groups.get(category).slice().sort((a, b) => a.name.localeCompare(b.name));
+    let names = entries.slice(0, MAX_NAMES_PER_CATEGORY).map((entry) => entry.name).join(" • ");
+    if (entries.length > MAX_NAMES_PER_CATEGORY) {
+      names += ` … +${entries.length - MAX_NAMES_PER_CATEGORY} more`;
+    }
+    lines.push(`│ ❄️ ${category.charAt(0).toUpperCase() + category.slice(1)} (${entries.length})`);
+    lines.push(`│    ${names}`);
+  }
+  lines.push("├────────────────");
+  lines.push(`│ ${translate(getText, "total", total, groups.size)}`);
+  lines.push(`│ 💡 ${prefix}help <command>`);
+  lines.push(`│ 💡 ${prefix}help <category>`);
+  lines.push("╰──────•◈•──────╯");
+  return lines.join("\n");
+}
+
+function formatCategory(category, entries, prefix) {
+  const lines = [
+    "╭──────•◈•──────╮",
+    `│ 📂 ${category.toUpperCase()} (${entries.length})`,
+    "├────────────────"
+  ];
+  for (const entry of entries.slice().sort((a, b) => a.name.localeCompare(b.name))) {
+    const usages = safeString(entry.config.usages, "");
+    lines.push(`│ • ${entry.name}${usages ? " — " + usages : ""}`);
+  }
+  lines.push("├────────────────");
+  lines.push(`│ 💡 ${prefix}help <command>`);
+  lines.push("╰──────•◈•──────╯");
+  return lines.join("\n");
+}
+
+function formatPage(entries, page, totalPages, prefix, getText) {
+  const lines = [
+    "╭──────•◈•──────╮",
+    `│ 📄 ${translate(getText, "page", page, totalPages)}`,
+    "├────────────────"
+  ];
+  for (const entry of entries) {
+    lines.push(`│ • ${entry.name}`);
+  }
+  lines.push("├────────────────");
+  lines.push(`│ 💡 ${prefix}help <command>`);
+  lines.push("╰──────•◈•──────╯");
+  return lines.join("\n");
+}
+
+/**
+ * Render a help reply. Returns null when `allowNotFound === false` and the
+ * query matches neither a command nor a category (used by the no-prefix
+ * handler so "help me" stays silent).
+ */
+function renderHelp({ threadID, args, getText, allowNotFound }) {
+  const commands = safeCommands();
+  const entries = commandEntries(commands);
+
+  if (!entries.length) {
+    // The no-prefix handler must stay silent during startup; only an explicit
+    // prefixed `!help` gets the friendly loading notice.
+    return allowNotFound === false ? null : translate(getText, "loading");
+  }
+
+  const rawArgs = Array.isArray(args)
+    ? args.map((arg) => (arg === undefined || arg === null ? "" : String(arg).trim())).filter(Boolean)
+    : [];
+  const first = rawArgs[0] || "";
+  const joined = rawArgs.join(" ").trim();
+  const prefix = safePrefix(threadID);
+  const groups = groupByCategory(entries);
+
+  if (!first) {
+    return formatCategories(groups, prefix, entries.length, getText);
+  }
+
+  // `!help all` is the explicit name for the full category list.
+  if (first.toLowerCase() === "all") {
+    return formatCategories(groups, prefix, entries.length, getText);
+  }
+
+  // `!help 2` -> flat paginated list.
+  if (/^\d+$/.test(first)) {
+    const page = Math.max(1, parseInt(first, 10));
+    const totalPages = Math.max(1, Math.ceil(entries.length / COMMANDS_PER_PAGE));
+    const start = (page - 1) * COMMANDS_PER_PAGE;
+    const view = entries.slice(start, start + COMMANDS_PER_PAGE);
+    if (!view.length) {
+      return translate(getText, "emptyPage", page);
+    }
+    return formatPage(view, page, totalPages, prefix, getText);
+  }
+
+  // Exact command/alias lookup always wins.
+  const command = safeCommand(commands, first);
+  if (command) {
+    const config = safeConfig(command);
+    if (!config) {
+      return translate(getText, "noConfig", first);
+    }
+    return formatDetails({ key: first, name: safeString(config.name, first), config }, prefix, getText);
+  }
+
+  // Category lookup: "QTV BOX" arrives as two args, so try the joined form
+  // first and then the first token.
+  const categoryCandidates = [joined.toLowerCase(), first.toLowerCase()];
+  for (const candidate of categoryCandidates) {
+    if (candidate && groups.has(candidate)) {
+      return formatCategory(candidate, groups.get(candidate), prefix);
+    }
+  }
+
+  // Partial category match (e.g. "!help admin" -> "admin-bot system").
+  if (joined) {
+    const partial = Array.from(groups.keys()).find((category) =>
+      category.includes(joined.toLowerCase()) || joined.toLowerCase().includes(category)
+    );
+    if (partial) {
+      return formatCategory(partial, groups.get(partial), prefix);
+    }
+  }
+
+  if (allowNotFound === false) return null;
+  return translate(getText, "notFound", joined || first, prefix);
 }
 
 module.exports.config = {
-        name: "help",
-        version: "1.0.2",
-        hasPermssion: 0,
-        credits: "𝐂𝐘𝐁𝐄𝐑 ☢️_𖣘 -𝐁𝐎𝐃 ⚠️ 𝑻𝑬𝑨𝑰_ ☢️",
-        description: "FREE SET-UP MESSENGER",
-        commandCategory: "system",
-        usages: "[Name module]",
-        cooldowns: 5,
-        envConfig: {
-                autoUnsend: true,
-                delayUnsend: 20
-        }
+  name: "help",
+  version: "2.0.0",
+  hasPermssion: 0,
+  credits: "CYBER BOT TEAM",
+  description: "Show command categories, a category, or details for one command.",
+  commandCategory: "system",
+  usages: "[command | category | page | all]",
+  cooldowns: 5,
+  envConfig: {
+    autoUnsend: true,
+    delayUnsend: 20
+  }
 };
 
 module.exports.languages = {
- "en": {
-    "moduleInfo": "╭──────•◈•──────╮\n |        𝗜𝘀𝗵𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁\n |●𝗡𝗮𝗺𝗶: •—» %1 «—•\n |●𝗨𝘀𝗮𝗴𝗲: %3\n |●𝗛𝗹𝗔𝗿𝗋𝗿𝗶p𝗌𝗋𝗷: %2\n |●𝗕𝗈𝗙𝗋𝗋𝗿𝗋: %4\n |●𝗧𝗛𝗼𝗹𝗉𝗎 𝗂𝗋𝗏𝗇𝗌: %5 seconds(s)\n |●𝗉𝗋𝗍𝗌𝗌𝗇𝗇𝗍𝗅𝗇𝗇𝗋: %6\n |𝗘𝗼𝗎𝗋𝗉𝗉 𝗘𝗈 𝗍𝗏𝗇𝗍𝗇𝗍\n |•—» " + (getAdminInfo().name || "Mahbub-Shaon ッ") + " «—•\n╰──────•◈•──────╯",
-    "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
-    "user": "User",
-        "adminGroup": "Admin group",
-        "adminBot": "Admin bot"
+  en: {
+    user: "User",
+    adminGroup: "Admin group",
+    adminBot: "Admin bot",
+    loading: "⏳ Commands are still loading. Please try again in a moment.",
+    total: "Total: %1 commands in %2 categories",
+    page: "Page %1/%2",
+    emptyPage: "❌ Page %1 is empty. Try a smaller page number.",
+    noConfig: "❌ Command \"%1\" has no configuration.",
+    notFound: "❌ Command or category \"%1\" not found.\nType %2help to see all categories."
+  },
+  bn: {
+    user: "ইউজার",
+    adminGroup: "গ্রুপ অ্যাডমিন",
+    adminBot: "বট অ্যাডমিন",
+    loading: "⏳ কমান্ডগুলো এখনো লোড হচ্ছে। একটু পরে আবার চেষ্টা করুন।",
+    total: "মোট: %1টি কমান্ড, %2টি ক্যাটাগরি",
+    page: "পৃষ্ঠা %1/%2",
+    emptyPage: "❌ %1 নম্বর পৃষ্ঠা খালি। ছোট পৃষ্ঠা নম্বর দিন।",
+    noConfig: "❌ \"%1\" কমান্ডের কনফিগারেশন নেই।",
+    notFound: "❌ \"%1\" নামে কোনো কমান্ড বা ক্যাটাগরি নেই।\nসব ক্যাটাগরি দেখতে %2help লিখুন।"
   }
 };
 
 module.exports.handleEvent = function ({ api, event, getText }) {
- const { commands } = global.client;
- const { threadID, messageID, body } = event;
+  try {
+    const body = event && event.body;
+    if (!body || typeof body !== "string") return;
 
- if (!body || typeof body == "undefined" || body.indexOf("help") != 0) return;
- const splitBody = body.slice(body.indexOf("help")).trim().split(/\s+/);
- if (splitBody.length == 1) return;
- const command = safeCommand(commands, splitBody[1]);
- const commandConfig = safeConfig(command);
- if (!commandConfig) {
-  if (splitBody[1]) logger.loader(`[HELP] Skipped ${splitBody[1]}: missing config`, "warn");
-  return;
- }
- const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
- const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
- return api.sendMessage(getText("moduleInfo", safeString(commandConfig.name, splitBody[1]), safeString(commandConfig.description, ""), `${prefix}${safeString(commandConfig.name, splitBody[1])} ${safeString(commandConfig.usages, "")}`, safeString(commandConfig.commandCategory, "uncategorized"), safeString(commandConfig.cooldowns, "0"), ((commandConfig.hasPermssion == 0) ? getText("user") : (commandConfig.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), safeString(commandConfig.credits, "")), threadID, messageID);
-}
+    // No-prefix form only. Prefixed "!help" is dispatched through run().
+    const match = body.trim().match(/^help(?:\s+|$)(.*)$/i);
+    if (!match) return;
 
-module.exports.run = function({ api, event, args, getText }) {
-  const httpClient = require("../../utils/httpClient");
-  const fs = require("fs-extra");
-  const commands = global.client.commands;
-  const { threadID, messageID } = event;
-  const command = safeCommand(commands, args[0] || "");
-  const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
-  const settings = global.configModule && global.configModule[this.config.name] || {};
-  const autoUnsend = settings.autoUnsend !== false; // default true
-  const delayUnsend = Number(settings.delayUnsend) || 20;
-  const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
-
-  if (args[0] == "all") {
-    const commandList = commands.values();
-    var group = [], msg = "";
-    for (const commandConfig of commandList) {
-      if (!commandConfig || !commandConfig.config) continue;
-      const category = safeString(commandConfig.config.commandCategory, "uncategorized").toLowerCase();
-      if (!group.some(item => item.group.toLowerCase() == category)) {
-        group.push({ group: category, cmds: [safeString(commandConfig.config.name, "unknown")] });
-      } else {
-        group.find(item => item.group.toLowerCase() == category).cmds.push(safeString(commandConfig.config.name, "unknown"));
-      }
-    }
-    group.forEach(commandGroup => msg += `❄️ ${commandGroup.group.charAt(0).toUpperCase() + commandGroup.group.slice(1)} \n${commandGroup.cmds.join(' • ')}\n\n`);
-
-    return httpClient.get('https://loidsenpaihelpapi.miraiandgoat.repl.co').then(async (res) => {
-      let ext = res.data.data.substring(res.data.data.lastIndexOf(".") + 1);
-      const ownerInfo = getAdminInfo();
-      let admID = ownerInfo.social.facebookUid || ownerInfo.avatar.uid || (global.config.ADMINBOT && global.config.ADMINBOT[0]) || "61551846081032";
-
-      // Download image using httpClient.fetchBuffer
-      const bufferRes = await httpClient.fetchBuffer(res.data.data);
-      if (!bufferRes.ok) {
-        throw new Error(bufferRes.error || "download failed");
-      }
-      const imgPath = __dirname + `/cache/472.${ext}`;
-      fs.writeFileSync(imgPath, bufferRes.data);
-
-      api.getUserInfo(parseInt(admID), (err, data) => {
-        if (err) { return console.log(err); }
-        const obj = Object.keys(data);
-        const firstname = data[obj].name.replace("@", "");
-        const callback = function () {
-          api.sendMessage({ 
-            body:`✿🄲🄾🄼🄼🄰🄽🄳 🄻🄸🅂🅃✿\n\n` + msg + `✿══════════════✿\n│𝗨𝘀𝗲 ${prefix}help [Name?]\n│𝗨𝘀𝗲 ${prefix}help [Page?]\n│𝗛𝗔𝗠𝗧 𝗊𝗧𝗧𝗲𝗁 : │${getAdminInfo().name || "Mahbub-Shaon ッ"}\n│𝗧𝗔𝗧𝗘𝗟 :  ${commands.size}\n————————————`, 
-            mentions: [{
-              tag: firstname,
-              id: admID,
-              fromIndex: 0
-            }],
-            attachment: fs.createReadStream(imgPath)
-          }, event.threadID, (err, info) => {
-            fs.unlinkSync(imgPath);
-            if (autoUnsend == false) {
-              setTimeout(() => {
-                return api.unsendMessage(info.messageID);
-              }, delayUnsend * 1000);
-            }
-          }, event.messageID);
-        };
-        callback();
-      });
+    const rest = match[1].trim();
+    const args = rest ? rest.split(/\s+/) : [];
+    const reply = renderHelp({
+      threadID: event.threadID,
+      args,
+      getText,
+      allowNotFound: false
     });
+
+    // "help me" / "help please" stays silent instead of spamming the group.
+    if (!reply) return;
+    return api.sendMessage(reply, event.threadID, event.messageID);
+  } catch (error) {
+    logger.loader(`[HELP] event error: ${error && error.message ? error.message : error}`, "error");
   }
+};
 
-  if (!command) {
-    const arrayInfo = [];
-    const page = parseInt(args[0]) || 1;
-    const numberOfOnePage = 15;
-    let i = 0;
-    let msg = "";
+module.exports.run = async function ({ api, event, args, getText }) {
+  const threadID = event && event.threadID;
+  const messageID = event && event.messageID;
 
-    for (var [name, commandInfo] of (commands)) {
-      if (!commandInfo || !commandInfo.config) continue;
-      arrayInfo.push({ data: name, config: commandInfo.config });
-    }
-
-    arrayInfo.sort((a, b) => a.data.localeCompare(b.data));
-    const first = numberOfOnePage * page - numberOfOnePage;
-    i = first;
-    const helpView = arrayInfo.slice(first, first + numberOfOnePage);
-
-    for (let entry of helpView) msg += `•—»[ ${entry.data} ]«—•\n`;
-    const siu = `╭──────•◈•──────╮\n |        𝗝𝘀𝗧𝗮𝗮𝗸 𝗰𝗧𝗮𝗆 𝗯𝗼𝗆\n |   🄲🄾🄼🄼🄰🄽🄳 🄻🄸🅂🅃       \n╰──────•◈•──────╯`;
-    const text = `╭──────•◈•──────╮\n│𝗨𝘀𝗲 ${prefix}help [Name?]\n│𝗨𝘀𝗲 ${prefix}help [Page?]\n│𝗛𝗔𝗠𝗧 𝗆𝗧𝗧𝗅𝗁 : │ ${getAdminInfo().name || "Mahbub-Shaon ッ"}\n│𝗧𝗔𝗧𝗍𝗍 : [${arrayInfo.length}]\n│📛🅶🅷🅶🅶🅴📛 :  [${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)}]\n╰──────•◈•──────╯`;
-    const links = [
-      "https://files.catbox.moe/0yuk20.jpeg",
-      "https://files.catbox.moe/0yuk20.jpeg",
-      "https://files.catbox.moe/utby7g.jpeg",
-      "https://i.postimg.cc/QdgH08j6/Messenger-creation-C2-A39-DCF-A8-E7-4-FC7-8715-2559476-FEEF4.gif",
-      "https://files.catbox.moe/utby7g.jpeg",
-      "https://files.catbox.moe/gatv0b.jpeg",
-      "https://files.catbox.moe/0yuk20.jpeg"
-    ];
-    (async () => {
-      const randomUrl = links[Math.floor(Math.random() * links.length)];
-      const bufferRes = await httpClient.fetchBuffer(randomUrl);
-      if (!bufferRes.ok) {
-        // fallback: send text only
-        return api.sendMessage(siu + "\n\n" + msg + text, event.threadID);
-      }
-      fs.writeFileSync(__dirname + "/cache/loidbutter.jpg", bufferRes.data);
-      api.sendMessage({ body: siu + "\n\n" + msg + text, attachment: fs.createReadStream(__dirname + "/cache/loidbutter.jpg") }, event.threadID, () => fs.unlinkSync(__dirname + "/cache/loidbutter.jpg"), event.messageID);
-    })();
-
-    // The list branch above already sent its reply. Falling through used to
-    // reach `command.config` with `command === undefined`, which threw
-    // "Cannot read properties of undefined (reading 'config')".
-    return;
+  try {
+    const reply = renderHelp({
+      threadID,
+      args,
+      getText,
+      allowNotFound: true
+    });
+    return api.sendMessage(reply, threadID, messageID);
+  } catch (error) {
+    logger.loader(`[HELP] error: ${error && error.message ? error.message : error}`, "error");
+    return api.sendMessage(
+      "❌ Help is temporarily unavailable. Please try again.",
+      threadID,
+      messageID
+    );
   }
-
-  const commandConfig = safeConfig(command);
-  if (!commandConfig) {
-    logger.loader(`[HELP] Skipped ${args[0] || "(unknown)"}: missing config`, "warn");
-    return;
-  }
-
-  const leiamname = getText("moduleInfo", safeString(commandConfig.name, args[0] || "unknown"), safeString(commandConfig.description, ""), safeString(commandConfig.usages, ""), safeString(commandConfig.commandCategory, "uncategorized"), safeString(commandConfig.cooldowns, "0"), ((commandConfig.hasPermssion == 0) ? getText("user") : (commandConfig.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), safeString(commandConfig.credits, ""));
-
-  const link = ["https://i.postimg.cc/QdgH08j6/Messenger-creation-C2-A39-DCF-A8-E7-4-FC7-8715-2559476-FEEF4.gif"];
-  (async () => {
-    const randomUrl = link[Math.floor(Math.random() * link.length)];
-    const bufferRes = await httpClient.fetchBuffer(randomUrl);
-    if (!bufferRes.ok) {
-      // fallback: send text only
-      return api.sendMessage(leiamname, event.threadID);
-    }
-    fs.writeFileSync(__dirname + "/cache/loidbutter.jpg", bufferRes.data);
-    api.sendMessage({ body: leiamname, attachment: fs.createReadStream(__dirname + "/cache/loidbutter.jpg") }, event.threadID, () => fs.unlinkSync(__dirname + "/cache/loidbutter.jpg"), event.messageID);
-  })();
 };

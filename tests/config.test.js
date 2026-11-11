@@ -126,3 +126,21 @@ test("webServer.ui supports dashboard and rejects unknown values", () => {
   }, { warn() {} });
   assert.equal(unknown.webServer.ui, "simple");
 });
+
+test("prefix behaviour defaults are safe", () => {
+  const config = normalizeConfig({}, { warn() {} });
+  assert.equal(config.usePrefix.enable, true);
+  assert.equal(config.respondToAllPrefixes, false);
+  assert.equal(config.commandNotFoundBehavior, "reply");
+});
+
+test("commandNotFoundBehavior only accepts silent or reply", () => {
+  assert.equal(normalizeConfig({ commandNotFoundBehavior: "SILENT" }, { warn() {} }).commandNotFoundBehavior, "silent");
+  assert.equal(normalizeConfig({ commandNotFoundBehavior: "reply" }, { warn() {} }).commandNotFoundBehavior, "reply");
+  assert.equal(normalizeConfig({ commandNotFoundBehavior: "banana" }, { warn() {} }).commandNotFoundBehavior, "reply");
+});
+
+test("respondToAllPrefixes is only enabled by an explicit true", () => {
+  assert.equal(normalizeConfig({ respondToAllPrefixes: true }, { warn() {} }).respondToAllPrefixes, true);
+  assert.equal(normalizeConfig({ respondToAllPrefixes: "true" }, { warn() {} }).respondToAllPrefixes, false);
+});

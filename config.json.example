@@ -28,12 +28,16 @@
     "nickNameBot": "ST | BOT",
     "prefix": "!",
     "usePrefix": {
-        "enable": false,
+        "enable": true,
+        "notes": "Commands require a prefix. A message that starts with another prefix (for example / when the bot uses !) is ignored silently. Set respondToAllPrefixes=true to also accept !, / and .",
         "adminUsePrefix": {
             "enable": true,
             "specificUids": []
         }
     },
+    "respondToAllPrefixes": false,
+    "commandNotFoundBehavior": "silent",
+    "notesCommandNotFound": "\"silent\" ignores a valid-prefix command that does not exist. \"reply\" sends one did-you-mean/not-found message. No-prefix and wrong-prefix messages are always silent.",
     "adminOnly": {
         "enable": false,
         "ignoreCommand": []

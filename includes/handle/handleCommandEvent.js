@@ -85,11 +85,16 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                     if (callerLevel < requiredLevel) continue;
                 }
 
-                // Backward compatible getText logic
+                // Backward compatible getText logic. Fall back to English when
+                // the command has no table for the configured language.
                 let getText2;
-                if (command.languages && typeof command.languages === 'object' && command.languages.hasOwnProperty(global.config.language)) {
+                const languageCode = global.config.language;
+                const languageTable = command.languages && typeof command.languages === 'object'
+                    ? (command.languages[languageCode] || command.languages.en || null)
+                    : null;
+                if (languageTable) {
                     getText2 = (...values) => {
-                        let lang = command.languages[global.config.language][values[0]] || '';
+                        let lang = languageTable[values[0]] || '';
                         for (let i = 1; i < values.length; i++) {
                             const expReg = RegExp('%' + i, 'g');
                             lang = lang.replace(expReg, values[i]);

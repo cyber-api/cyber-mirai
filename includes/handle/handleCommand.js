@@ -128,12 +128,39 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
             const botNickname = config.nickNameBot || "CYBER MIRAI BOT";
             const botID = api.getCurrentUserID();
 
+            // Only a message that actually starts with a valid prefix (or the
+            // bot nickname / an @mention) is a command. Anything else — a
+            // message for another bot, a wrong prefix like "/" when the bot
+            // uses "!", or plain chatter — must stay completely silent.
+            // `usePrefix.enable === false` used to turn EVERY message into a
+            // command, which is what produced both the wrong-prefix reply and
+            // the "commandNotFound" spam for ordinary group chatter.
+            const acceptedPrefixes = [];
+            const addPrefix = (value) => {
+                const text = String(value || "");
+                if (text && !acceptedPrefixes.includes(text)) acceptedPrefixes.push(text);
+            };
+            addPrefix(prefix);
+            if (config.respondToAllPrefixes === true) {
+                addPrefix("!");
+                addPrefix("/");
+                addPrefix(".");
+            }
+
             let commandText = body;
             let isCommand = false;
+            let matchedPrefix = null;
 
-            if (body.startsWith(prefix)) {
+            for (const candidate of acceptedPrefixes) {
+                if (body.startsWith(candidate)) {
+                    matchedPrefix = candidate;
+                    break;
+                }
+            }
+
+            if (matchedPrefix) {
                 isCommand = true;
-                commandText = body.slice(prefix.length).trim();
+                commandText = body.slice(matchedPrefix.length).trim();
             } else if (body.toLowerCase().startsWith(botNickname.toLowerCase())) {
                 isCommand = true;
                 commandText = body.slice(botNickname.length).trim();
@@ -146,9 +173,6 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 } catch (error) {
                     commandText = "";
                 }
-            } else if (config.usePrefix && config.usePrefix.enable === false) {
-                isCommand = true;
-                commandText = body.trim();
             }
 
             if (!isCommand || commandText == "") return;
@@ -176,6 +200,8 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 // Exactly one of: "did you mean" (fuzzy > 0.7) or "not found".
                 // Never both, and never in addition to a valid command reply.
                 markConsumed();
+                const notFoundBehavior = String(config.commandNotFoundBehavior || "reply").toLowerCase();
+                if (notFoundBehavior !== "reply") return;
                 if (config.hideNotiMessage && config.hideNotiMessage.commandNotFound) return;
 
                 const allCommandName = Array.from(commands.keys());
@@ -192,11 +218,12 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 return api.sendMessage(global.getText("handleCommand", "commandNotFound", commandName), threadID, messageID);
             }
 
-            // If the command is a non‑prefix (handleEvent) type, let the event handler deal with it.
-            if (typeof command.handleEvent === "function") {
-                // This command will be processed via handleCommandEvent, not here.
-                return;
-            }
+            // A command may expose both `run` and `handleEvent` (for example
+            // help, console, hi, settings). The prefixed dispatcher must run
+            // `run`; the event dispatcher is skipped for this message through
+            // `__cyberHandledCommandName`. The old early return here made every
+            // such command silently do nothing when invoked with a prefix.
+            if (typeof command.run !== "function") return;
 
             // --- Admin-only mode is evaluated now that we know it is a command,
             // so non-command chatter no longer produces a denial message.
@@ -239,8 +266,6 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
                 return api.sendMessage(global.getText("handleCommand", "threadNotAllowNSFW"), threadID, messageID);
             }
 
-            if (typeof command.run !== "function") return;
-
             // --- ৬. Permission Check ---
             const declared = command.config.hasPermssion !== undefined
                 ? command.config.hasPermssion
@@ -282,11 +307,17 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
 
             // --- ৮. Execute Command ---
             try {
-                // Backward compatible getText logic
+                // Backward compatible getText logic. Fall back to English when
+                // the command has no table for the configured language (help,
+                // for example, only ships an English table).
                 let getText2;
-                if (command.languages && typeof command.languages === 'object' && command.languages.hasOwnProperty(global.config.language)) {
+                const languageCode = global.config.language;
+                const languageTable = command.languages && typeof command.languages === 'object'
+                    ? (command.languages[languageCode] || command.languages.en || null)
+                    : null;
+                if (languageTable) {
                     getText2 = (...values) => {
-                        let lang = command.languages[global.config.language][values[0]] || '';
+                        let lang = languageTable[values[0]] || '';
                         for (let i = 1; i < values.length; i++) {
                             const expReg = RegExp('%' + i, 'g');
                             lang = lang.replace(expReg, values[i]);

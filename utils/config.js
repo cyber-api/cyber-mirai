@@ -101,6 +101,20 @@ function normalizeConfig(input, options) {
         : (typeof config.prefix === "string" && config.prefix ? config.prefix : "!");
     config.prefix = config.PREFIX;
 
+    // Prefix behaviour: a message is a command only when it starts with a
+    // configured prefix (or the bot nickname / an @mention). `usePrefix` is
+    // kept for config-shape compatibility; the dispatcher no longer treats
+    // every message as a command when it is false.
+    if (!config.usePrefix || typeof config.usePrefix !== "object" || Array.isArray(config.usePrefix)) {
+        config.usePrefix = { enable: true };
+    } else if (typeof config.usePrefix.enable !== "boolean") {
+        config.usePrefix.enable = true;
+    }
+    config.respondToAllPrefixes = config.respondToAllPrefixes === true;
+    config.commandNotFoundBehavior = String(config.commandNotFoundBehavior || "reply").toLowerCase() === "silent"
+        ? "silent"
+        : "reply";
+
     config.DeveloperMode = Boolean(config.DeveloperMode || config.developerMode);
     config.developerMode = config.DeveloperMode;
 
