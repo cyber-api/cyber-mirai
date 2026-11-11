@@ -46,7 +46,7 @@
         "enable": true,
         "port": null,
         "ui": "simple",
-        "notes": "Render Web Service endpoint. ui=\"simple\" serves public/index.html at /; ui=\"dashboard\" redirects / to /dashboard. /health and /api/health always return JSON. Set enable=false when deploying as a Background Worker. When port is null, Render's PORT env var is used, then 10000."
+        "notes": "Render Web Service endpoint. ui=\"simple\" serves public/index.html at /; ui=\"dashboard\" redirects / to /dashboard. /health and /api/health always return JSON. Set enable=false when deploying as a Background Worker. When port is null, Render's PORT env var is used, then 10000. On `npm start`/`node index.js`, Ullash.js owns Render's PORT and serves the dashboard, /health and the file API; Cyber.js skips its own health server."
     },
     "adminBot": [
         "YOUR_ADMIN_UID"
@@ -93,7 +93,7 @@
         "password": "CHANGE_ME_DASHBOARD_PASSWORD",
         "sessionSecret": "CHANGE_ME_RANDOM_SESSION_SECRET",
         "secureCookie": false,
-        "notes": "host: bind address (keep 127.0.0.1 unless behind a TLS proxy). password/sessionSecret/secureCookie are read from config.json. secureCookie must be true only when serving over HTTPS."
+        "notes": "host: bind address (keep 127.0.0.1 unless behind a TLS proxy; when Render's PORT is set the dashboard binds 0.0.0.0 automatically). password/sessionSecret/secureCookie are read from config.json. secureCookie must be true only when serving over HTTPS. File manager allow-list: Script/, assets/, languages/, includes/, utils/, public/, config.json/admin.json (write requires confirmation), config.json.example, admin.json.example, package.json, README.md. Blocked: .git/, node_modules/, .env*, *.sqlite, appstate*.json and legacy ST-BOT cookie files."
     },
     "serverUptime": {
         "enable": true,

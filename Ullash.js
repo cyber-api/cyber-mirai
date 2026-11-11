@@ -4,8 +4,9 @@ const logger = require("./utils/log");
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
-const fs = require("fs-extra");
-const { secretsMatch, sameOriginAllowed, createPathGuards } = require("./utils/dashboardSecurity.js");
+const { secretsMatch, sameOriginAllowed } = require("./utils/dashboardSecurity.js");
+const fileManager = require("./utils/fileManager.js");
+const { healthPayload, statsPayload } = require("./utils/webServer.js");
 
 // ==================== Load package.json & config.json ====================
 let pkg = {};
@@ -27,9 +28,15 @@ try {
 
 // ==================== Dashboard configuration ====================
 const dashConfig = (config && config.dashBoard) || {};
+// Render provides PORT. When it is present the dashboard must own that port;
+// otherwise Render routes to Cyber.js's tiny health server, which does not
+// implement /stats or /api/file and the dashboard looks "offline" with a file
+// manager that fails for every file.
+const RENDER_PORT = Number(process.env.PORT) > 0 ? Number(process.env.PORT) : null;
 const DASHBOARD_ENABLED = dashConfig.enable === true;
-const DASHBOARD_PORT = Number(dashConfig.port) > 0 ? Number(dashConfig.port) : 3000;
-const DASHBOARD_HOST = process.env.DASHBOARD_HOST || dashConfig.host || "127.0.0.1";
+const DASHBOARD_PORT = RENDER_PORT || (Number(dashConfig.port) > 0 ? Number(dashConfig.port) : 3000);
+const DASHBOARD_HOST = process.env.DASHBOARD_HOST
+    || (RENDER_PORT ? "0.0.0.0" : (dashConfig.host || "127.0.0.1"));
 const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD
     || dashConfig.password
     || (dashConfig.passwordProtection && dashConfig.passwordProtection.password)
@@ -44,27 +51,10 @@ const SECURE_COOKIE = process.env.DASHBOARD_SECURE_COOKIE === "true"
     || dashConfig.secureCookie === true
     || dashConfig.https === true;
 
-const SCRIPT_ROOTS = {
-    commands: path.join(__dirname, "Script", "commands"),
-    events: path.join(__dirname, "Script", "events"),
-};
-
-// Exact allow-list for the small config editor in the dashboard.
-const CONFIG_FILES = new Set(["config.json", "config.json.example", "package.json", "README.md"]);
+const STARTED_AT = Date.now();
 const MAX_BODY_SIZE = "512kb";
-const MAX_SCRIPT_BYTES = 512 * 1024;
 
 // ==================== Helpers ====================
-const { safeScriptPath, safeConfigPath } = createPathGuards({
-    scriptRoots: SCRIPT_ROOTS,
-    baseDir: __dirname,
-    configFiles: Array.from(CONFIG_FILES),
-});
-
-function bodySizeOk(content) {
-    return typeof content === "string" && Buffer.byteLength(content, "utf8") <= MAX_SCRIPT_BYTES;
-}
-
 function passwordMatches(candidate) {
     return secretsMatch(candidate, DASHBOARD_PASSWORD);
 }
@@ -226,6 +216,13 @@ function startDashboard() {
         });
     });
 
+    // --- public health endpoints (Render health check) ---
+    // These are intentionally unauthenticated: Render's health checker and the
+    // dashboard's status poll both need them. They expose no secrets.
+    app.get("/health", (req, res) => res.json(healthPayload({ pkg, config, startedAt: STARTED_AT })));
+    app.get("/api/health", (req, res) => res.json(healthPayload({ pkg, config, startedAt: STARTED_AT })));
+    app.get("/api/status", (req, res) => res.json(statsPayload({ pkg, config, startedAt: STARTED_AT })));
+
     // Public static assets (CSS/JS/login page). No secrets live here.
     app.use(express.static(path.join(__dirname, "public")));
     app.use(requireAuth);
@@ -234,125 +231,43 @@ function startDashboard() {
     app.get("/dashboard", (req, res) => res.sendFile(path.join(__dirname, "public", "dashboard.html")));
 
     app.get("/stats", (req, res) => {
-        const uptime = process.uptime();
-        const memoryUsage = process.memoryUsage();
-        res.json({
-            uptime: `${Math.floor(uptime / 3600)}h ${Math.floor((uptime % 3600) / 60)}m ${Math.floor(uptime % 60)}s`,
-            totalThread: "N/A",
-            totalUser: "N/A",
-            memory: {
-                heapUsed: Math.round(memoryUsage.heapUsed / 1024 / 1024),
-                heapTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024),
-                rss: Math.round(memoryUsage.rss / 1024 / 1024),
-            },
+        res.json(statsPayload({ pkg, config, startedAt: STARTED_AT }));
+    });
+
+    // --- file manager (one shared handler for every route) ---
+    // The same rules are used by utils/webServer.js, so the dashboard cannot
+    // drift from the health server's allow/block list.
+    async function fileApi(req, res) {
+        const result = await fileManager.handleApi({
+            method: req.method,
+            pathname: req.path,
+            query: new URLSearchParams(req.query || {}),
+            body: req.body || {},
+            headers: req.headers,
+            config,
+            logger: (message, level) => logger(message, level === "warn" ? "[ Warning ]" : "[ Files ]")
         });
-    });
+        if (!result) {
+            return res.status(404).json({ ok: false, success: false, code: "not_found", message: "Not found" });
+        }
+        return res.status(result.status).json(result.payload);
+    }
 
-    // --- script management (contained) ---
-    app.get("/api/scripts/:type", async (req, res) => {
-        const type = req.params.type;
-        if (type !== "commands" && type !== "events") {
-            return res.status(400).json({ success: false, message: "Invalid script type" });
-        }
-        const root = SCRIPT_ROOTS[type];
-        try {
-            if (!fs.existsSync(root)) return res.json({ success: true, files: [] });
-            const files = await fs.readdir(root);
-            return res.json({ success: true, files: files.filter((f) => f.endsWith(".js")) });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not list scripts" });
-        }
-    });
-
-    app.get("/api/scripts/:type/:filename", async (req, res) => {
-        const target = safeScriptPath(req.params.type, req.params.filename);
-        if (!target) return res.status(400).json({ success: false, message: "Invalid file path" });
-        try {
-            if (!fs.existsSync(target)) return res.status(404).json({ success: false, message: "File not found" });
-            const content = await fs.readFile(target, "utf8");
-            return res.json({ success: true, content });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not read file" });
-        }
-    });
-
-    app.post("/api/scripts/:type/:filename", async (req, res) => {
-        const target = safeScriptPath(req.params.type, req.params.filename);
-        if (!target) return res.status(400).json({ success: false, message: "Invalid file path" });
-        const { content } = req.body || {};
-        if (!bodySizeOk(content)) return res.status(400).json({ success: false, message: "Invalid or oversized content" });
-        try {
-            await fs.writeFile(target, content, { encoding: "utf8", mode: 0o600 });
-            return res.json({ success: true, reloaded: false, loadError: "Reload requires a bot restart" });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not write file" });
-        }
-    });
-
-    app.post("/api/scripts/:type", async (req, res) => {
-        const { filename, content } = req.body || {};
-        const target = safeScriptPath(req.params.type, filename);
-        if (!target) return res.status(400).json({ success: false, message: "Invalid file path" });
-        if (!bodySizeOk(content)) return res.status(400).json({ success: false, message: "Invalid or oversized content" });
-        try {
-            if (fs.existsSync(target)) return res.status(409).json({ success: false, message: "File already exists" });
-            await fs.writeFile(target, content, { encoding: "utf8", mode: 0o600 });
-            return res.json({ success: true });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not create file" });
-        }
-    });
-
-    app.delete("/api/scripts/:type/:filename", async (req, res) => {
-        const target = safeScriptPath(req.params.type, req.params.filename);
-        if (!target) return res.status(400).json({ success: false, message: "Invalid file path" });
-        try {
-            if (fs.existsSync(target)) await fs.unlink(target);
-            return res.json({ success: true });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not delete file" });
-        }
-    });
-
-    // --- allow-listed config files (no traversal, no appstate) ---
-    app.get("/api/file/:filename", async (req, res) => {
-        const target = safeConfigPath(req.params.filename);
-        if (!target) return res.status(400).json({ success: false, message: "File not allowed" });
-        try {
-            if (!fs.existsSync(target)) return res.status(404).json({ success: false, message: "File not found" });
-            const content = await fs.readFile(target, "utf8");
-            return res.json({ success: true, content });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not read file" });
-        }
-    });
-
-    app.post("/api/file/:filename", async (req, res) => {
-        const target = safeConfigPath(req.params.filename);
-        if (!target) return res.status(400).json({ success: false, message: "File not allowed" });
-        const { content } = req.body || {};
-        if (!bodySizeOk(content)) return res.status(400).json({ success: false, message: "Invalid or oversized content" });
-        try {
-            await fs.writeFile(target, content, { encoding: "utf8", mode: 0o600 });
-            return res.json({ success: true });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not write file" });
-        }
-    });
-
-    // --- read-only FCA info (no restart / cookie clearing endpoints) ---
-    app.get("/api/get-fca-type", (req, res) => {
-        try {
-            const current = JSON.parse(fs.readFileSync(path.join(__dirname, "config.json"), "utf8"));
-            return res.json({ success: true, fcaType: current.FCA || current.fca || "cyber-bot-fca" });
-        } catch (error) {
-            return res.status(500).json({ success: false, message: "Could not read config" });
-        }
-    });
+    app.get("/api/files", fileApi);
+    app.all("/api/file", fileApi);
+    app.all("/api/file/:filename", fileApi);
+    app.all("/api/scripts/:type", fileApi);
+    app.all("/api/scripts/:type/:filename", fileApi);
+    app.get("/api/get-fca-type", fileApi);
 
     app.use((req, res) => {
         res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
     });
+
+    // Tell the child Cyber.js process that this server owns the public port.
+    // Without this flag both processes would try to bind PORT; the child's
+    // health-only server would win and the dashboard would lose its API.
+    process.env.CYBER_DASHBOARD_MANAGED = "1";
 
     const server = app.listen(DASHBOARD_PORT, DASHBOARD_HOST, () => {
         logger(`Dashboard listening on http://${DASHBOARD_HOST}:${DASHBOARD_PORT} (auth required).`, "[ Dashboard ]");

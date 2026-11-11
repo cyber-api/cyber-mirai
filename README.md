@@ -25,13 +25,17 @@ The repository includes `render.yaml` and a `Procfile`, both using `node index.j
 `NODE_VERSION=20.20.2` so the native `canvas` binary matches the runtime.
 
 - **Web Service (recommended if you want the dashboard):** keep the service type
-  as Web Service. `Cyber.js` starts a tiny health server on `0.0.0.0` using
-  `process.env.PORT` (or `config.webServer.port`, then `10000`). `GET /` and
-  `GET /health` return `{ "status": "ok", "bot": "...", "version": "..." }`.
+  as Web Service. `Ullash.js` owns Render's `PORT` and serves the dashboard,
+  `/health`, `/api/health`, `/api/status` and the file-manager API. `Cyber.js`
+  detects `CYBER_DASHBOARD_MANAGED=1` and does not bind a second server.
+  `GET /health` returns
+  `{ "status": "ok", "bot": "...", "version": "...", "uptime": 0, "started": "...", "online": true }`.
 - **Background Worker (bot only, no dashboard):** switch the service type to
   Background Worker and set `webServer.enable` to `false` in `config.json`.
 
-`config.webServer.enable` defaults to `true` in `config.json.example`. The health
+`config.webServer.enable` defaults to `true` in `config.json.example`. When the
+dashboard is disabled, `Cyber.js` starts the lightweight health server itself
+using `process.env.PORT` (or `config.webServer.port`, then `10000`). The health
 server never touches the bot's command pipeline and only exposes status.
 
 ### Credentials and login
@@ -153,9 +157,18 @@ All modules under `Script/commands` and `Script/events` are loaded. There is no 
 
 Dashboard access requires `dashBoard.password` in `config.json` and is bound to `dashBoard.host` (loopback by default). It serves:
 
-- `/dashboard` — statistics and a script-only editor (commands/events)
-- `/api/scripts/*` — list/read/write/delete scripts inside `Script/commands` and `Script/events`
-- `/api/file/*` — read/write a small allow-list (`config.json`, `config.json.example`, `package.json`, `README.md`)
+- `/dashboard` — statistics, an online/offline status badge, and a file manager
+- `/api/files` — list the allowed roots, or a directory (`?dir=Script/commands`)
+- `/api/file?path=...` — read/write/delete one allow-listed file
+- `/api/scripts/*` — legacy list/read/write/delete aliases for `Script/commands` and `Script/events`
+- `/api/file/*` — legacy read/write alias for the root config files
+
+The file manager allows `Script/`, `assets/`, `languages/`, `includes/`,
+`utils/`, `public/`, `config.json`, `config.json.example`, `admin.json`,
+`admin.json.example`, `package.json` and `README.md`. Writing `config.json` or
+`admin.json` requires an explicit confirmation. It always blocks `.git/`,
+`node_modules/`, `.env*`, `*.sqlite`, `appstate*.json` and legacy ST-BOT cookie
+files. Paths are resolved relative to the project root and can never escape it.
 
 The dashboard does **not** provide restart, cookie-clearing, FCA switching, or arbitrary file access. Assets are self-hosted under `public/vendor`; responses include CSP, `X-Frame-Options: DENY`, `Referrer-Policy`, and related headers.
 

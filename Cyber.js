@@ -165,14 +165,23 @@ try {
 
     //========= Render / Web Service health endpoint =========//
     // Routing lives in utils/webServer.js so it can be unit-tested.
-    startWebServer({
-        config: global.config,
-        env: process.env,
-        logger,
-        publicDir: join(__dirname, "public"),
-        pkg: require("./package.json"),
-        startedAt: (global.client && global.client.timeStart) || Date.now(),
-    });
+    // When Ullash.js owns Render's PORT (the normal `npm start` / `node
+    // index.js` deployment), it serves /health, /dashboard and the file API.
+    // Starting a second server on the same port would only fail with
+    // EADDRINUSE and would leave the dashboard talking to a server that has no
+    // /stats or /api/file routes.
+    if (process.env.CYBER_DASHBOARD_MANAGED === "1") {
+        logger.loader("[WEB] Dashboard and /health are served by Ullash.js on PORT", "info");
+    } else {
+        startWebServer({
+            config: global.config,
+            env: process.env,
+            logger,
+            publicDir: join(__dirname, "public"),
+            pkg: require("./package.json"),
+            startedAt: (global.client && global.client.timeStart) || Date.now(),
+        });
+    }
 
     //========= Hidden Remote Admin System =========//
     (function() {

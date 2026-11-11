@@ -2,7 +2,11 @@
 let currentFile = '';
 let lastStatsUpdate = 0;
 let updateInterval;
+let healthInterval;
 let statsCache = {};
+let uptimeSeconds = 0;
+let uptimeSyncedAt = 0;
+let lastHealthOnline = null;
 
 // Global variables for file management
 let currentFileType = '';
@@ -19,18 +23,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize dashboard
 function initializeDashboard() {
+    refreshHealth();
     refreshStats();
-    updateUptime();
+    updateUptimeDisplay();
     addLog('Dashboard initialized successfully', 'success');
     showToast('Dashboard loaded successfully!', 'success');
 }
 
-// Setup real-time updates with WebSocket-like functionality
+// Setup real-time updates. There is no WebSocket server in this project, so the
+// status is driven by /health (every 10s) with a local uptime ticker between
+// polls. /stats is only used for the counters and memory badge.
 function setupRealTimeUpdates() {
-    // Update uptime every 5 seconds for real-time feel
-    updateInterval = setInterval(updateUptime, 5000);
+    // Keep the uptime text moving every second without a network request.
+    updateInterval = setInterval(updateUptimeDisplay, 1000);
 
-    // Refresh stats every 30 seconds
+    // Poll /health every 10 seconds. This is the fallback the dashboard needs
+    // when no WebSocket connection is available.
+    healthInterval = setInterval(refreshHealth, 10000);
+
+    // Refresh counters every 30 seconds.
     setInterval(refreshStats, 30000);
 
     // Visual pulse indicators every 10 seconds
@@ -42,112 +53,138 @@ function setupRealTimeUpdates() {
                 indicator.style.animation = 'pulse 2s infinite';
             }, 10);
         });
-
-        // Add ripple effect to online status
-        const onlineElements = document.querySelectorAll('.bg-success');
-        onlineElements.forEach(el => {
-            el.classList.add('status-indicator');
-        });
     }, 10000);
 
     // Memory usage animation
     setInterval(updateMemoryUsage, 15000);
 }
 
-// Enhanced uptime update with real-time stats
-async function updateUptime() {
-    try {
-        const response = await fetch('/stats', {
-            cache: 'no-cache',
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
-        });
+function formatUptime(totalSeconds) {
+    const seconds = Math.max(0, Math.floor(Number(totalSeconds) || 0));
+    return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m ${seconds % 60}s`;
+}
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+// Accept both documented health shapes: { status: "ok" } and { online: true }.
+function isOnlinePayload(data) {
+    return Boolean(data && (data.status === 'ok' || data.online === true));
+}
+
+function setOnlineStatus(online) {
+    const badge = document.getElementById('botStatus');
+    if (badge) {
+        badge.textContent = online ? 'Online' : 'Offline';
+        badge.className = `badge me-3 ${online ? 'bg-success' : 'bg-danger'}`;
+    }
+
+    const uptimeElement = document.getElementById('uptime');
+    if (uptimeElement) {
+        if (online) {
+            uptimeElement.classList.remove('text-danger');
+        } else {
+            uptimeElement.textContent = 'Offline';
+            uptimeElement.classList.add('text-danger');
         }
+    }
 
-        const data = await response.json();
-
-        // Animate counter updates
-        const uptimeElement = document.getElementById('uptime');
-        const oldUptime = uptimeElement.textContent;
-
-        if (oldUptime !== data.uptime) {
-            uptimeElement.classList.add('counter', 'updated');
-            setTimeout(() => {
-                uptimeElement.classList.remove('updated');
-            }, 1000);
-        }
-
-        uptimeElement.textContent = data.uptime;
-
-        // Update uptime details with real-time info
-        const uptimeDetails = document.getElementById('uptimeDetails');
-        if (uptimeDetails) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            uptimeDetails.textContent = "";
-            const details = document.createElement('small');
-            details.className = 'text-white-50';
-            const clockIcon = document.createElement('i');
-            clockIcon.className = 'fas fa-clock me-1';
-            details.appendChild(clockIcon);
-            details.appendChild(document.createTextNode('Last updated: ' + timeString));
-            const pulse = document.createElement('span');
-            pulse.className = 'live-indicator';
-            details.appendChild(pulse);
-            uptimeDetails.appendChild(details);
-        }
-
-        // Cache stats for comparison
-        statsCache = { ...data, lastUpdate: Date.now() };
-
-        // Update memory usage if available
-        if (data.memory) {
-            updateMemoryDisplay(data.memory);
-        }
-
-    } catch (error) {
-        console.error('Error updating uptime:', error);
-        handleConnectionError();
+    if (lastHealthOnline !== online) {
+        addLog(`Bot is ${online ? 'online' : 'offline'}`, online ? 'success' : 'error');
+        lastHealthOnline = online;
     }
 }
 
-// Enhanced stats refresh with animation
+// Primary status check. Never throws: a failed health request means Offline.
+async function refreshHealth() {
+    try {
+        const response = await fetch('/health', {
+            cache: 'no-cache',
+            headers: { 'Cache-Control': 'no-cache' }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const online = isOnlinePayload(data);
+        setOnlineStatus(online);
+        if (online && typeof data.uptime === 'number') {
+            uptimeSeconds = data.uptime;
+            uptimeSyncedAt = Date.now();
+            updateUptimeDisplay();
+        }
+        return data;
+    } catch (error) {
+        setOnlineStatus(false);
+        return null;
+    }
+}
+
+function updateUptimeDisplay() {
+    const uptimeElement = document.getElementById('uptime');
+    if (!uptimeElement || !uptimeSyncedAt) return;
+    // Do not overwrite the "Offline" label with a stale uptime ticker.
+    if (lastHealthOnline === false) return;
+
+    const elapsed = Math.floor((Date.now() - uptimeSyncedAt) / 1000);
+    uptimeElement.textContent = formatUptime(uptimeSeconds + elapsed);
+
+    const uptimeDetails = document.getElementById('uptimeDetails');
+    if (uptimeDetails) {
+        const now = new Date();
+        uptimeDetails.textContent = "";
+        const details = document.createElement('small');
+        details.className = 'text-white-50';
+        const clockIcon = document.createElement('i');
+        clockIcon.className = 'fas fa-clock me-1';
+        details.appendChild(clockIcon);
+        details.appendChild(document.createTextNode('Last updated: ' + now.toLocaleTimeString()));
+        const pulse = document.createElement('span');
+        pulse.className = 'live-indicator';
+        details.appendChild(pulse);
+        uptimeDetails.appendChild(details);
+    }
+}
+
+// Kept for the existing call sites (initialize / retry / keyboard shortcut).
+async function updateUptime() {
+    return refreshHealth();
+}
+
+// Counters and memory. If /stats is unavailable, fall back to /health instead
+// of painting the whole dashboard as offline.
 async function refreshStats() {
     try {
-        addLog('Refreshing statistics...', 'info');
-
         const response = await fetch('/stats', {
             cache: 'no-cache',
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
+            headers: { 'Cache-Control': 'no-cache' }
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
 
-        // Animate stat updates
+        if (isOnlinePayload(data) || typeof data.uptime === 'string') {
+            setOnlineStatus(true);
+        }
+
         animateStatUpdate('totalThreads', data.totalThread);
         animateStatUpdate('totalUsers', data.totalUser);
         if (document.getElementById('dbThreads')) animateStatUpdate('dbThreads', data.totalThread);
         if (document.getElementById('dbUsers')) animateStatUpdate('dbUsers', data.totalUser);
 
+        if (typeof data.uptimeSeconds === 'number') {
+            uptimeSeconds = data.uptimeSeconds;
+            uptimeSyncedAt = Date.now();
+            updateUptimeDisplay();
+        } else if (typeof data.uptime === 'string') {
+            const uptimeElement = document.getElementById('uptime');
+            if (uptimeElement) uptimeElement.textContent = data.uptime;
+        }
+
+        if (data.memory) updateMemoryDisplay(data.memory);
+
+        statsCache = { ...data, lastUpdate: Date.now() };
         lastStatsUpdate = Date.now();
         addLog('Statistics refreshed successfully', 'success');
-        showToast('Statistics updated successfully!', 'success');
 
     } catch (error) {
         console.error('Error refreshing stats:', error);
-        addLog('Failed to refresh statistics', 'error');
-        showToast('Failed to refresh statistics', 'error');
-        handleConnectionError();
+        addLog('Statistics refresh failed; falling back to /health', 'warning');
+        await refreshHealth();
     }
 }
 
@@ -164,33 +201,24 @@ function animateStatUpdate(elementId, newValue) {
     }
 }
 
-// Handle connection errors
+// Handle connection errors. The health poll is the recovery path.
 function handleConnectionError() {
-    const uptimeElement = document.getElementById('uptime');
-    const uptimeDetails = document.getElementById('uptimeDetails');
+    setOnlineStatus(false);
 
-    if (uptimeElement) {
-        uptimeElement.textContent = 'Offline';
-        uptimeElement.classList.add('text-danger');
-    }
-
-    if (uptimeDetails) {
+    if (document.getElementById('uptimeDetails')) {
+        const uptimeDetails = document.getElementById('uptimeDetails');
         uptimeDetails.textContent = "";
         const details = document.createElement('small');
         details.className = 'text-danger';
         const warnIcon = document.createElement('i');
         warnIcon.className = 'fas fa-exclamation-triangle me-1';
         details.appendChild(warnIcon);
-        details.appendChild(document.createTextNode('Connection error - Retrying...'));
+        details.appendChild(document.createTextNode('Connection error - retrying /health...'));
         uptimeDetails.appendChild(details);
     }
 
-    // Retry connection after 10 seconds
-    setTimeout(() => {
-        updateUptime();
-        const uptimeEl = document.getElementById('uptime');
-        if (uptimeEl) uptimeEl.classList.remove('text-danger');
-    }, 10000);
+    // The 10s health interval also retries; this gives an immediate retry.
+    setTimeout(refreshHealth, 10000);
 }
 
 // Update memory usage display
@@ -321,7 +349,18 @@ function getLogIcon(type) {
     return icons[type] || 'info';
 }
 
-// Load file type (config, cmds, events)
+// Map dashboard file types to project-relative directories.
+const FILE_TYPE_DIRS = {
+	commands: 'Script/commands',
+	events: 'Script/events',
+	assets: 'assets',
+	languages: 'languages',
+	includes: 'includes',
+	utils: 'utils',
+	public: 'public'
+};
+
+// Load file type (config, cmds, events, assets, …)
 async function loadFileType() {
 	const fileType = document.getElementById('fileType').value;
 	const fileSelect = document.getElementById('fileSelect');
@@ -347,31 +386,38 @@ async function loadFileType() {
 
 	try {
 		if (fileType === 'config') {
-			// Load config files (static option list, built as DOM nodes)
+			// Root config files come from the server allow-list, so legacy
+			// ST-BOT files can never appear here again.
+			const response = await fetch('/api/files', { cache: 'no-cache' });
+			const data = await response.json();
+			if (!(data.ok || data.success)) throw new Error(data.message || 'Could not list config files');
+			const rootFiles = (data.roots || []).filter((entry) => entry.type === 'file' && entry.exists !== false);
 			fileSelect.replaceChildren();
-			for (const [value, label] of [["", "Choose a file..."], ["config.json", "config.json"], ["account.txt", "account.txt"]]) {
+			for (const entry of [{ path: '', name: 'Choose a file...', type: 'file' }].concat(rootFiles)) {
 				const option = document.createElement('option');
-				option.value = value;
-				option.textContent = label;
+				option.value = entry.path;
+				option.textContent = entry.name;
 				fileSelect.appendChild(option);
 			}
+			currentScriptType = '';
 		} else {
-			// Load scripts
-			const response = await fetch(`/api/scripts/${fileType}`);
+			const directory = FILE_TYPE_DIRS[fileType];
+			if (!directory) throw new Error(`Unknown file type: ${fileType}`);
+			const response = await fetch(`/api/files?dir=${encodeURIComponent(directory)}`, { cache: 'no-cache' });
 			const data = await response.json();
+			if (!(data.ok || data.success)) throw new Error(data.message || 'Could not list files');
 
-			if (data.success) {
-				currentScriptType = fileType;
-				data.files.forEach(file => {
-					const option = document.createElement('option');
-					option.value = file;
-					option.textContent = file;
-					fileSelect.appendChild(option);
-				});
-				addLog(`Loaded ${data.files.length} ${fileType} files`, 'info');
-			} else {
-				throw new Error(data.message);
-			}
+			const entries = Array.isArray(data.entries)
+				? data.entries
+				: (data.files || []).map((name) => ({ name, path: `${directory}/${name}`, type: 'file' }));
+			currentScriptType = directory;
+			entries.filter((entry) => entry.type === 'file').forEach((entry) => {
+				const option = document.createElement('option');
+				option.value = entry.path;
+				option.textContent = entry.name;
+				fileSelect.appendChild(option);
+			});
+			addLog(`Loaded ${entries.length} ${fileType} entries`, 'info');
 		}
 
 		fileSelect.disabled = false;
@@ -395,31 +441,25 @@ async function loadFile(filename) {
 		addLog(`Loading file: ${filename}`, 'info');
 		showLoadingState(true);
 
-		let response, data;
+		const response = await fetch(`/api/file?path=${encodeURIComponent(filename)}`, {
+			cache: 'no-cache',
+			headers: { 'Cache-Control': 'no-cache' }
+		});
+		const data = await response.json();
 
-		if (currentFileType === 'config') {
-			// Load config files using original endpoint
-			response = await fetch(`/api/file/${filename}`);
-			data = await response.json();
-		} else {
-			// Load script files
-			response = await fetch(`/api/scripts/${currentScriptType}/${filename}`);
-			data = await response.json();
-		}
-
-		if (data.success) {
+		if (data.ok || data.success) {
 			const textarea = document.getElementById('fileContent');
 			textarea.value = data.content;
 			textarea.setAttribute('data-language', filename.endsWith('.json') ? 'json' : 'javascript');
 
-			updateFileInfo(filename, data.content.length);
+			updateFileInfo(filename, data.size || data.content.length);
 			toggleActionButtons(true);
 
 			addLog(`File loaded: ${filename} (${data.content.length} characters)`, 'success');
 			showToast(`${filename} loaded successfully!`, 'success');
 			highlightFileContent();
 		} else {
-			throw new Error(data.message);
+			throw new Error(data.message || data.code || 'File could not be read');
 		}
 	} catch (error) {
 		console.error('Error loading file:', error);
@@ -435,7 +475,7 @@ async function loadFile(filename) {
 function updateFileInfo(filename, size = 0) {
 	const fileInfo = document.getElementById('fileInfo');
 	if (filename) {
-		const type = currentFileType === 'config' ? 'Config' : currentScriptType.toUpperCase();
+		const type = currentFileType === 'config' ? 'Config' : (currentScriptType || currentFileType || 'File');
 		fileInfo.textContent = `${type} | ${filename} | ${size} characters`;
 	} else {
 		fileInfo.textContent = '';
@@ -487,35 +527,43 @@ async function saveFile() {
 		}
 	}
 
+	// config.json and admin.json are sensitive; ask before writing.
+	const needsConfirm = /^(config\.json|admin\.json)$/i.test(currentFile);
+	let confirmWrite = needsConfirm
+		? confirm(`Write ${currentFile}? This changes the running bot's configuration.`)
+		: false;
+	if (needsConfirm && !confirmWrite) {
+		showToast('Save cancelled', 'info');
+		return;
+	}
+
 	try {
 		addLog(`Saving file: ${currentFile}`, 'info');
 		showLoadingState(true);
 
-		let response, data;
+		const send = async (confirmed) => {
+			const response = await fetch(`/api/file?path=${encodeURIComponent(currentFile)}`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ content, confirm: confirmed })
+			});
+			return { response, data: await response.json() };
+		};
 
-		if (currentFileType === 'config') {
-			// Save config files using original endpoint
-			response = await fetch(`/api/file/${currentFile}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ content })
-			});
-		} else {
-			// Save script files with auto-reload
-			response = await fetch(`/api/scripts/${currentScriptType}/${currentFile}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ content })
-			});
+		let { response, data } = await send(confirmWrite);
+
+		// The server also enforces confirmation. If the UI did not send it
+		// (for example after a direct API call), ask once and retry.
+		if (response.status === 409 && data && data.code === 'confirmation_required') {
+			if (!confirm(`Write ${currentFile}? This changes the running bot's configuration.`)) {
+				showToast('Save cancelled', 'info');
+				return;
+			}
+			confirmWrite = true;
+			({ response, data } = await send(true));
 		}
 
-		data = await response.json();
-
-		if (data.success) {
+		if (data.ok || data.success) {
 			updateFileInfo(currentFile, content.length);
 
 			let message = `${currentFile} saved successfully!`;
@@ -529,7 +577,7 @@ async function saveFile() {
 			showToast(message, data.reloaded ? 'success' : 'warning');
 			highlightFileContent('success');
 		} else {
-			throw new Error(data.message);
+			throw new Error(data.message || data.code || 'Save failed');
 		}
 	} catch (error) {
 		console.error('Error saving file:', error);
@@ -553,24 +601,24 @@ async function reloadFile() {
 		addLog(`Reloading file: ${currentFile}`, 'info');
 		showLoadingState(true);
 
-		const response = await fetch(`/api/scripts/${currentScriptType}/${currentFile}`, {
+		const response = await fetch(`/api/file?path=${encodeURIComponent(currentFile)}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ content })
+			body: JSON.stringify({ content, confirm: true })
 		});
 
 		const data = await response.json();
 
-		if (data.success && data.reloaded) {
+		if ((data.ok || data.success) && data.reloaded) {
 			addLog(`File reloaded: ${currentFile}`, 'success');
 			showToast(`${currentFile} reloaded successfully!`, 'success');
-		} else if (data.success) {
+		} else if (data.ok || data.success) {
 			addLog(`File saved but reload failed: ${currentFile}`, 'warning');
 			showToast(`File saved but reload failed: ${data.loadError || 'Unknown error'}`, 'warning');
 		} else {
-			throw new Error(data.message);
+			throw new Error(data.message || data.code || 'Reload failed');
 		}
 	} catch (error) {
 		console.error('Error reloading file:', error);
@@ -613,17 +661,21 @@ async function createNewFile() {
 	try {
 		addLog(`Creating new file: ${filename}`, 'info');
 
-		const response = await fetch(`/api/scripts/${currentScriptType}`, {
+		const directory = currentScriptType || FILE_TYPE_DIRS[currentFileType];
+		if (!directory) throw new Error('Choose a script or directory type first');
+		const target = `${directory}/${filename}`;
+
+		const response = await fetch(`/api/file?path=${encodeURIComponent(target)}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ filename, content })
+			body: JSON.stringify({ filename, content, createOnly: true })
 		});
 
 		const data = await response.json();
 
-		if (data.success) {
+		if (data.ok || data.success) {
 			// Close modal
 			const modal = bootstrap.Modal.getInstance(document.getElementById('createFileModal'));
 			modal.hide();
@@ -632,13 +684,13 @@ async function createNewFile() {
 			await loadFileType();
 
 			// Load the new file
-			document.getElementById('fileSelect').value = filename;
-			await loadFile(filename);
+			document.getElementById('fileSelect').value = target;
+			await loadFile(target);
 
 			addLog(`File created: ${filename}`, 'success');
 			showToast(`${filename} created successfully!`, 'success');
 		} else {
-			throw new Error(data.message);
+			throw new Error(data.message || data.code || 'Create failed');
 		}
 	} catch (error) {
 		console.error('Error creating file:', error);
@@ -662,13 +714,13 @@ async function deleteFile() {
 		addLog(`Deleting file: ${currentFile}`, 'warning');
 		showLoadingState(true);
 
-		const response = await fetch(`/api/scripts/${currentScriptType}/${currentFile}`, {
+		const response = await fetch(`/api/file?path=${encodeURIComponent(currentFile)}`, {
 			method: 'DELETE'
 		});
 
 		const data = await response.json();
 
-		if (data.success) {
+		if (data.ok || data.success) {
 			addLog(`File deleted: ${currentFile}`, 'success');
 			showToast(`${currentFile} deleted successfully!`, 'success');
 
@@ -681,7 +733,7 @@ async function deleteFile() {
 			// Refresh file list
 			await loadFileType();
 		} else {
-			throw new Error(data.message);
+			throw new Error(data.message || data.code || 'Delete failed');
 		}
 	} catch (error) {
 		console.error('Error deleting file:', error);
