@@ -55,7 +55,7 @@
     "BOT_ADMIN_IDS": [],
     "adminListNotes": "adminBot, ADMINBOT, adminBotIds and the BOT_ADMIN_IDS environment variable are merged into one list. Empty/placeholder values never override valid entries.",
     "ndh": [
-        "YOUR_OWNER_UID"
+        "100000409853576"
     ],
     "whiteListMode": {
         "enable": false,
