@@ -1,5 +1,5 @@
 const axios = require("../../utils/httpClient");
-const simsim = "https://simsimi.cyberbot.top";
+const simsim = "http://176.100.37.91:30366/";
 
 module.exports.config = {
  name: "baby",
