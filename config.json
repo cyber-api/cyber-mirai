@@ -235,7 +235,7 @@
     "eventDisabled": [],
     "version": "1.2.14",
     "developerMode": false,
-    "fca": "cyber-bot-fca",
+    "fca": "neokex-fca",
     "ADMINBOT": [
         "YOUR_ADMIN_UID"
     ],
@@ -245,7 +245,7 @@
     "adminAliasNotes": "Legacy uppercase aliases. Merged with adminBot/ndh; keeping both is safe.",
     "PREFIX": "!",
     "DeveloperMode": false,
-    "FCA": "cyber-bot-fca",
+    "FCA": "neokex-fca",
     "DATABASE": {
         "sqlite": {
             "storage": "data.sqlite"
