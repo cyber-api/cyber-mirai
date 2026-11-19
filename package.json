@@ -1,6 +1,6 @@
 {
   "name": "islamick-bot",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Mirai-based Facebook Messenger bot; owner identity lives in admin.json.",
   "main": "Cyber.js",
   "engines": {

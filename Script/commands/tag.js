@@ -27,7 +27,7 @@ const run = async ({ api, args, event }) => {
   }]
   }, event.threadID, event.messageID);
  } else {
-  api.sendMessage("", event.threadID, event.messageID);
+  api.sendMessage("❌ Could not find that user.", event.threadID, event.messageID);
   }
  } catch (error) {
   console.log(error);

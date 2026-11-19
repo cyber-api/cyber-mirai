@@ -57,8 +57,6 @@
         "Script/commands/admin.js",
         "Script/commands/adbot.js",
         "Script/commands/allbox.js",
-        "Script/commands/autoban.js",
-        "Script/commands/birthday.js",
         "Script/commands/bot.js",
         "Script/commands/help.js",
         "Script/commands/helpall.js",
@@ -139,9 +137,7 @@
     "birthday": {
       "type": "string",
       "default": "",
-      "usedBy": [
-        "Script/commands/birthday.js"
-      ],
+      "usedBy": [],
       "description": "Date string parsable by Date.parse, e.g. 'September 12, 2025 00:00:00'."
     },
     "avatar.uid": {
@@ -151,7 +147,6 @@
       "usedBy": [
         "Script/commands/admin.js",
         "Script/commands/adbot.js",
-        "Script/commands/birthday.js",
         "Script/commands/help.js"
       ],
       "description": "Facebook UID used to build the Graph profile-picture URL."
@@ -161,8 +156,7 @@
       "default": "",
       "usedBy": [
         "Script/commands/admin.js",
-        "Script/commands/adbot.js",
-        "Script/commands/birthday.js"
+        "Script/commands/adbot.js"
       ],
       "description": "Explicit avatar image URL; takes precedence over avatar.uid."
     },

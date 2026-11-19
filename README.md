@@ -184,7 +184,6 @@ These commands are part of the bot and are **not** quarantined:
 - `shell` — run shell commands (bot admin, `hasPermssion: 2`)
 - `cmd` — install/load/unload/delete commands (bot admin, `hasPermssion: 2`)
 - `config` — bot account automation menu (bot admin, `hasPermssion: 2`)
-- `inbox` — media command (user level)
 - `god` — bot activity notifications (event)
 - `timkiem`, `diya`, `groupadmin` — duplicate command files restored under their own names
 
@@ -202,7 +201,7 @@ Updates are **never mandatory**. The bot always starts and keeps running on the 
 Release maintenance: bump `package.json` and add an entry to `versions.json`:
 
 ```json
-{ "version": "5.0.1", "files": { "Script/commands/example.js": "fix" }, "deleteFiles": {}, "note": "what changed" }
+{ "version": "5.1.0", "files": { "Script/commands/example.js": "fix" }, "deleteFiles": {}, "note": "what changed" }
 ```
 
 ## Operations

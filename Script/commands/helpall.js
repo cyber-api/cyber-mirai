@@ -15,13 +15,21 @@ module.exports.config = {
  }
 };
 
-module.exports.languages = {
- "en": {
- "moduleInfo": "╭──────•◈•──────╮\n | 𝗜𝘀𝗹𝗮𝗺𝗶𝗰𝗸 𝗰𝗵𝗮𝘁 𝗯𝗼𝘁\n |●𝗡𝗮𝗺𝗲: •—» %1 «—•\n |●𝗨𝘀𝗮𝗴𝗲: %3\n |●𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: %2\n |●𝗖𝗮𝘁𝗲𝗴𝗼𝗿𝘆: %4\n |●𝗪𝗮𝗶𝘁𝗶𝗻𝗴 𝘁𝗶𝗺𝗲: %5 seconds(s)\n |●𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻: %6\n |𝗠𝗼𝗱𝘂𝗹𝗲 𝗰𝗼𝗱𝗲 𝗯𝘆\n |•—» " + (getAdminInfo().name || "Mahbub-Shaon ッ") + " «—•\n╰──────•◈•──────╯",
+function usageText(config, prefix) {
+ const raw = config && config.usages;
+ const usages = typeof raw === "string"
+ ? raw
+ : (raw && typeof raw === "object" ? (raw.en || Object.values(raw).find((v) => typeof v === "string") || "") : "");
+ const invocation = `${prefix}${config.name}`;
+ return usages.includes("{pn}") ? usages.replace(/\{pn\}/g, invocation) : `${invocation} ${usages}`.trim();
+}
+
+module.exports.languages = { "en": {
+ "moduleInfo": "╭──────•◈•──────╮\n│ 𝗖𝗬𝗕𝗘𝗥 𝗕𝗢𝗧\n│●𝗡𝗮𝗺𝗲: •—» %1 «—•\n│●𝗨𝘀𝗮𝗴𝗲: %3\n│●𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: %2\n│●𝗖𝗮𝘁𝗲𝗴𝗼𝗿𝘆: %4\n│●𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻: %5 seconds(s)\n│●𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻: %6\n│𝗠𝗼𝗱𝘂𝗹𝗲 𝗰𝗼𝗱𝗲 𝗯𝘆\n│•—» " + (getAdminInfo().name || "Mahbub-Shaon ッ") + " «—•\n╰──────•◈•──────╯",
  "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
  "user": "User",
- "adminGroup": "Admin group",
- "adminBot": "Admin bot"
+ "adminGroup": "Group admin",
+ "adminBot": "Bot admin"
  }
 };
 
@@ -44,7 +52,7 @@ module.exports.handleEvent = function ({ api, event, getText }) {
  "moduleInfo",
  command.config.name,
  command.config.description,
- `${prefix}${command.config.name} ${command.config.usages || ""}`,
+ usageText(command.config, prefix),
  command.config.commandCategory,
  command.config.cooldowns,
  command.config.hasPermssion == 0
@@ -157,7 +165,7 @@ module.exports.run = async function ({ api, event, args, getText }) {
  "moduleInfo",
  command.config.name,
  command.config.description,
- command.config.usages || "",
+ usageText(command.config, prefix),
  command.config.commandCategory,
  command.config.cooldowns,
  command.config.hasPermssion == 0

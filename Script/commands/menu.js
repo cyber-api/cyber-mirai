@@ -24,10 +24,14 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
  let command_config = commands.get(dataAfter).config;
  msg += ` ｢ ${command_config.commandCategory.toUpperCase()} ｣ \n`;
  msg += `\nᴄᴏᴍᴍᴀɴᴅ ɴᴀᴍᴇ: ${dataAfter}`;
- msg += `\nᴅᴇsᴄʀɪʙᴇ: ${command_config.description}`;
- msg += `\nᴜsɪɴɢ: ${(command_config.usages) ? command_config.usages : ""}`;
- msg += `\nᴡᴀɪᴛɪɴɢ ᴛɪᴍᴇ: ${command_config.cooldowns || 5}s`;
- msg += `\nᴘᴏᴡᴇʀ: ${(command_config.hasPermssion == 0) ? "User" : (command_config.hasPermssion == 1) ? "Group administrator" : "Bot admin"}`;
+ msg += `\nᴅᴇsᴄʀɪᴘᴛɪᴏɴ: ${command_config.description}`;
+ const usageRaw = command_config.usages;
+ const usageText = typeof usageRaw === "string"
+ ? usageRaw.replace(/\{pn\}/g, `${(global.config && global.config.PREFIX) || "!"}${dataAfter}`)
+ : (usageRaw && typeof usageRaw === "object" ? (usageRaw.en || Object.values(usageRaw).find((v) => typeof v === "string") || "") : "");
+ msg += `\nᴜsᴀɢᴇ: ${usageText}`;
+ msg += `\nᴄᴏᴏʟᴅᴏᴡɴ: ${command_config.cooldowns || 5}s`;
+ msg += `\nᴘᴇʀᴍɪssɪᴏɴ: ${(command_config.hasPermssion == 0) ? "User" : (command_config.hasPermssion == 1) ? "Group admin" : "Bot admin"}`;
  msg += `\n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆`
  msg += `\n\n Module code by ${command_config.credits} `;
  } else {
@@ -38,7 +42,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
  dataAfter.cmds.forEach(item => {
  msg += `\n ｢${count+=1}.｣ ${item}: ${commands.get(item).config.description}`;
  })
- msg += "\n𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗮𝗻𝗱 𝗵𝗼𝘄 𝘁𝗼 𝘂𝘀𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱";
+ msg += "\n𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗮𝗻𝗱 𝗵𝗼𝘄 𝘁𝗼 𝘂𝘀𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱";
  }
  }
  const axios = require('../../utils/httpClient');
@@ -81,7 +85,7 @@ module.exports.run = async function({ api, event, args }) {
  fs.writeFileSync(path, Buffer.from(dowloadIMG, "utf-8") );
  imgP.push(fs.createReadStream(path))
  const command = commands.values();
- var group = [], msg = "╭•┄┅════❁🌺❁════┅┄•╮\n আসসালামু আলাইকুম-!!🖤💫\n╰•┄┅════❁🌺❁════┅┄•╯\n\n𝐈𝐒𝐋𝐀𝐌𝐈𝐂𝐊 𝐂𝐇𝐀𝐓 𝐌𝐄𝐍𝐔 𝐋𝐈𝐒𝐓\n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆\n";
+ var group = [], msg = "╭•┄┅════❁🌺❁════┅┄•╮\n আসসালামু আলাইকুম-!!🖤💫\n╰•┄┅════❁🌺❁════┅┄•╯\n\n𝐂𝐘𝐁𝐄𝐑 𝐁𝐎𝐓 𝐌𝐄𝐍𝐔 𝐋𝐈𝐒𝐓\n⋆✦⋆⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⋆✦⋆\n";
  let check = true, page_num_input = "";
  let bonus = 0;
 
@@ -114,7 +118,7 @@ module.exports.run = async function({ api, event, args }) {
  msg += `\n\nPage ${page_num_input || 1}/${page_num_total}`;
  msg += `\nᴛᴏ ᴠɪᴇᴡ ᴏᴛʜᴇʀ ᴘᴀɢᴇs, ᴜsᴇ: ${prefix}ᴍᴇɴᴜ [ᴀʟʟ/-ᴀ] [ɴᴜᴍʙᴇʀ ᴏғ ᴘᴀɢᴇs]`;
  msg += `\nʏᴏᴜ ᴄᴀɴ ᴜsᴇ ${prefix}ʜᴇʟᴘ ᴀʟʟ ᴛᴏ sᴇᴇ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs`
- msg += "\n𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗮𝗻𝗱 𝗵𝗼𝘄 𝘁𝗼 𝘂𝘀𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱";
+ msg += "\n𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗮𝗻𝗱 𝗵𝗼𝘄 𝘁𝗼 𝘂𝘀𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱";
  }
  var msgg = {body: msg, attachment: imgP}
  return api.sendMessage(msgg, threadID, (error, info) => {
@@ -147,7 +151,7 @@ module.exports.run = async function({ api, event, args }) {
  msg += `\n\n𝐏𝐀𝐆𝐄 ｢${page_num_input || 1}/${page_num_total}｣`;
  msg += `\nᴛᴏ ᴠɪᴇᴡ ᴏᴛʜᴇʀ ᴘᴀɢᴇs, ᴜsᴇ: ${prefix}ᴍᴇɴᴜ [ɴᴜᴍʙᴇʀ ᴏғ ᴘᴀɢᴇs]`;
  msg += `\nʏᴏᴜ ᴄᴀɴ ᴜsᴇ ${prefix}ᴍᴇɴᴜ ᴀʟʟ ᴛᴏ sᴇᴇ ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs`
- msg += `\n𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘆 𝗰𝗮𝘁𝗲𝗴𝗼𝗿𝘆`;
+ msg += `\n𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝗯𝘆 𝗻𝘂𝗺𝗯𝗲𝗿 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗯𝘆 𝗰𝗮𝘁𝗲𝗴𝗼𝗿𝘆`;
  }
  var msgg = {body: msg, attachment: imgP}
  return api.sendMessage(msgg, threadID, async (error, info) => {

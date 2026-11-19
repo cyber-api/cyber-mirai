@@ -201,7 +201,6 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
    if ((event.body.toLowerCase() == "ami mahbub") || (event.body.toLowerCase() == "kire")) {
      return api.sendMessage("হ্যা বস কেমন আছেন..?☺️", threadID);
    };
-  mess = "{name}"
   
   if (event.body.indexOf("/Bot") == 0 || (event.body.indexOf("/bot") == 0)) {
     var msg = {
