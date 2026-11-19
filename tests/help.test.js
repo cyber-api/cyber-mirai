@@ -116,11 +116,11 @@ test("!help help shows command details", async () => {
   const { sent } = await runHelp({}, ["help"]);
   assert.equal(sent.length, 1);
   const message = sent[0].message;
-  assert.match(message, /🔹 help/);
-  assert.match(message, /📂 system/);
-  assert.match(message, /🔐 User/);
-  assert.match(message, /⏱️ 5s/);
-  assert.match(message, /💡 !help \[command\]/);
+  assert.match(message, /🔹 Command: help/);
+  assert.match(message, /📂 Category: system/);
+  assert.match(message, /🔐 Permission: User/);
+  assert.match(message, /⏱️ Cooldown: 5s/);
+  assert.match(message, /💡 Usage: !help \[command\]/);
 });
 
 test("!help system shows the commands in that category", async () => {
@@ -143,8 +143,8 @@ test("!help <alias> resolves to the command", async () => {
   commands.set("help", command("help", "system", { aliases: ["h", "?"] }));
   const { sent } = await runHelp({ commands }, ["h"]);
   assert.equal(sent.length, 1);
-  assert.match(sent[0].message, /🔹 help/);
-  assert.match(sent[0].message, /🔄 h, \?/);
+  assert.match(sent[0].message, /🔹 Command: help/);
+  assert.match(sent[0].message, /🔄 Aliases: h, \?/);
 });
 
 test("!help xyzabc gives a friendly not-found reply", async () => {
@@ -163,7 +163,7 @@ test("!help before commands finish loading is friendly, not a crash", async () =
 test("!help works when global.data.threadData is missing", async () => {
   const { sent } = await runHelp({ data: {} }, ["help"]);
   assert.equal(sent.length, 1);
-  assert.match(sent[0].message, /💡 !help \[command\]/);
+  assert.match(sent[0].message, /💡 Usage: !help \[command\]/);
 });
 
 test("a command with no config is skipped without throwing", async () => {
@@ -193,7 +193,7 @@ test("no-prefix 'help help' replies, but 'help me' stays silent", async () => {
     getText: loaded.getText,
   });
   assert.equal(loaded.sent.length, 1);
-  assert.match(loaded.sent[0].message, /🔹 help/);
+  assert.match(loaded.sent[0].message, /🔹 Command: help/);
 
   await loaded.help.handleEvent({
     api: loaded.api,

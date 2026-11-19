@@ -51,8 +51,19 @@ test("every access_token consumer reads the restored credential helper", () => {
   assert.deepEqual(offenders, []);
 });
 
-test("birthday.js no longer carries the truncated hardcoded token", () => {
-  const source = fs.readFileSync(path.join(COMMANDS_DIR, "birthday.js"), "utf8");
-  assert.doesNotMatch(source, /access_token=66262/);
-  assert.match(source, /getFbAppToken\(\)/);
+test("v5.1.0 removed the obsolete command files", () => {
+  const removed = [
+    "4k.js", "Work-beta.js", "allah.js", "approve.js", "artifay.js", "autoban.js",
+    "automention.js", "autoreact.js", "autoseen.js", "bf.js", "birthday.js", "botinfo.js",
+    "bro.js", "by.js", "choose.js", "crush.js", "date.js", "date2.js", "decode.js",
+    "delmsg.js", "download.js", "fact.js", "fact2.js", "filter.js", "fire.js", "fish.js",
+    "flop.js", "fyoutoo.js", "gitlink.js", "give.js", "giveaway.js", "hack.js", "hi.js",
+    "hot.js", "hug.js", "inbox.js", "ip.js", "islamick.js", "kiss.js", "listbanbybot.js",
+    "lyrics.js", "meno.js", "mlstalk.js", "moon.js", "mp3.js", "mycoins.js", "namaz-time.js",
+    "nastik.js", "nhentai.js", "night.js", "penis.js", "petmonsters.js", "pooh.js",
+    "prefix.js", "rainbow.js", "randomicon.js", "repository.js", "rules.js", "stalk.js",
+    "steal.js", "stt.js", "tictactoe.js", "tile.js", "war.js", "wednesday.js", "x.js"
+  ];
+  const stillPresent = removed.filter((name) => fs.existsSync(path.join(COMMANDS_DIR, name)));
+  assert.deepEqual(stillPresent, []);
 });

@@ -11,8 +11,8 @@ module.exports.config = {
  
 module.exports.languages = {
 	"vi": {
-		"sendSuccess": "ÄÃ£ gá»­i thÃ¡nh chá»‰ tá»›i %1 nhÃ³m",
-		"sendFail": "KhÃ´ng thá»ƒ gá»­i thÃ¡nh chá»‰ tá»›i %1 nhÃ³m"
+		"sendSuccess": "Đã gửi thánh chỉ tới %1 nhóm",
+		"sendFail": "Không thể gửi thánh chỉ tới %1 nhóm"
 	},
 	"en": {
 		"sendSuccess": "Sent message to %1 thread!",

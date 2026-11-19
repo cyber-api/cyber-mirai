@@ -59,6 +59,34 @@ function safeString(value, fallback) {
   return value === undefined || value === null || value === "" ? fallback : String(value);
 }
 
+/**
+ * Some modules ship `usages` as a language map ({ en: "...", vi: "..." }).
+ * Never let that reach the chat as "[object Object]".
+ */
+function safeUsages(value) {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    if (typeof value.en === "string") return value.en;
+    const first = Object.values(value).find((entry) => typeof entry === "string");
+    return first || "";
+  }
+  return "";
+}
+
+/** Expand the Mirai `{pn}` placeholder to the real prefix + command name. */
+function expandUsage(usages, invocation) {
+  return usages.includes("{pn}") ? usages.replace(/\{pn\}/g, invocation) : usages;
+}
+
+/** Keep multi-line usages inside the help box. */
+function boxText(text) {
+  return String(text)
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n│ ");
+}
+
 function safeThreadData(threadID) {
   try {
     const store = global.data && global.data.threadData;
@@ -138,8 +166,10 @@ function permissionLabel(config, getText) {
 function usageLine(entry, prefix) {
   const config = entry.config;
   const name = safeString(config.name, entry.name);
-  const usages = safeString(config.usages, "");
-  return `${prefix}${name}${usages ? " " + usages : ""}`;
+  const usages = safeUsages(config.usages);
+  const invocation = `${prefix}${name}`;
+  if (usages.includes("{pn}")) return usages.replace(/\{pn\}/g, invocation);
+  return `${invocation}${usages ? " " + usages : ""}`;
 }
 
 function formatDetails(entry, prefix, getText) {
@@ -150,15 +180,15 @@ function formatDetails(entry, prefix, getText) {
     : (typeof config.aliases === "string" && config.aliases ? [config.aliases] : []);
   const lines = [
     "╭──────•◈•──────╮",
-    `│ 🔹 ${name}`,
-    `│ 📝 ${safeString(config.description, "No description")}`,
-    `│ 📂 ${safeString(config.commandCategory, "uncategorized")}`,
-    `│ 🔐 ${permissionLabel(config, getText)}`,
-    `│ ⏱️ ${safeString(config.cooldowns, "0")}s`,
-    `│ 💡 ${usageLine(entry, prefix)}`
+    `│ 🔹 Command: ${name}`,
+    `│ 📝 Description: ${safeString(config.description, "No description")}`,
+    `│ 📂 Category: ${safeString(config.commandCategory, "uncategorized")}`,
+    `│ 🔐 Permission: ${permissionLabel(config, getText)}`,
+    `│ ⏱️ Cooldown: ${safeString(config.cooldowns, "0")}s`,
+    `│ 💡 Usage: ${boxText(usageLine(entry, prefix))}`
   ];
-  if (aliases.length) lines.push(`│ 🔄 ${aliases.join(", ")}`);
-  lines.push(`│ 👤 ${safeString(config.credits, "Unknown")}`);
+  if (aliases.length) lines.push(`│ 🔄 Aliases: ${aliases.join(", ")}`);
+  lines.push(`│ 👤 Credits: ${safeString(config.credits, "Unknown")}`);
   lines.push("╰──────•◈•──────╯");
   return lines.join("\n");
 }
@@ -166,8 +196,8 @@ function formatDetails(entry, prefix, getText) {
 function formatCategories(groups, prefix, total, getText) {
   const lines = [
     "╭──────•◈•──────╮",
-    "│   📋 COMMAND CATEGORIES",
-    "├────────────────"
+    "│  📋 COMMAND CATEGORIES",
+    "├──────•◈•──────┤"
   ];
   for (const category of Array.from(groups.keys()).sort()) {
     const entries = groups.get(category).slice().sort((a, b) => a.name.localeCompare(b.name));
@@ -175,10 +205,10 @@ function formatCategories(groups, prefix, total, getText) {
     if (entries.length > MAX_NAMES_PER_CATEGORY) {
       names += ` … +${entries.length - MAX_NAMES_PER_CATEGORY} more`;
     }
-    lines.push(`│ ❄️ ${category.charAt(0).toUpperCase() + category.slice(1)} (${entries.length})`);
+    lines.push(`│ 📂 ${category.charAt(0).toUpperCase() + category.slice(1)} (${entries.length})`);
     lines.push(`│    ${names}`);
   }
-  lines.push("├────────────────");
+  lines.push("├──────•◈•──────┤");
   lines.push(`│ ${translate(getText, "total", total, groups.size)}`);
   lines.push(`│ 💡 ${prefix}help <command>`);
   lines.push(`│ 💡 ${prefix}help <category>`);
@@ -190,13 +220,13 @@ function formatCategory(category, entries, prefix) {
   const lines = [
     "╭──────•◈•──────╮",
     `│ 📂 ${category.toUpperCase()} (${entries.length})`,
-    "├────────────────"
+    "├──────•◈•──────┤"
   ];
   for (const entry of entries.slice().sort((a, b) => a.name.localeCompare(b.name))) {
-    const usages = safeString(entry.config.usages, "");
-    lines.push(`│ • ${entry.name}${usages ? " — " + usages : ""}`);
+    const usages = safeUsages(entry.config.usages);
+    lines.push(`│ • ${entry.name}${usages ? " — " + boxText(expandUsage(usages, `${prefix}${entry.name}`)) : ""}`);
   }
-  lines.push("├────────────────");
+  lines.push("├──────•◈•──────┤");
   lines.push(`│ 💡 ${prefix}help <command>`);
   lines.push("╰──────•◈•──────╯");
   return lines.join("\n");
@@ -206,12 +236,12 @@ function formatPage(entries, page, totalPages, prefix, getText) {
   const lines = [
     "╭──────•◈•──────╮",
     `│ 📄 ${translate(getText, "page", page, totalPages)}`,
-    "├────────────────"
+    "├──────•◈•──────┤"
   ];
   for (const entry of entries) {
     lines.push(`│ • ${entry.name}`);
   }
-  lines.push("├────────────────");
+  lines.push("├──────•◈•──────┤");
   lines.push(`│ 💡 ${prefix}help <command>`);
   lines.push("╰──────•◈•──────╯");
   return lines.join("\n");
@@ -312,8 +342,8 @@ module.exports.config = {
 module.exports.languages = {
   en: {
     user: "User",
-    adminGroup: "Admin group",
-    adminBot: "Admin bot",
+    adminGroup: "Group admin",
+    adminBot: "Bot admin",
     loading: "⏳ Commands are still loading. Please try again in a moment.",
     total: "Total: %1 commands in %2 categories",
     page: "Page %1/%2",
